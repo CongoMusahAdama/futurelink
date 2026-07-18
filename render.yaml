@@ -12,4 +12,4 @@ services:
       - key: MONGODB_URI
         sync: false
       - key: CLIENT_ORIGIN
-        sync: false
+        value: "https://futurelinkservices.netlify.app,http://localhost:5173"

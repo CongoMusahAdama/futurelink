@@ -530,7 +530,6 @@ export default function VenueTabletPage() {
                   type="tel"
                   inputMode="numeric"
                   autoComplete="tel"
-                  pattern="[0-9+\s-]*"
                   value={form.phone}
                   onChange={handleChange}
                   onBlur={handlePhoneBlur}

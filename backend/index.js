@@ -7,25 +7,35 @@ import attendeesRouter from "./routes/attendees.js";
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const allowedOrigins = (process.env.CLIENT_ORIGIN || "")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+/** Always allow production + local dev; extend via CLIENT_ORIGIN env (comma-separated). */
+const DEFAULT_ORIGINS = [
+  "https://futurelinkservices.netlify.app",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+];
+
+const allowedOrigins = [
+  ...new Set([
+    ...DEFAULT_ORIGINS,
+    ...(process.env.CLIENT_ORIGIN || "")
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean),
+  ]),
+];
 
 app.use(
-  cors(
-    allowedOrigins.length
-      ? {
-          origin(origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
-              callback(null, true);
-              return;
-            }
-            callback(null, false);
-          },
-        }
-      : undefined
-  )
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      callback(null, false);
+    },
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
 );
 app.use(express.json());
 
