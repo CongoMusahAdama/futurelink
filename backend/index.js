@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 3001;
 
 /** Always allow production + local dev; extend via CLIENT_ORIGIN env (comma-separated). */
 const DEFAULT_ORIGINS = [
+  "https://future-linkservices.com",
+  "https://www.future-linkservices.com",
   "https://futurelinkservices.netlify.app",
   "http://localhost:5173",
   "http://127.0.0.1:5173",
