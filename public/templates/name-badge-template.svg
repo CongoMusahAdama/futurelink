@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Editable name badge source — 3.5" × 5.5" vertical (889 × 1397 px @ 254 dpi) -->
+<!-- Brand: Navy #001d4a · Accent #1afb97 · Open in Figma, Illustrator, or Inkscape -->
+<svg xmlns="http://www.w3.org/2000/svg" width="889" height="1397" viewBox="0 0 889 1397">
+  <defs>
+    <style>
+      .navy { fill: #001d4a; }
+      .mint { fill: #1afb97; }
+      .white { fill: #ffffff; }
+      .text-white { fill: #ffffff; font-family: 'Arial', 'Helvetica', sans-serif; }
+      .text-navy { fill: #001d4a; font-family: 'Arial', 'Helvetica', sans-serif; }
+      .text-muted { fill: #64748b; font-family: 'Arial', 'Helvetica', sans-serif; }
+      .bold { font-weight: 700; }
+    </style>
+  </defs>
+
+  <!-- Bleed background -->
+  <rect class="navy" x="0" y="0" width="889" height="1397"/>
+
+  <!-- Trim area guide (3.5×5.5" inset 0.125" bleed) -->
+  <rect class="navy" x="32" y="32" width="825" height="1333" rx="24"/>
+
+  <!-- Punch hole -->
+  <rect fill="#f0f4f8" x="404" y="52" width="80" height="22" rx="11"/>
+
+  <!-- Org pill -->
+  <rect class="white" x="80" y="100" width="729" height="110" rx="28"/>
+  <text class="text-navy bold" x="200" y="155" font-size="32">Ghana Hubs Network</text>
+  <text class="text-muted" x="200" y="188" font-size="22">Powered by Future-Link Services</text>
+  <!-- Replace with logo: public/events/ghana-hubs-network.png -->
+
+  <!-- Event title -->
+  <text class="text-white bold" x="444" y="280" font-size="44" text-anchor="middle">GHANA HUBS NETWORK AGM</text>
+  <text class="text-white" x="444" y="330" font-size="28" text-anchor="middle">Annual General Meeting 2026</text>
+
+  <!-- Theme -->
+  <text class="mint bold" x="80" y="390" font-size="22">THEME:</text>
+  <rect fill="none" stroke="#1afb97" stroke-width="3" x="80" y="410" width="729" height="90" rx="12"/>
+  <text class="text-white bold" x="444" y="465" font-size="26" text-anchor="middle">"CONNECTING HUBS · BUILDING IMPACT"</text>
+
+  <!-- Attendee name — EDIT -->
+  <text class="text-white bold" x="444" y="560" font-size="48" text-anchor="middle">{{ATTENDEE_NAME}}</text>
+
+  <!-- Role pill — EDIT -->
+  <rect class="mint" x="120" y="600" width="649" height="120" rx="28"/>
+  <text class="text-navy bold" x="444" y="680" font-size="56" text-anchor="middle">{{ROLE}}</text>
+
+  <!-- Contact — EDIT -->
+  <text class="text-white" x="444" y="780" font-size="24" text-anchor="middle">Contact: 054 000 0000 | 027 000 0000</text>
+
+  <!-- Footer -->
+  <line stroke="#1afb97" stroke-width="2" x1="80" y1="820" x2="809" y2="820"/>
+  <rect class="white" x="80" y="820" width="729" height="100"/>
+  <text class="text-navy" x="444" y="875" font-size="20" text-anchor="middle">www.ghanahubsnetwork.org  |  info@ghanahubsnetwork.org</text>
+</svg>

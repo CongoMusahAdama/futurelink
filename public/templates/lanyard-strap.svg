@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lanyard strap repeat pattern — import into Figma/Illustrator, tile along 36" strip -->
+<svg xmlns="http://www.w3.org/2000/svg" width="3600" height="120" viewBox="0 0 3600 120">
+  <defs>
+    <pattern id="strap" width="600" height="120" patternUnits="userSpaceOnUse">
+      <rect fill="#ffffff" width="600" height="120"/>
+      <rect fill="#1afb97" y="0" width="600" height="6"/>
+      <rect fill="#1afb97" y="114" width="600" height="6"/>
+      <text x="300" y="68" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#001d4a" text-anchor="middle">
+        ◆ GHANA HUBS NETWORK ◆ AGM 2026 ◆
+      </text>
+      <text x="300" y="98" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#64748b" text-anchor="middle">
+        Future-Link Services
+      </text>
+    </pattern>
+  </defs>
+  <rect fill="url(#strap)" width="3600" height="120"/>
+</svg>
