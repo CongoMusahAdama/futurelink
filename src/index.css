@@ -5658,11 +5658,11 @@ html.tv-dashboard body {
   justify-content: space-between;
   overflow: hidden;
   padding: 3rem;
-  color: white;
+  color: var(--color-navy);
   background:
-    radial-gradient(circle at 15% 15%, rgba(26, 251, 151, 0.18), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(26, 251, 151, 0.12), transparent 45%),
-    linear-gradient(155deg, #001d4a 0%, #002a63 100%);
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.35), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(18, 216, 130, 0.55), transparent 50%),
+    linear-gradient(155deg, var(--color-brand-blue) 0%, var(--color-brand-blue-dark) 100%);
 }
 
 @media (min-width: 900px) {
@@ -5691,7 +5691,7 @@ html.tv-dashboard body {
   margin-top: 1rem;
   font-size: 0.95rem;
   line-height: 1.7;
-  color: rgb(203 213 225);
+  color: rgb(0 29 74 / 0.78);
 }
 
 .ops-login-hero-points {
@@ -5705,8 +5705,8 @@ html.tv-dashboard body {
   position: relative;
   padding-left: 1.5rem;
   font-size: 0.9rem;
-  font-weight: 600;
-  color: rgb(226 232 240);
+  font-weight: 700;
+  color: var(--color-navy);
 }
 
 .ops-login-hero-points li::before {
@@ -5717,13 +5717,13 @@ html.tv-dashboard body {
   height: 0.55rem;
   width: 0.55rem;
   border-radius: 9999px;
-  background: var(--color-brand-blue);
+  background: var(--color-navy);
 }
 
 .ops-login-hero-foot {
   font-size: 0.8125rem;
-  font-weight: 600;
-  color: rgb(148 163 184);
+  font-weight: 700;
+  color: rgb(0 29 74 / 0.65);
 }
 
 .ops-login-panel {
