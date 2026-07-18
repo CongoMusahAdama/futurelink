@@ -1746,6 +1746,79 @@ html.venue-tablet .venue-scanner-manual:active {
   vertical-align: middle;
 }
 
+.table-pagination {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  border-top: 1px solid #f1f5f9;
+  background: #fafbfc;
+  padding: 0.875rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .table-pagination {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.table-pagination-summary {
+  font-size: 0.8125rem;
+  color: rgb(100 116 139);
+}
+
+.table-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.table-pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.table-pagination-btn,
+.table-pagination-page {
+  display: inline-flex;
+  min-height: 2.25rem;
+  min-width: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  border: 1px solid #e2e8f0;
+  background: white;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgb(0 29 74);
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.table-pagination-btn:hover:not(:disabled),
+.table-pagination-page:hover:not(.is-active) {
+  border-color: rgb(26 251 151 / 0.45);
+  background: #f0fdf9;
+}
+
+.table-pagination-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.table-pagination-page.is-active {
+  border-color: var(--color-brand-blue);
+  background: var(--color-brand-blue);
+  color: rgb(0 29 74);
+}
+
+.table-pagination-ellipsis {
+  padding: 0 0.25rem;
+  font-size: 0.875rem;
+  color: rgb(148 163 184);
+}
+
 /* Check-in success — contactless pass */
 .venue-success-screen {
   position: relative;

@@ -1,4 +1,4 @@
-import { LOGO_SRC, BRAND_NAME } from "../lib/brand";
+import { LOGO_SRC, LOGO_ON_DARK_SRC, BRAND_NAME } from "../lib/brand";
 
 /** Height + width — TRANS.png has wide transparent margins; width + scale on `landing` */
 const SIZES = {
@@ -12,6 +12,8 @@ const SIZES = {
   landing:
     "h-[5.5rem] w-[min(78vw,300px)] sm:h-[7rem] sm:w-[380px] md:h-[8rem] md:w-[440px] lg:h-[9rem] lg:w-[500px] origin-left scale-[1.35] sm:scale-[1.4] md:scale-[1.45] lg:scale-[1.5]",
   hero: "h-[4.5rem] w-[240px] sm:h-24 sm:w-[300px] lg:h-28 lg:w-[360px]",
+  /** Ops sidebar — transparent on navy */
+  sidebar: "h-11 w-auto max-w-[200px] sm:h-12 sm:max-w-[220px]",
 };
 
 /** Icon-only clip — TRANS.png wordmark sits to the right of the mint mark */
@@ -43,6 +45,13 @@ export default function Logo({
         decoding="async"
       />
     </span>
+  ) : variant === "onDark" ? (
+    <img
+      src={LOGO_ON_DARK_SRC}
+      alt={BRAND_NAME}
+      className={`${SIZES.sidebar} object-contain object-left ${className}`}
+      decoding="async"
+    />
   ) : (
     <img
       src={LOGO_SRC}

@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import OpsShell from "../components/OpsShell";
 import TableExportMenu from "../components/TableExportMenu";
+import TablePagination from "../components/TablePagination";
 import { withDemoFallback } from "../data/dummyAttendees";
 import { api } from "../lib/api";
 import { ATTENDEE_EXPORT_COLUMNS } from "../lib/exportTable";
+import { usePagination } from "../hooks/usePagination";
 
 const EVENT_TITLE = "Ghana Hubs Network AGM 2026";
+const PAGE_SIZE = 10;
 
 export default function AdminPage() {
   const [attendees, setAttendees] = useState([]);
@@ -36,6 +39,21 @@ export default function AdminPage() {
     if (filter === "pending") return !a.checkedIn;
     return true;
   });
+
+  const {
+    page,
+    setPage,
+    totalPages,
+    totalItems,
+    paginatedItems,
+    rangeStart,
+    rangeEnd,
+    resetPage,
+  } = usePagination(filtered, PAGE_SIZE);
+
+  useEffect(() => {
+    resetPage();
+  }, [filter, resetPage]);
 
   const checkedInCount = attendees.filter((a) => a.checkedIn).length;
 
@@ -107,7 +125,7 @@ export default function AdminPage() {
       ) : (
         <>
           <ul className="space-y-3 md:hidden">
-            {filtered.map((a) => (
+            {paginatedItems.map((a) => (
               <li
                 key={a._id}
                 className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/80"
@@ -153,10 +171,20 @@ export default function AdminPage() {
             ))}
           </ul>
 
+          <TablePagination
+            className="mt-4 rounded-2xl ring-1 ring-slate-200/80 md:hidden"
+            page={page}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            rangeStart={rangeStart}
+            rangeEnd={rangeEnd}
+            onPageChange={setPage}
+          />
+
           <div className="hidden overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200/80 md:block">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3">
             <p className="text-sm font-semibold text-navy">
-              {filtered.length} record{filtered.length !== 1 ? "s" : ""}
+              {totalItems} record{totalItems !== 1 ? "s" : ""}
             </p>
             <TableExportMenu {...exportProps} />
           </div>
@@ -173,7 +201,7 @@ export default function AdminPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((a) => (
+                {paginatedItems.map((a) => (
                   <tr key={a._id} className="text-navy hover:bg-slate-50/80">
                     <td className="px-5 py-3 font-mono text-xs text-slate-600">{a.registrationId}</td>
                     <td className="px-5 py-3">
@@ -201,6 +229,14 @@ export default function AdminPage() {
               </tbody>
             </table>
           </div>
+          <TablePagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            rangeStart={rangeStart}
+            rangeEnd={rangeEnd}
+            onPageChange={setPage}
+          />
         </div>
 
           <div className="mt-4 flex justify-end md:hidden">

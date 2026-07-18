@@ -4,7 +4,6 @@ import {
   ChevronRight,
   FileImage,
   LayoutDashboard,
-  Monitor,
   Radio,
   Tablet,
   Users,
@@ -14,7 +13,6 @@ import TableExportMenu from "./TableExportMenu";
 
 const NAV = [
   { href: "#dashboard", label: "Dashboard", icon: LayoutDashboard, id: "dashboard" },
-  { href: "#dashboard-tv", label: "TV Display", icon: Monitor, id: "tv" },
   { href: "#checkin", label: "Check-in", icon: Tablet, id: "venue" },
   { href: "#admin", label: "Attendees", icon: Users, id: "admin" },
   { href: "#signage", label: "Signage", icon: FileImage, id: "signage" },
@@ -50,7 +48,7 @@ export default function OpsShell({
     <div className="ops-ui min-h-screen bg-slate-100">
       {/* Mobile top bar */}
       <header className="border-b border-white/10 bg-navy px-4 py-3 md:hidden">
-        <Logo variant="light" size="lg" />
+        <Logo variant="onDark" />
         <nav className="mt-3 flex gap-1 overflow-x-auto pb-1">
           {NAV.map(({ href, label, icon: Icon, id }) => {
             const isActive = active === id;
@@ -89,15 +87,13 @@ export default function OpsShell({
           >
             {!collapsed && (
               <div className="min-w-0">
-              <Logo variant="light" size="lg" />
+                <Logo variant="onDark" />
                 <p className="mt-2 text-[10px] font-medium uppercase tracking-wider text-blue-200/70">
                   Event Operations
                 </p>
               </div>
             )}
-            {collapsed && (
-              <Logo variant="light" size="sm" />
-            )}
+            {collapsed && <Logo markOnly size="md" />}
             {!collapsed && (
               <button
                 type="button"

@@ -1,7 +1,14 @@
 import { ArrowRight } from "lucide-react";
 import SectionHeading from "./SectionHeading";
 import ScrollReveal from "./ScrollReveal";
-import { CONTACT_EMAIL, CONTACT_PHONES } from "../lib/brand";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONES,
+  CONTACT_ADDRESS,
+  CONTACT_MAP_URL,
+  CONTACT_BANK_NAME,
+  CONTACT_BANK_ACCOUNT,
+} from "../lib/brand";
 
 import { ghanaHubsEvent } from "../data/events";
 
@@ -38,7 +45,22 @@ export default function Contact() {
                 </ul>
               </div>
               <p className="text-sm text-slate-500">
-                <span className="font-medium text-navy">Location:</span> Accra, Ghana
+                <span className="font-medium text-navy">Address:</span>{" "}
+                <a
+                  href={CONTACT_MAP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand-blue"
+                >
+                  {CONTACT_ADDRESS}
+                </a>
+              </p>
+              <p className="text-sm text-slate-500">
+                <span className="font-medium text-navy">Bank:</span>{" "}
+                <span>
+                  {CONTACT_BANK_NAME} · Acct{" "}
+                  <span className="font-mono font-medium text-navy">{CONTACT_BANK_ACCOUNT}</span>
+                </span>
               </p>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import Logo from "./Logo";
+import { CONTACT_ADDRESS, CONTACT_MAP_URL, CONTACT_BANK } from "../lib/brand";
 
 const links = {
   Solutions: ["Event Registration", "Live Dashboard", "Analytics Reports", "On-site Support"],
@@ -18,6 +19,15 @@ export default function Footer() {
               intelligence for conferences and workshops across Ghana.
             </p>
             <p className="mt-3 text-xs text-white/50">Smart Event Intelligence</p>
+            <a
+              href={CONTACT_MAP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-block text-xs text-white/50 transition-colors hover:text-white"
+            >
+              {CONTACT_ADDRESS}
+            </a>
+            <p className="mt-1 text-xs text-white/50">{CONTACT_BANK}</p>
           </div>
 
           {Object.entries(links).map(([title, items]) => (

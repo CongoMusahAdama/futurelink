@@ -1,7 +1,6 @@
 import {
   Activity,
   Clock,
-  Monitor,
   RefreshCw,
   UserCheck,
   UserPlus,
@@ -10,7 +9,9 @@ import {
 import OpsShell from "../components/OpsShell";
 import BarChartPanel, { HourlyChartPanel } from "../components/BarChartPanel";
 import TableExportMenu from "../components/TableExportMenu";
+import TablePagination from "../components/TablePagination";
 import { useDashboardData } from "../hooks/useDashboardData";
+import { usePagination } from "../hooks/usePagination";
 import { ACTIVITY_EXPORT_COLUMNS } from "../lib/exportTable";
 
 const STATION_LABELS = {
@@ -20,6 +21,7 @@ const STATION_LABELS = {
 };
 
 const EVENT_TITLE = "Ghana Hubs Network AGM 2026";
+const ACTIVITY_PAGE_SIZE = 8;
 
 function formatTime(value) {
   if (!value) return "—";
@@ -40,6 +42,17 @@ function formatDate(value) {
 export default function LiveDashboardPage() {
   const { stats, attendees, isDemo, error, lastUpdated, recentActivity, checkedInList } =
     useDashboardData(5000);
+
+  const activityPagination = usePagination(recentActivity, ACTIVITY_PAGE_SIZE);
+  const {
+    page: activityPage,
+    setPage: setActivityPage,
+    paginatedItems: paginatedActivity,
+    totalPages: activityTotalPages,
+    totalItems: activityTotalItems,
+    rangeStart: activityRangeStart,
+    rangeEnd: activityRangeEnd,
+  } = activityPagination;
 
   const exportProps = {
     columns: ACTIVITY_EXPORT_COLUMNS,
@@ -64,21 +77,12 @@ export default function LiveDashboardPage() {
         sheetName: "Attendees",
       }}
       actions={
-        <div className="flex flex-wrap items-center gap-2">
-          <a
-            href="#dashboard-tv"
-            className="inline-flex items-center gap-2 rounded-full bg-navy px-4 py-2 text-xs font-semibold text-white transition-opacity hover:opacity-90"
-          >
-            <Monitor className="h-3.5 w-3.5" />
-            Open TV mode
-          </a>
-          {lastUpdated && (
-            <div className="flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-medium text-brand-blue">
-              <RefreshCw className="h-3.5 w-3.5 animate-spin [animation-duration:3s]" />
-              Updated {formatTime(lastUpdated)}
-            </div>
-          )}
-        </div>
+        lastUpdated ? (
+          <div className="flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-medium text-brand-blue">
+            <RefreshCw className="h-3.5 w-3.5 animate-spin [animation-duration:3s]" />
+            Updated {formatTime(lastUpdated)}
+          </div>
+        ) : null
       }
     >
       {isDemo && (
@@ -186,7 +190,7 @@ export default function LiveDashboardPage() {
               ) : (
                 <>
                   <ul className="divide-y divide-slate-100 md:hidden">
-                    {recentActivity.map((a) => (
+                    {paginatedActivity.map((a) => (
                       <li key={a._id} className="px-4 py-4">
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
@@ -229,6 +233,16 @@ export default function LiveDashboardPage() {
                     ))}
                   </ul>
 
+                  <TablePagination
+                    className="md:hidden"
+                    page={activityPage}
+                    totalPages={activityTotalPages}
+                    totalItems={activityTotalItems}
+                    rangeStart={activityRangeStart}
+                    rangeEnd={activityRangeEnd}
+                    onPageChange={setActivityPage}
+                  />
+
                   <div className="hidden overflow-x-auto md:block">
                     <table className="ops-table min-w-[640px]">
                     <thead>
@@ -242,7 +256,7 @@ export default function LiveDashboardPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {recentActivity.map((a) => (
+                      {paginatedActivity.map((a) => (
                         <tr key={a._id} className="text-navy hover:bg-slate-50/80">
                           <td className="px-5 py-3">
                             <p className="font-medium">{a.fullName}</p>
@@ -283,6 +297,16 @@ export default function LiveDashboardPage() {
                     </tbody>
                   </table>
                   </div>
+
+                  <TablePagination
+                    className="hidden md:flex"
+                    page={activityPage}
+                    totalPages={activityTotalPages}
+                    totalItems={activityTotalItems}
+                    rangeStart={activityRangeStart}
+                    rangeEnd={activityRangeEnd}
+                    onPageChange={setActivityPage}
+                  />
                 </>
               )}
             </section>

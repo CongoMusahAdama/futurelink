@@ -14,7 +14,6 @@ import Footer from "./components/Footer";
 import RegistrationPage from "./components/RegistrationPage";
 import VenueTabletPage from "./pages/VenueTabletPage";
 import LiveDashboardPage from "./pages/LiveDashboardPage";
-import TvDashboardPage from "./pages/TvDashboardPage";
 import SignagePage from "./pages/SignagePage";
 import AdminPage from "./pages/AdminPage";
 
@@ -22,7 +21,6 @@ function getOpsRoute() {
   const hash = window.location.hash.replace(/^#/, "");
   if (hash === "venue" || hash === "checkin") return "venue";
   if (hash === "dashboard") return "dashboard";
-  if (hash === "dashboard-tv" || hash === "tv") return "tv";
   if (hash === "signage") return "signage";
   if (hash === "admin") return "admin";
   return null;
@@ -40,7 +38,6 @@ function AppContent() {
 
   if (opsRoute === "venue") return <VenueTabletPage />;
   if (opsRoute === "dashboard") return <LiveDashboardPage />;
-  if (opsRoute === "tv") return <TvDashboardPage />;
   if (opsRoute === "signage") return <SignagePage />;
   if (opsRoute === "admin") return <AdminPage />;
   if (activeEvent) return <RegistrationPage event={activeEvent} />;

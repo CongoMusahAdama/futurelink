@@ -69,7 +69,7 @@ Health check: [https://futurelink-ufwi.onrender.com/api/health](https://futureli
 
 After Netlify gives you a URL, add it to Render as `CLIENT_ORIGIN` and redeploy Render if you set it after the first deploy.
 
-**Ops routes:** `yoursite.netlify.app/#checkin` · `#dashboard` · `#dashboard-tv` · `#admin` · `#signage`
+**Ops routes:** `yoursite.netlify.app/#checkin` · `#dashboard` · `#admin` · `#signage`
 
 ## Brand Colors
 
