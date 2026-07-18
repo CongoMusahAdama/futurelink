@@ -10,6 +10,7 @@ export const ghanaHubsEvent = {
   heroImageClass: "object-contain object-center p-2 sm:p-3",
   upcoming: true,
   upcomingLabel: "Next week in Kumasi",
+  startsAt: "2026-07-21T09:00:00+00:00",
   excerpt:
     "Upcoming AGM next week in Kumasi — annual general meeting for Ghana Hubs Network members with professional QR check-in, live dashboard, and end-of-day analytics.",
 };
@@ -73,3 +74,9 @@ export const carouselEvents = events.slice(0, 5);
 export const featuredLargeEvents = events.slice(0, 2);
 
 export const featuredSmallEvents = events.slice(2);
+
+/** Events with a future start date for countdowns */
+export function getUpcomingEvents() {
+  const now = Date.now();
+  return events.filter((e) => e.upcoming && e.startsAt && new Date(e.startsAt).getTime() > now);
+}

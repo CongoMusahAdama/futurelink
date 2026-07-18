@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import Logo from "./Logo";
+import EventCountdown from "./EventCountdown";
 import { useRegistrationModal } from "../context/RegistrationModalContext";
 
 const initialForm = {
@@ -36,14 +37,6 @@ export default function RegistrationPage({ event }) {
   const [form, setForm] = useState(initialForm);
   const [submitted, setSubmitted] = useState(false);
 
-  const year = event.date.match(/\d{4}/)?.[0] ?? "2026";
-  const eventLabel = event.title
-    .replace(new RegExp(`\\s*${event.category}\\s*`, "i"), " ")
-    .replace(/\d{4}/, "")
-    .trim()
-    .toUpperCase();
-  const headline = event.category.toUpperCase();
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
@@ -60,19 +53,19 @@ export default function RegistrationPage({ event }) {
   return (
     <div className="min-h-screen bg-blue-50">
       <header className="border-b border-blue-100 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4">
           <button
             type="button"
             onClick={closeRegistration}
             className="rounded-lg transition-opacity hover:opacity-80"
             aria-label="Future-Link Services home"
           >
-            <Logo size="xl" />
+            <Logo size="xl" markOnly />
           </button>
           <button
             type="button"
             onClick={closeRegistration}
-            className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-navy transition-colors hover:bg-blue-100"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-blue-50 px-3 py-2 text-sm font-medium text-navy transition-colors hover:bg-blue-100 sm:px-4"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to home
@@ -82,28 +75,39 @@ export default function RegistrationPage({ event }) {
 
       <main className="mx-auto max-w-5xl px-4 py-8 sm:px-5 sm:py-10">
         <div className="overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-blue-100">
-          <div className="relative h-48 overflow-hidden sm:h-60">
-            <img
-              src={event.image}
-              alt=""
-              className={`absolute inset-0 h-full w-full ${
-                event.heroImageClass ?? "object-cover object-center"
-              }`}
-            />
-            <div className="absolute inset-0 bg-navy/78" />
+          <div className="relative overflow-hidden bg-navy px-6 py-10 sm:py-12">
+            {event.image && (
+              <img
+                src={event.image}
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute inset-0 h-full w-full scale-110 object-cover opacity-15 blur-sm"
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-b from-navy/90 via-navy/95 to-navy" />
 
-            <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-100">
-                {eventLabel}
+            <div className="relative flex flex-col items-center justify-center gap-5 text-center">
+              {event.logo ? (
+                <img
+                  src={event.logo}
+                  alt={event.title}
+                  className="h-20 w-auto max-w-[min(90vw,320px)] object-contain sm:h-28"
+                />
+              ) : (
+                <h1 className="text-2xl font-bold text-white sm:text-3xl">{event.title}</h1>
+              )}
+
+              {event.upcoming && event.startsAt && (
+                <EventCountdown
+                  startsAt={event.startsAt}
+                  label="Event starts in"
+                  variant="hero"
+                />
+              )}
+
+              <p className="text-sm text-blue-100">
+                {event.date} · {event.location}
               </p>
-              <h1 className="mt-2 text-3xl font-bold uppercase tracking-wide sm:text-5xl">
-                {headline}
-              </h1>
-              <div className="mt-3 flex items-center gap-3">
-                <span className="h-px w-10 bg-white/40 sm:w-14" />
-                <span className="text-sm font-medium">{year}</span>
-                <span className="h-px w-10 bg-white/40 sm:w-14" />
-              </div>
             </div>
           </div>
 

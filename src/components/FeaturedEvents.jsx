@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import EventCountdown from "./EventCountdown";
 import { useRegistrationModal } from "../context/RegistrationModalContext";
 import {
   featuredLargeEvents,
@@ -66,6 +67,14 @@ export default function FeaturedEvents() {
                   {event.title}
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-500">{event.excerpt}</p>
+                {event.upcoming && event.startsAt && (
+                  <EventCountdown
+                    startsAt={event.startsAt}
+                    label="Starts in"
+                    variant="compact"
+                    className="mt-4"
+                  />
+                )}
                 <button
                   type="button"
                   onClick={() => openRegistration(event)}

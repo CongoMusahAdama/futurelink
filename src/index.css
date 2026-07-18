@@ -25,6 +25,100 @@ html {
 .site-header-logo {
   overflow: visible;
   line-height: 0;
+  max-width: calc(100% - 3.5rem);
+}
+
+/* Scaled logo extends visually but must not steal taps from the menu button */
+.site-header-logo img {
+  pointer-events: none;
+}
+
+.site-header-logo a {
+  pointer-events: auto;
+}
+
+.logo-mark {
+  line-height: 0;
+}
+
+/* Event countdown */
+.event-countdown-heading {
+  margin-bottom: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(100 116 139);
+}
+
+.event-countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.event-countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(219 234 254);
+  background: white;
+  padding: 0.625rem 0.375rem;
+  border-radius: 0.75rem;
+}
+
+.event-countdown-value {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgb(0 29 74);
+}
+
+.event-countdown-label {
+  margin-top: 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(100 116 139);
+}
+
+.event-countdown-hero .event-countdown-heading {
+  color: rgb(191 219 254);
+}
+
+.event-countdown-hero .event-countdown-unit {
+  border-color: rgb(255 255 255 / 0.15);
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(4px);
+}
+
+.event-countdown-hero .event-countdown-value {
+  color: white;
+}
+
+.event-countdown-hero .event-countdown-label {
+  color: rgb(191 219 254);
+}
+
+.event-countdown-compact .event-countdown-grid {
+  max-width: 18rem;
+}
+
+.event-countdown-compact .event-countdown-unit {
+  padding: 0.5rem 0.25rem;
+}
+
+.event-countdown-compact .event-countdown-value {
+  font-size: 1rem;
+}
+
+.event-countdown-live {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgb(26 251 151);
 }
 
 body {

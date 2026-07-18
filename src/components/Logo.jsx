@@ -14,20 +14,46 @@ const SIZES = {
   hero: "h-[4.5rem] w-[240px] sm:h-24 sm:w-[300px] lg:h-28 lg:w-[360px]",
 };
 
-export default function Logo({ variant = "default", size = "md", className = "", href }) {
-  const dimensions = SIZES[size] || SIZES.md;
+/** Icon-only clip — TRANS.png wordmark sits to the right of the mint mark */
+const MARK_SIZES = {
+  sm: "h-10 w-10",
+  md: "h-12 w-12",
+  lg: "h-14 w-14 sm:h-16 sm:w-16",
+  xl: "h-16 w-16 sm:h-[4.5rem] sm:w-[4.5rem]",
+  nav: "h-14 w-14 sm:h-16 sm:w-16",
+  landing: "h-16 w-16 sm:h-20 sm:w-20",
+};
 
-  const img = (
+export default function Logo({
+  variant = "default",
+  size = "md",
+  className = "",
+  href,
+  markOnly = false,
+}) {
+  const dimensions = SIZES[size] || SIZES.md;
+  const markBox = MARK_SIZES[size] || MARK_SIZES.md;
+
+  const img = markOnly ? (
+    <span className={`logo-mark inline-flex shrink-0 overflow-hidden ${markBox} ${className}`}>
+      <img
+        src={LOGO_SRC}
+        alt={BRAND_NAME}
+        className="h-full w-auto max-w-none object-contain object-left"
+        decoding="async"
+      />
+    </span>
+  ) : (
     <img
       src={LOGO_SRC}
       alt={BRAND_NAME}
-      className={`${dimensions} object-contain object-left`}
+      className={`${dimensions} object-contain object-left ${className}`}
       decoding="async"
     />
   );
 
   const inner =
-    variant === "light" ? (
+    variant === "light" && !markOnly ? (
       <span className="inline-flex rounded-xl bg-white px-3 py-2.5 shadow-sm ring-1 ring-white/20 sm:px-4 sm:py-3">
         {img}
       </span>
@@ -35,7 +61,11 @@ export default function Logo({ variant = "default", size = "md", className = "",
       img
     );
 
-  const content = <div className={`inline-flex items-center ${className}`}>{inner}</div>;
+  const content = markOnly ? (
+    inner
+  ) : (
+    <div className={`inline-flex items-center ${className}`}>{inner}</div>
+  );
 
   if (href) {
     return (

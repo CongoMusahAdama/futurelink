@@ -45,12 +45,12 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
    | Key | Value |
    |-----|--------|
    | `MONGODB_URI` | Your MongoDB Atlas connection string |
-   | `CLIENT_ORIGIN` | Your Netlify URL, e.g. `https://futurelink.netlify.app` |
+   | `CLIENT_ORIGIN` | `https://futurelinkservices.netlify.app,http://localhost:5173` |
 
-5. Copy the Render URL, e.g. `https://futurelink-api.onrender.com`
+5. **Live API:** [https://futurelink-ufwi.onrender.com](https://futurelink-ufwi.onrender.com)
 6. In **MongoDB Atlas** → Network Access → allow `0.0.0.0/0` (or Render IPs)
 
-Health check: `https://YOUR-RENDER-URL.onrender.com/api/health`
+Health check: [https://futurelink-ufwi.onrender.com/api/health](https://futurelink-ufwi.onrender.com/api/health)
 
 ### 2. Frontend on Netlify
 
@@ -59,11 +59,9 @@ Health check: `https://YOUR-RENDER-URL.onrender.com/api/health`
 3. Netlify reads `netlify.toml` automatically:
    - Build: `npm run build`
    - Publish: `dist`
-4. **Environment variable:**
+   - `VITE_API_URL` → `https://futurelink-ufwi.onrender.com/api` (already in `netlify.toml`)
 
-   | Key | Value |
-   |-----|--------|
-   | `VITE_API_URL` | `https://YOUR-RENDER-URL.onrender.com/api` |
+4. **Live site:** [https://futurelinkservices.netlify.app](https://futurelinkservices.netlify.app)
 
 5. Deploy. Open your Netlify URL → `#checkin` for venue tablet.
 

@@ -1,6 +1,7 @@
 import { ArrowUpRight, Play } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import TicketButton from "./TicketButton";
+import EventCountdown from "./EventCountdown";
 import { useRegistrationModal } from "../context/RegistrationModalContext";
 import { events, ghanaHubsEvent } from "../data/events";
 
@@ -111,6 +112,15 @@ export default function Hero() {
               See How It Works
             </a>
           </div>
+
+          {ghanaHubsEvent.upcoming && ghanaHubsEvent.startsAt && (
+            <div className="hero-animate hero-animate-delay-6 mx-auto mt-8 max-w-md">
+              <EventCountdown
+                startsAt={ghanaHubsEvent.startsAt}
+                label={`${ghanaHubsEvent.title} starts in`}
+              />
+            </div>
+          )}
         </div>
 
         <div className="hero-bento mt-12 w-full sm:mt-16">

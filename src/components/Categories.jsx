@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import EventCountdown from "./EventCountdown";
 import { ghanaHubsEvent } from "../data/events";
 
 const categories = [
@@ -88,6 +89,15 @@ export default function Categories() {
               <p className="mt-3 text-sm leading-relaxed text-slate-500 sm:text-base">
                 {featured.description}
               </p>
+
+              {ghanaHubsEvent.upcoming && ghanaHubsEvent.startsAt && (
+                <EventCountdown
+                  startsAt={ghanaHubsEvent.startsAt}
+                  label="AGM starts in"
+                  variant="compact"
+                  className="mt-4"
+                />
+              )}
 
               <div className="mt-5 flex items-center justify-between border-t border-blue-100 pt-5 text-sm">
                 <span className="font-medium text-navy">{featured.count} upcoming events</span>

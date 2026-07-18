@@ -21,7 +21,7 @@ app.use(
               callback(null, true);
               return;
             }
-            callback(new Error(`CORS blocked origin: ${origin}`));
+            callback(null, false);
           },
         }
       : undefined

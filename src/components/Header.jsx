@@ -63,8 +63,10 @@ export default function Header() {
 
         <button
           type="button"
-          className="p-2 text-navy lg:hidden"
-          onClick={() => setOpen(!open)}
+          className="relative z-30 -mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-navy transition-colors hover:bg-blue-50 lg:hidden"
+          onClick={() => setOpen((prev) => !prev)}
+          aria-expanded={open}
+          aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -72,7 +74,7 @@ export default function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-blue-100 bg-white px-5 py-4 lg:hidden">
+        <div id="mobile-nav" className="relative z-20 border-t border-blue-100 bg-white px-5 py-4 lg:hidden">
           <nav className="flex flex-col gap-3">
             {navLinks.map((link) => (
               <a
