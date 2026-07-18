@@ -36,9 +36,10 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 1. Go to [render.com](https://render.com) → **New** → **Blueprint** (or **Web Service**)
 2. Connect repo: `CongoMusahAdama/futurelink`
 3. Use `render.yaml` (Root Directory: repo root) **or** manual setup:
-   - **Root Directory:** `backend`
+   - **Recommended — Root Directory:** `backend`
    - **Build Command:** `npm install`
    - **Start Command:** `npm start`
+   - **If Root Directory is empty (repo root):** Build Command `npm install` (installs backend via `postinstall`), Start Command `npm start`
 4. **Environment variables:**
 
    | Key | Value |

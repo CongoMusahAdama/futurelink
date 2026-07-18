@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import SectionHeading from "./SectionHeading";
 import ScrollReveal from "./ScrollReveal";
+import { CONTACT_EMAIL, CONTACT_PHONES } from "../lib/brand";
 
 import { ghanaHubsEvent } from "../data/events";
 
@@ -20,13 +21,22 @@ export default function Contact() {
             <div className="mt-8 space-y-3 border-t border-slate-200 pt-8">
               <p className="text-sm text-slate-500">
                 <span className="font-medium text-navy">Email:</span>{" "}
-                <a href="mailto:info@futurelinkservices.com" className="hover:text-brand-blue">
-                  info@futurelinkservices.com
+                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-brand-blue">
+                  {CONTACT_EMAIL}
                 </a>
               </p>
-              <p className="text-sm text-slate-500">
-                <span className="font-medium text-navy">Phone:</span> +233 XX XXX XXXX
-              </p>
+              <div className="text-sm text-slate-500">
+                <span className="font-medium text-navy">Phone:</span>
+                <ul className="mt-1.5 space-y-1">
+                  {CONTACT_PHONES.map((phone) => (
+                    <li key={phone}>
+                      <a href={`tel:+233${phone.replace(/^0/, "")}`} className="hover:text-brand-blue">
+                        {phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3")}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <p className="text-sm text-slate-500">
                 <span className="font-medium text-navy">Location:</span> Accra, Ghana
               </p>

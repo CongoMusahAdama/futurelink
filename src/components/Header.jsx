@@ -32,8 +32,8 @@ export default function Header() {
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 sm:py-4">
-        <Logo href="#" size="nav" className="shrink-0" />
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-5 sm:py-5 lg:py-4">
+        <Logo href="#" size="landing" className="site-header-logo shrink-0" />
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
           {navLinks.map((link) => (

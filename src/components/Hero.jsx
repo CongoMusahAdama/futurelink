@@ -78,7 +78,7 @@ export default function Hero() {
   const { openRegistration } = useRegistrationModal();
 
   return (
-    <section className="bg-blue-50 pb-16 pt-28 sm:pb-24 sm:pt-32">
+    <section className="bg-blue-50 pb-16 pt-32 sm:pb-24 sm:pt-40 lg:pt-36">
       <div className="mx-auto max-w-7xl px-4 sm:px-5">
         <div className="mx-auto max-w-3xl text-center">
           <p className="hero-animate hero-animate-delay-1 text-sm font-medium text-brand-blue">

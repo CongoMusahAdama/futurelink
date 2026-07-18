@@ -1,14 +1,16 @@
 import { LOGO_SRC, BRAND_NAME } from "../lib/brand";
 
-/** Height + width — TRANS.png has wide transparent margins; width helps it read larger */
+/** Height + width — TRANS.png has wide transparent margins; width + scale on `landing` */
 const SIZES = {
   sm: "h-12 w-[140px] sm:h-14 sm:w-[160px]",
   md: "h-14 w-[160px] sm:h-16 sm:w-[190px]",
   lg: "h-16 w-[190px] sm:h-[4.5rem] sm:w-[230px]",
   xl: "h-[4.5rem] w-[240px] sm:h-20 sm:w-[280px]",
   "2xl": "h-20 w-[280px] sm:h-24 sm:w-[340px]",
-  /** Site header — mobile-first, prominent on all breakpoints */
-  nav: "h-[3.75rem] w-[200px] min-w-[180px] sm:h-[4.5rem] sm:w-[240px] md:h-20 md:w-[280px] lg:h-[5.25rem] lg:w-[320px]",
+  nav: "h-[4.5rem] w-[220px] sm:h-20 sm:w-[260px] md:h-24 md:w-[300px] lg:h-28 lg:w-[340px]",
+  /** Landing page header — extra large + scale for transparent PNG padding */
+  landing:
+    "h-[5.5rem] w-[min(78vw,300px)] sm:h-[7rem] sm:w-[380px] md:h-[8rem] md:w-[440px] lg:h-[9rem] lg:w-[500px] origin-left scale-[1.35] sm:scale-[1.4] md:scale-[1.45] lg:scale-[1.5]",
   hero: "h-[4.5rem] w-[240px] sm:h-24 sm:w-[300px] lg:h-28 lg:w-[360px]",
 };
 

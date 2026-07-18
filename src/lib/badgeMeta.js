@@ -1,5 +1,5 @@
 import { ghanaHubsEvent } from "../data/events";
-import { BRAND_NAME, LOGO_SRC } from "./brand";
+import { BRAND_NAME, LOGO_SRC, CONTACT_EMAIL, CONTACT_PHONES_DISPLAY } from "./brand";
 
 /** Name badge print spec: 3.5" × 5.5" vertical + 0.125" bleed */
 export const BADGE_SPEC = {
@@ -18,9 +18,9 @@ export const BADGE_ORG = {
   eventSubtitle: "Annual General Meeting 2026",
   themeLabel: "THEME:",
   themeQuote: "Connecting Hubs · Building Impact",
-  phones: "054 000 0000 | 027 000 0000",
+  phones: CONTACT_PHONES_DISPLAY,
   website: "www.ghanahubsnetwork.org",
-  email: "info@ghanahubsnetwork.org",
+  email: CONTACT_EMAIL,
   poweredBy: BRAND_NAME,
 };
 

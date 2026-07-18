@@ -46,10 +46,10 @@
   <text class="text-navy bold" x="444" y="680" font-size="56" text-anchor="middle">{{ROLE}}</text>
 
   <!-- Contact — EDIT -->
-  <text class="text-white" x="444" y="780" font-size="24" text-anchor="middle">Contact: 054 000 0000 | 027 000 0000</text>
+  <text class="text-white" x="444" y="780" font-size="24" text-anchor="middle">Contact: 057 553 4229 | 054 756 0022 | 020 753 7553</text>
 
   <!-- Footer -->
   <line stroke="#1afb97" stroke-width="2" x1="80" y1="820" x2="809" y2="820"/>
   <rect class="white" x="80" y="820" width="729" height="100"/>
-  <text class="text-navy" x="444" y="875" font-size="20" text-anchor="middle">www.ghanahubsnetwork.org  |  info@ghanahubsnetwork.org</text>
+  <text class="text-navy" x="444" y="875" font-size="20" text-anchor="middle">www.ghanahubsnetwork.org  |  futurelinkservices@gmail.com</text>
 </svg>
