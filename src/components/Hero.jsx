@@ -47,7 +47,8 @@ export default function Hero() {
           )}
 
           <h1 className="hero-animate-line hero-animate-delay-2 text-3xl font-bold leading-[1.15] tracking-tight text-navy sm:text-5xl lg:text-[3.5rem]">
-            Skills. Business.{" "}
+            Skills. Business.
+            <br className="sm:hidden" />{" "}
             <Typewriter
               className="hero-headline-highlight hero-headline-typewriter"
               words={["Opportunity.", "Growth.", "Income.", "Success."]}

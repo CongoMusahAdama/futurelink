@@ -18,6 +18,10 @@ import LiveDashboardPage from "./pages/LiveDashboardPage";
 import SignagePage from "./pages/SignagePage";
 import AdminPage from "./pages/AdminPage";
 import PageLoader from "./components/PageLoader";
+import SupportWidget from "./components/SupportWidget";
+import OpsLogin from "./components/OpsLogin";
+import { isOpsAuthed, logoutOps } from "./lib/opsAuth";
+import { LogOut } from "lucide-react";
 
 import ServicesPage from "./pages/ServicesPage";
 import EventsPage from "./pages/EventsPage";
@@ -49,10 +53,19 @@ function getPageRoute() {
   return null;
 }
 
+const OPS_TITLES = {
+  venue: "Check-In Login",
+  dashboard: "Live Dashboard Login",
+  signage: "Signage Login",
+  admin: "Admin Login",
+};
+
 function AppContent() {
   const { activeEvent } = useRegistrationModal();
   const [opsRoute, setOpsRoute] = useState(getOpsRoute);
   const [pageRoute, setPageRoute] = useState(getPageRoute);
+  const [opsAuthed, setOpsAuthed] = useState(isOpsAuthed);
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -105,35 +118,117 @@ function AppContent() {
     }
   }, [pageRoute]);
 
-  if (opsRoute === "venue") return <VenueTabletPage />;
-  if (opsRoute === "dashboard") return <LiveDashboardPage />;
-  if (opsRoute === "signage") return <SignagePage />;
-  if (opsRoute === "admin") return <AdminPage />;
-  if (activeEvent) return <RegistrationPage event={activeEvent} />;
-  if (pageRoute === "services") return <ServicesPage />;
-  if (pageRoute === "events") return <EventsPage />;
-  if (pageRoute === "blog-post") {
-    const postId = window.location.hash.replace(/^#/, "");
-    return <BlogPostPage postId={postId} />;
+  if (opsRoute) {
+    if (!opsAuthed) {
+      return (
+        <OpsLogin
+          title={OPS_TITLES[opsRoute] ?? "Operations Login"}
+          onSuccess={() => setOpsAuthed(true)}
+        />
+      );
+    }
+
+    const opsPage =
+      opsRoute === "venue" ? (
+        <VenueTabletPage />
+      ) : opsRoute === "dashboard" ? (
+        <LiveDashboardPage />
+      ) : opsRoute === "signage" ? (
+        <SignagePage />
+      ) : (
+        <AdminPage />
+      );
+
+    return (
+      <>
+        {opsPage}
+        <button
+          type="button"
+          className="ops-logout-fab"
+          onClick={() => setConfirmLogout(true)}
+        >
+          <LogOut className="h-4 w-4" aria-hidden="true" />
+          Sign out
+        </button>
+
+        {confirmLogout && (
+          <div
+            className="ops-logout-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Confirm sign out"
+            onClick={() => setConfirmLogout(false)}
+          >
+            <div className="ops-logout-modal" onClick={(e) => e.stopPropagation()}>
+              <span className="ops-logout-modal-icon">
+                <LogOut className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <h2 className="ops-logout-modal-title">Sign out of operations?</h2>
+              <p className="ops-logout-modal-text">
+                You&apos;ll need to sign in again with your Future-Link credentials to
+                access this screen.
+              </p>
+              <div className="ops-logout-modal-actions">
+                <button
+                  type="button"
+                  className="ops-logout-cancel"
+                  onClick={() => setConfirmLogout(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="ops-logout-confirm"
+                  onClick={() => {
+                    logoutOps();
+                    setConfirmLogout(false);
+                    setOpsAuthed(false);
+                  }}
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
   }
-  if (pageRoute === "blog") return <BlogPage />;
+  if (activeEvent) return <RegistrationPage event={activeEvent} />;
+
+  const renderPage = () => {
+    if (pageRoute === "services") return <ServicesPage />;
+    if (pageRoute === "events") return <EventsPage />;
+    if (pageRoute === "blog-post") {
+      const postId = window.location.hash.replace(/^#/, "");
+      return <BlogPostPage postId={postId} />;
+    }
+    if (pageRoute === "blog") return <BlogPage />;
+
+    return (
+      <>
+        <Header />
+        <main>
+          <Hero />
+          <Categories />
+          <FeaturedEvents />
+          <Services />
+          <HowItWorks />
+          <DashboardPreview />
+          <Pricing />
+          <About />
+          <BlogPreview />
+          <Contact />
+        </main>
+        <Footer />
+      </>
+    );
+  };
 
   return (
     <>
-      <Header />
-      <main>
-        <Hero />
-        <Categories />
-        <FeaturedEvents />
-        <Services />
-        <HowItWorks />
-        <DashboardPreview />
-        <Pricing />
-        <About />
-        <BlogPreview />
-        <Contact />
-      </main>
-      <Footer />
+      {renderPage()}
+      <SupportWidget />
     </>
   );
 }

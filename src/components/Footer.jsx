@@ -1,5 +1,10 @@
-import Logo from "./Logo";
-import { CONTACT_ADDRESS, CONTACT_MAP_URL, CONTACT_BANK } from "../lib/brand";
+import {
+  BRAND_NAME,
+  CONTACT_ADDRESS,
+  CONTACT_MAP_URL,
+  CONTACT_BANK,
+  LOGO_ON_DARK_SRC,
+} from "../lib/brand";
 
 const links = {
   Solutions: ["Event Registration", "Live Dashboard", "Analytics Reports", "On-site Support"],
@@ -13,7 +18,12 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-5 py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <Logo variant="light" size="xl" />
+            <img
+              src={LOGO_ON_DARK_SRC}
+              alt={BRAND_NAME}
+              className="h-24 w-auto object-contain object-left sm:h-28"
+              decoding="async"
+            />
             <p className="mt-4 text-sm leading-relaxed text-white/70">
               Smooth Entry, Smart Insights. Professional digital registration and event
               intelligence for conferences and workshops across Ghana.
