@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "../lib/api";
+import { api, apiUrl } from "../lib/api";
 
 export function useConnectionStatus() {
   const [online, setOnline] = useState(navigator.onLine);
@@ -14,7 +14,7 @@ export function useConnectionStatus() {
     let active = true;
     async function ping() {
       try {
-        const res = await fetch("/api/health");
+        const res = await fetch(apiUrl("/health"));
         if (active) setApiOk(res.ok);
       } catch {
         if (active) setApiOk(false);

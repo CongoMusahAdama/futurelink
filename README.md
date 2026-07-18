@@ -29,6 +29,49 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 - **Benefits** — Value propositions for event organizers
 - **Contact** — Demo request form
 
+## Deploy (Netlify + Render)
+
+### 1. Backend on Render
+
+1. Go to [render.com](https://render.com) → **New** → **Blueprint** (or **Web Service**)
+2. Connect repo: `CongoMusahAdama/futurelink`
+3. Use `render.yaml` (Root Directory: repo root) **or** manual setup:
+   - **Root Directory:** `backend`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+4. **Environment variables:**
+
+   | Key | Value |
+   |-----|--------|
+   | `MONGODB_URI` | Your MongoDB Atlas connection string |
+   | `CLIENT_ORIGIN` | Your Netlify URL, e.g. `https://futurelink.netlify.app` |
+
+5. Copy the Render URL, e.g. `https://futurelink-api.onrender.com`
+6. In **MongoDB Atlas** → Network Access → allow `0.0.0.0/0` (or Render IPs)
+
+Health check: `https://YOUR-RENDER-URL.onrender.com/api/health`
+
+### 2. Frontend on Netlify
+
+1. Go to [netlify.com](https://netlify.com) → **Add new site** → **Import from Git**
+2. Select `CongoMusahAdama/futurelink`
+3. Netlify reads `netlify.toml` automatically:
+   - Build: `npm run build`
+   - Publish: `dist`
+4. **Environment variable:**
+
+   | Key | Value |
+   |-----|--------|
+   | `VITE_API_URL` | `https://YOUR-RENDER-URL.onrender.com/api` |
+
+5. Deploy. Open your Netlify URL → `#checkin` for venue tablet.
+
+### 3. Link them together
+
+After Netlify gives you a URL, add it to Render as `CLIENT_ORIGIN` and redeploy Render if you set it after the first deploy.
+
+**Ops routes:** `yoursite.netlify.app/#checkin` · `#dashboard` · `#dashboard-tv` · `#admin` · `#signage`
+
 ## Brand Colors
 
 | Token | Hex | Usage |

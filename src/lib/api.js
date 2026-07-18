@@ -1,7 +1,13 @@
-const API = "/api";
+/** API base — `/api` in dev (Vite proxy), full URL on Netlify (VITE_API_URL) */
+export const API_BASE = (import.meta.env.VITE_API_URL || "/api").replace(/\/$/, "");
+
+export function apiUrl(path = "") {
+  const suffix = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE}${suffix}`;
+}
 
 async function request(path, options = {}) {
-  const res = await fetch(`${API}${path}`, {
+  const res = await fetch(apiUrl(path), {
     headers: { "Content-Type": "application/json", ...options.headers },
     ...options,
   });
@@ -29,5 +35,5 @@ export const api = {
       method: "PATCH",
       body: JSON.stringify({ checkInStation }),
     }),
-  exportUrl: () => `${API}/attendees/export`,
+  exportUrl: () => apiUrl("/attendees/export"),
 };

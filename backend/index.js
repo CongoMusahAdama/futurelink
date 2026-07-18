@@ -7,7 +7,26 @@ import attendeesRouter from "./routes/attendees.js";
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors(
+    allowedOrigins.length
+      ? {
+          origin(origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+              callback(null, true);
+              return;
+            }
+            callback(new Error(`CORS blocked origin: ${origin}`));
+          },
+        }
+      : undefined
+  )
+);
 app.use(express.json());
 
 app.get("/api/health", (_req, res) => {
