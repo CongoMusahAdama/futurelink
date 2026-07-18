@@ -40,7 +40,7 @@ function formatDate(value) {
 }
 
 export default function LiveDashboardPage() {
-  const { stats, attendees, isDemo, error, lastUpdated, recentActivity, checkedInList } =
+  const { stats, attendees, error, lastUpdated, recentActivity, checkedInList } =
     useDashboardData(5000);
 
   const activityPagination = usePagination(recentActivity, ACTIVITY_PAGE_SIZE);
@@ -85,14 +85,7 @@ export default function LiveDashboardPage() {
         ) : null
       }
     >
-      {isDemo && (
-        <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          Showing <strong>sample data</strong> for preview — real numbers will appear once attendees
-          check in.
-        </div>
-      )}
-
-      {error && !isDemo && (
+      {error && (
         <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
           Cannot reach server: {error}
         </div>

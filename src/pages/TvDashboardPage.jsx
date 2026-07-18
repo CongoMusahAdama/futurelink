@@ -23,7 +23,7 @@ function formatClock(date) {
 }
 
 export default function TvDashboardPage() {
-  const { stats, isDemo, error, lastUpdated, checkedInList } = useDashboardData(5000);
+  const { stats, error, lastUpdated, checkedInList } = useDashboardData(5000);
   const [clock, setClock] = useState(() => new Date());
 
   useEffect(() => {
@@ -68,13 +68,7 @@ export default function TvDashboardPage() {
         </div>
       </header>
 
-      {isDemo && (
-        <p className="tv-screen-banner tv-screen-banner-demo">
-          Sample data — real counts appear after check-ins start
-        </p>
-      )}
-
-      {error && !isDemo && (
+      {error && (
         <p className="tv-screen-banner tv-screen-banner-error">Offline: {error}</p>
       )}
 

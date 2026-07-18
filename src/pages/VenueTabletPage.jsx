@@ -13,7 +13,7 @@ import CheckInPass from "../components/CheckInPass";
 import Logo from "../components/Logo";
 import QrScanner, { FastLaneManualEntry, FastLaneModeToggle } from "../components/QrScanner";
 import { AlreadyCheckedInScreen, CheckInErrorScreen } from "../components/VenueStatusScreen";
-import { computeStatsFromAttendees, DUMMY_ATTENDEES } from "../data/dummyAttendees";
+import { computeStatsFromAttendees } from "../data/dummyAttendees";
 import { api } from "../lib/api";
 import {
   formatGhanaPhone,
@@ -240,9 +240,7 @@ export default function VenueTabletPage() {
   };
 
   if (!station) {
-    const displayStats =
-      stats && stats.total > 0 ? stats : computeStatsFromAttendees(DUMMY_ATTENDEES);
-    const usingDemoStats = !stats || stats.total === 0;
+    const displayStats = stats ?? computeStatsFromAttendees([]);
 
     return (
       <div className="venue-screen venue-home">
@@ -293,12 +291,6 @@ export default function VenueTabletPage() {
                 </div>
               </div>
             </div>
-
-            {usingDemoStats && (
-              <p className="mt-4 text-xs text-amber-700">
-                Sample stats shown for preview — live counts appear after check-ins start.
-              </p>
-            )}
           </div>
 
           <section className="venue-stations-panel">

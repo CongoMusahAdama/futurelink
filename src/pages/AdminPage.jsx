@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import OpsShell from "../components/OpsShell";
 import TableExportMenu from "../components/TableExportMenu";
 import TablePagination from "../components/TablePagination";
-import { withDemoFallback } from "../data/dummyAttendees";
 import { api } from "../lib/api";
 import { ATTENDEE_EXPORT_COLUMNS } from "../lib/exportTable";
 import { usePagination } from "../hooks/usePagination";
@@ -12,7 +11,6 @@ const PAGE_SIZE = 10;
 
 export default function AdminPage() {
   const [attendees, setAttendees] = useState([]);
-  const [isDemo, setIsDemo] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("all");
@@ -21,14 +19,11 @@ export default function AdminPage() {
     api
       .listAttendees()
       .then((list) => {
-        const { data, isDemo: demo } = withDemoFallback(list);
-        setAttendees(data);
-        setIsDemo(demo);
+        setAttendees(Array.isArray(list) ? list : []);
+        setError("");
       })
       .catch((err) => {
-        const { data, isDemo: demo } = withDemoFallback([]);
-        setAttendees(data);
-        setIsDemo(demo);
+        setAttendees([]);
         setError(err.message);
       })
       .finally(() => setLoading(false));
@@ -80,13 +75,7 @@ export default function AdminPage() {
         sheetName: "Attendees",
       }}
     >
-      {isDemo && (
-        <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          Showing <strong>sample data</strong> for preview — this will be replaced by live registrations.
-        </div>
-      )}
-
-      {error && !isDemo && (
+      {error && (
         <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
           {error}
         </div>

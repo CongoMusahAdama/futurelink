@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { computeStatsFromAttendees, withDemoFallback } from "../data/dummyAttendees";
+import { computeStatsFromAttendees } from "../data/dummyAttendees";
 import { api } from "../lib/api";
 
 export function useDashboardData(refreshMs = 5000) {
   const [stats, setStats] = useState(null);
   const [attendees, setAttendees] = useState([]);
-  const [isDemo, setIsDemo] = useState(false);
   const [error, setError] = useState("");
   const [lastUpdated, setLastUpdated] = useState(null);
 
@@ -17,20 +16,15 @@ export function useDashboardData(refreshMs = 5000) {
         const [statsData, list] = await Promise.all([api.getStats(), api.listAttendees()]);
         if (!active) return;
 
-        const { data, isDemo: demo } = withDemoFallback(list);
-        setAttendees(data);
-        setIsDemo(demo);
-        setStats(
-          demo ? computeStatsFromAttendees(data) : { ...statsData, ...computeStatsFromAttendees(data) }
-        );
+        const rows = Array.isArray(list) ? list : [];
+        setAttendees(rows);
+        setStats({ ...statsData, ...computeStatsFromAttendees(rows) });
         setError("");
         setLastUpdated(new Date());
       } catch (err) {
         if (!active) return;
-        const { data, isDemo: demo } = withDemoFallback([]);
-        setAttendees(data);
-        setIsDemo(demo);
-        setStats(computeStatsFromAttendees(data));
+        setAttendees([]);
+        setStats(null);
         setError(err.message);
         setLastUpdated(new Date());
       }
@@ -61,5 +55,5 @@ export function useDashboardData(refreshMs = 5000) {
     [attendees]
   );
 
-  return { stats, attendees, isDemo, error, lastUpdated, recentActivity, checkedInList };
+  return { stats, attendees, error, lastUpdated, recentActivity, checkedInList };
 }
