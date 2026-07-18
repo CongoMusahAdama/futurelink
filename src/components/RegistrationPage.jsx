@@ -67,7 +67,7 @@ export default function RegistrationPage({ event }) {
             className="rounded-lg transition-opacity hover:opacity-80"
             aria-label="Future-Link Services home"
           >
-            <Logo size="lg" />
+            <Logo size="xl" />
           </button>
           <button
             type="button"

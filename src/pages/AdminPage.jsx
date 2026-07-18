@@ -84,7 +84,7 @@ export default function AdminPage() {
               key={id}
               type="button"
               onClick={() => setFilter(id)}
-              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+              className={`min-h-11 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
                 filter === id
                   ? "bg-brand-blue text-navy"
                   : "bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50"
@@ -105,7 +105,55 @@ export default function AdminPage() {
           </a>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200/80">
+        <>
+          <ul className="space-y-3 md:hidden">
+            {filtered.map((a) => (
+              <li
+                key={a._id}
+                className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/80"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-navy">{a.fullName}</p>
+                    <p className="mt-0.5 font-mono text-xs text-slate-500">{a.registrationId}</p>
+                  </div>
+                  {a.checkedIn ? (
+                    <span className="shrink-0 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-green-700 ring-1 ring-green-100">
+                      In
+                    </span>
+                  ) : (
+                    <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500">
+                      Pending
+                    </span>
+                  )}
+                </div>
+                <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+                  <div className="col-span-2">
+                    <dt className="text-slate-400">Organisation</dt>
+                    <dd className="font-medium text-navy">{a.organisation || "—"}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-slate-400">Hub / Region</dt>
+                    <dd className="font-medium text-navy">
+                      {[a.hub, a.region].filter(Boolean).join(" · ") || "—"}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-slate-400">Category</dt>
+                    <dd className="font-medium text-navy">{a.category}</dd>
+                  </div>
+                  {a.phone && (
+                    <div className="col-span-2">
+                      <dt className="text-slate-400">Phone</dt>
+                      <dd className="font-medium text-navy">{a.phone}</dd>
+                    </div>
+                  )}
+                </dl>
+              </li>
+            ))}
+          </ul>
+
+          <div className="hidden overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200/80 md:block">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3">
             <p className="text-sm font-semibold text-navy">
               {filtered.length} record{filtered.length !== 1 ? "s" : ""}
@@ -154,6 +202,11 @@ export default function AdminPage() {
             </table>
           </div>
         </div>
+
+          <div className="mt-4 flex justify-end md:hidden">
+            <TableExportMenu {...exportProps} />
+          </div>
+        </>
       )}
     </OpsShell>
   );

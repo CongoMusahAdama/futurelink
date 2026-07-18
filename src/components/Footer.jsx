@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-5 py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <Logo variant="light" size="lg" />
+            <Logo variant="light" size="xl" />
             <p className="mt-4 text-sm leading-relaxed text-white/70">
               Smooth Entry, Smart Insights. Professional digital registration and event
               intelligence for conferences and workshops across Ghana.

@@ -98,7 +98,7 @@ export default function LiveDashboardPage() {
         <div className="flex items-center justify-center py-24 text-slate-500">Loading dashboard…</div>
       ) : (
         <div className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 grid-cols-2 xl:grid-cols-4">
             <MetricCard
               label="Registered"
               value={stats.total}
@@ -184,8 +184,53 @@ export default function LiveDashboardPage() {
                   </a>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="ops-table min-w-[640px]">
+                <>
+                  <ul className="divide-y divide-slate-100 md:hidden">
+                    {recentActivity.map((a) => (
+                      <li key={a._id} className="px-4 py-4">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="font-semibold text-navy">{a.fullName}</p>
+                            <p className="mt-0.5 text-xs text-slate-400">{a.organisation || "—"}</p>
+                          </div>
+                          {a.checkedIn ? (
+                            <span className="shrink-0 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-green-700 ring-1 ring-green-100">
+                              In
+                            </span>
+                          ) : (
+                            <span className="shrink-0 rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-700 ring-1 ring-amber-100">
+                              Pending
+                            </span>
+                          )}
+                        </div>
+                        <dl className="mt-3 grid grid-cols-2 gap-2 text-xs">
+                          <div>
+                            <dt className="text-slate-400">ID</dt>
+                            <dd className="font-mono font-semibold text-navy">{a.registrationId}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-slate-400">Category</dt>
+                            <dd className="font-medium text-navy">{a.category}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-slate-400">Station</dt>
+                            <dd className="font-medium text-navy">
+                              {STATION_LABELS[a.checkInStation] || "—"}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt className="text-slate-400">Time</dt>
+                            <dd className="font-medium text-navy">
+                              {a.checkedInAt ? formatTime(a.checkedInAt) : formatTime(a.createdAt)}
+                            </dd>
+                          </div>
+                        </dl>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="hidden overflow-x-auto md:block">
+                    <table className="ops-table min-w-[640px]">
                     <thead>
                       <tr>
                         <th>Attendee</th>
@@ -237,7 +282,8 @@ export default function LiveDashboardPage() {
                       ))}
                     </tbody>
                   </table>
-                </div>
+                  </div>
+                </>
               )}
             </section>
           </div>
@@ -285,7 +331,7 @@ function MetricCard({ label, value, hint, icon: Icon, tone, highlight }) {
           </span>
         )}
       </div>
-      <p className="mt-4 font-display text-3xl font-bold tracking-tight text-navy">{value}</p>
+      <p className="mt-3 sm:mt-4 font-display text-2xl font-bold tracking-tight text-navy sm:text-3xl">{value}</p>
       <p className="mt-1 text-sm font-medium text-navy">{label}</p>
       <p className={`mt-0.5 text-xs ${styles.accent}`}>{hint}</p>
     </div>

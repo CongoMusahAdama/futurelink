@@ -30,7 +30,7 @@ export default function SignagePage() {
             <button
               type="button"
               onClick={downloadRoleBadgeTemplatesPdf}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-blue px-5 py-3 text-sm font-bold text-navy"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-blue px-5 py-3 text-sm font-bold text-navy sm:w-auto"
             >
               <Download className="h-4 w-4" />
               Role templates (PDF)
@@ -38,7 +38,7 @@ export default function SignagePage() {
             <button
               type="button"
               onClick={downloadLanyardStrapPdf}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/10 px-5 py-3 text-sm font-bold text-white ring-1 ring-white/20"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 px-5 py-3 text-sm font-bold text-white ring-1 ring-white/20 sm:w-auto"
             >
               <Download className="h-4 w-4" />
               Lanyard pattern

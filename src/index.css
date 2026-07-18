@@ -1540,6 +1540,60 @@ html.venue-tablet .venue-scanner-manual:active {
   color: #991b1b;
 }
 
+/* Ops dashboard — mobile-friendly */
+.ops-main {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 767px) {
+  .ops-ui .ops-table thead th,
+  .ops-ui .ops-table tbody td {
+    padding: 0.75rem 1rem;
+  }
+
+  .badge-preview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.875rem;
+  }
+
+  .tv-screen {
+    padding: 1rem 1rem 1.25rem;
+  }
+
+  .tv-screen-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .tv-screen-top-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tv-screen-main {
+    grid-template-columns: 1fr;
+    padding: 1rem 0;
+    gap: 1.25rem;
+  }
+
+  .tv-screen-cards {
+    max-width: none;
+  }
+
+  .tv-screen-feed-row {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .tv-screen-feed-time {
+    grid-column: 2;
+    justify-self: start;
+    font-size: 0.75rem;
+  }
+}
+
 /* Ops dashboard tables */
 .ops-table {
   width: 100%;

@@ -1,38 +1,32 @@
 import { LOGO_SRC, BRAND_NAME } from "../lib/brand";
 
+/** Height + width — TRANS.png has wide transparent margins; width helps it read larger */
 const SIZES = {
-  sm: "h-9",
-  md: "h-11",
-  lg: "h-16",
-  xl: "h-20",
-  "2xl": "h-24",
-  hero: "h-[4.5rem] sm:h-[5.5rem] lg:h-[6.5rem]",
-};
-
-const MAX_WIDTH = {
-  sm: "max-w-[200px]",
-  md: "max-w-[260px]",
-  lg: "max-w-[320px]",
-  xl: "max-w-[380px]",
-  "2xl": "max-w-[480px]",
-  hero: "max-w-[300px] sm:max-w-[380px] lg:max-w-[460px]",
+  sm: "h-12 w-[140px] sm:h-14 sm:w-[160px]",
+  md: "h-14 w-[160px] sm:h-16 sm:w-[190px]",
+  lg: "h-16 w-[190px] sm:h-[4.5rem] sm:w-[230px]",
+  xl: "h-[4.5rem] w-[240px] sm:h-20 sm:w-[280px]",
+  "2xl": "h-20 w-[280px] sm:h-24 sm:w-[340px]",
+  /** Site header — mobile-first, prominent on all breakpoints */
+  nav: "h-[3.75rem] w-[200px] min-w-[180px] sm:h-[4.5rem] sm:w-[240px] md:h-20 md:w-[280px] lg:h-[5.25rem] lg:w-[320px]",
+  hero: "h-[4.5rem] w-[240px] sm:h-24 sm:w-[300px] lg:h-28 lg:w-[360px]",
 };
 
 export default function Logo({ variant = "default", size = "md", className = "", href }) {
-  const height = SIZES[size] || SIZES.md;
-  const maxW = MAX_WIDTH[size] || MAX_WIDTH.md;
+  const dimensions = SIZES[size] || SIZES.md;
 
   const img = (
     <img
       src={LOGO_SRC}
       alt={BRAND_NAME}
-      className={`${height} w-auto ${maxW} object-contain object-left`}
+      className={`${dimensions} object-contain object-left`}
+      decoding="async"
     />
   );
 
   const inner =
     variant === "light" ? (
-      <span className="inline-flex rounded-xl bg-white px-3 py-2 shadow-sm ring-1 ring-white/20">
+      <span className="inline-flex rounded-xl bg-white px-3 py-2.5 shadow-sm ring-1 ring-white/20 sm:px-4 sm:py-3">
         {img}
       </span>
     ) : (

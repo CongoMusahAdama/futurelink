@@ -50,7 +50,7 @@ export default function OpsShell({
     <div className="ops-ui min-h-screen bg-slate-100">
       {/* Mobile top bar */}
       <header className="border-b border-white/10 bg-navy px-4 py-3 md:hidden">
-        <Logo variant="light" />
+        <Logo variant="light" size="lg" />
         <nav className="mt-3 flex gap-1 overflow-x-auto pb-1">
           {NAV.map(({ href, label, icon: Icon, id }) => {
             const isActive = active === id;
@@ -89,7 +89,7 @@ export default function OpsShell({
           >
             {!collapsed && (
               <div className="min-w-0">
-                <Logo variant="light" />
+              <Logo variant="light" size="lg" />
                 <p className="mt-2 text-[10px] font-medium uppercase tracking-wider text-blue-200/70">
                   Event Operations
                 </p>
@@ -193,11 +193,15 @@ export default function OpsShell({
                   {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
                 </div>
               </div>
-              {actions && <div className="flex items-center gap-3">{actions}</div>}
+              {actions && (
+                <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
+                  {actions}
+                </div>
+              )}
             </div>
           </header>
 
-          <main className="flex-1 px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8">{children}</main>
+          <main className="ops-main flex-1 px-4 py-4 sm:px-6 sm:py-6 md:px-8 md:py-8">{children}</main>
         </div>
       </div>
     </div>
