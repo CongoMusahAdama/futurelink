@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Lanyard strap repeat pattern — import into Figma/Illustrator, tile along 36" strip -->
+<!-- Lanyard strap repeat pattern — tile along 36 inch strip for sublimation/screen print -->
 <svg xmlns="http://www.w3.org/2000/svg" width="3600" height="120" viewBox="0 0 3600 120">
   <defs>
-    <pattern id="strap" width="600" height="120" patternUnits="userSpaceOnUse">
-      <rect fill="#ffffff" width="600" height="120"/>
-      <rect fill="#1afb97" y="0" width="600" height="6"/>
-      <rect fill="#1afb97" y="114" width="600" height="6"/>
-      <text x="300" y="68" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#001d4a" text-anchor="middle">
-        ◆ GHANA HUBS NETWORK ◆ AGM 2026 ◆
+    <pattern id="strap" width="720" height="120" patternUnits="userSpaceOnUse">
+      <rect fill="#ffffff" width="720" height="120"/>
+      <rect fill="#1afb97" y="0" width="720" height="6"/>
+      <rect fill="#1afb97" y="114" width="720" height="6"/>
+
+      <!-- Mint dot separators -->
+      <circle cx="248" cy="60" r="5" fill="#1afb97"/>
+      <circle cx="472" cy="60" r="5" fill="#1afb97"/>
+
+      <text x="130" y="66" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#001d4a" text-anchor="middle">
+        GHANA HUBS NETWORK
       </text>
-      <text x="300" y="98" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#64748b" text-anchor="middle">
-        Future-Link Services
+      <text x="360" y="66" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#001d4a" text-anchor="middle">
+        AGM 2026
+      </text>
+      <text x="596" y="66" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#001d4a" text-anchor="middle">
+        FUTURE-LINK
       </text>
     </pattern>
   </defs>

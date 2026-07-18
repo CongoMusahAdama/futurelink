@@ -26,14 +26,24 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`site-header fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        solidNav ? "site-header-scrolled" : ""
+      } ${
         solidNav
           ? "border-b border-blue-100 bg-white/95 shadow-sm backdrop-blur-sm"
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-5 sm:py-5 lg:py-4">
-        <Logo href="#" size="landing" className="site-header-logo shrink-0" />
+      <div
+        className={`mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 transition-all duration-300 sm:px-5 ${
+          scrolled ? "py-2 sm:py-2.5" : "py-3 sm:py-4 lg:py-5"
+        }`}
+      >
+        <Logo
+          href="#"
+          size={scrolled ? "scrolled" : "landing"}
+          className="site-header-logo shrink-0"
+        />
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
           {navLinks.map((link) => (
@@ -54,7 +64,9 @@ export default function Header() {
           </a>
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 bg-brand-blue px-5 py-2.5 text-sm font-medium text-navy transition-colors hover:bg-brand-blue-dark"
+            className={`inline-flex items-center gap-2 bg-brand-blue text-sm font-medium text-navy transition-all duration-300 hover:bg-brand-blue-dark ${
+              scrolled ? "px-4 py-2" : "px-5 py-2.5"
+            }`}
           >
             Contact
             <ArrowRight className="h-4 w-4" />

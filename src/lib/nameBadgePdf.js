@@ -175,32 +175,76 @@ async function drawBadgeFace(doc, fields, { showCropMarks = true, placeholderNam
   }
 }
 
+function drawMintDot(doc, x, y, r = 1.2) {
+  doc.setFillColor(...MINT);
+  doc.circle(x, y, r, "F");
+}
+
+/** Repeat unit width for tiling along a long strap */
+function measureLanyardTile(doc, phrases, fontSize, gap) {
+  doc.setFontSize(fontSize);
+  doc.setFont(undefined, "bold");
+  let w = 12;
+  phrases.forEach((phrase, idx) => {
+    w += doc.getTextWidth(phrase);
+    if (idx < phrases.length - 1) w += gap;
+  });
+  return w;
+}
+
+function drawLanyardTile(doc, x, y, phrases, fontSize, gap) {
+  doc.setFontSize(fontSize);
+  doc.setFont(undefined, "bold");
+  doc.setTextColor(...NAVY);
+
+  let cx = x + 6;
+  phrases.forEach((phrase, idx) => {
+    doc.text(phrase, cx, y);
+    cx += doc.getTextWidth(phrase);
+    if (idx < phrases.length - 1) {
+      drawMintDot(doc, cx + gap / 2, y - 1.5, 1.1);
+      cx += gap;
+    }
+  });
+}
+
 function drawLanyardStrip(doc) {
-  const stripH = 35;
-  const y0 = (PAGE_H - stripH) / 2;
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+  const margin = Math.max(BLEED, 8);
+  const stripH = 34;
+  const y0 = (pageH - stripH) / 2;
+  const left = margin;
+  const width = pageW - margin * 2;
 
   doc.setFillColor(...WHITE);
-  doc.rect(BLEED, y0, TRIM_W, stripH, "F");
-
-  doc.setTextColor(...NAVY);
-  doc.setFontSize(8);
-  doc.setFont(undefined, "bold");
-
-  const pattern = "  ◆  GHANA HUBS NETWORK  ◆  AGM 2026  ◆  FUTURE-LINK  ";
-  let x = BLEED + 2;
-  for (let i = 0; i < 3; i++) {
-    doc.text(pattern, x + i * 62, y0 + stripH / 2 + 2);
-  }
+  doc.rect(left, y0, width, stripH, "F");
 
   doc.setFillColor(...MINT);
-  doc.rect(BLEED, y0, TRIM_W, 2, "F");
-  doc.rect(BLEED, y0 + stripH - 2, TRIM_W, 2, "F");
+  doc.rect(left, y0, width, 3, "F");
+  doc.rect(left, y0 + stripH - 3, width, 3, "F");
+
+  const phrases = ["GHANA HUBS NETWORK", "AGM 2026", "FUTURE-LINK"];
+  const fontSize = width > 200 ? 9 : 7.5;
+  const gap = 7;
+  const tileW = measureLanyardTile(doc, phrases, fontSize, gap);
+  const textY = y0 + stripH / 2 + 2.5;
+
+  let x = left;
+  while (x + tileW <= left + width + 0.5) {
+    drawLanyardTile(doc, x, textY, phrases, fontSize, gap);
+    x += tileW;
+  }
 
   doc.setFontSize(6);
+  doc.setFont(undefined, "normal");
   doc.setTextColor(100, 116, 139);
-  doc.text("Lanyard strap pattern — repeat along 36\" strap · print sublimation or screen", PAGE_W / 2, y0 + stripH + 8, {
-    align: "center",
-  });
+  doc.text(
+    "Lanyard strap pattern - repeat tile along 36 inch strap - sublimation or screen print",
+    pageW / 2,
+    y0 + stripH + 8,
+    { align: "center" }
+  );
 }
 
 function newBadgeDoc() {
@@ -235,9 +279,9 @@ export async function downloadRoleBadgeTemplatesPdf() {
   doc.save("ghn-agm-name-badge-role-templates.pdf");
 }
 
-/** Lanyard strap pattern page only */
+/** Lanyard strap pattern page only (landscape A4 for a wide repeat preview) */
 export function downloadLanyardStrapPdf() {
-  const doc = newBadgeDoc();
+  const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
   drawLanyardStrip(doc);
   doc.save("ghn-agm-lanyard-strap-pattern.pdf");
 }

@@ -26,11 +26,17 @@ html {
   overflow: visible;
   line-height: 0;
   max-width: calc(100% - 3.5rem);
+  transition: max-width 0.3s ease;
+}
+
+.site-header-scrolled .site-header-logo {
+  max-width: calc(100% - 3rem);
 }
 
 /* Scaled logo extends visually but must not steal taps from the menu button */
 .site-header-logo img {
   pointer-events: none;
+  transition: height 0.3s ease, width 0.3s ease, transform 0.3s ease;
 }
 
 .site-header-logo a {
@@ -39,6 +45,22 @@ html {
 
 .logo-mark {
   line-height: 0;
+}
+
+/* TRANS.png on navy ops sidebar — transparent, no white card */
+.ops-sidebar-logo {
+  display: inline-flex;
+  max-width: 100%;
+  line-height: 0;
+}
+
+.logo-sidebar-trans {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
+}
+
+.ops-ui aside .logo-mark img,
+.ops-ui header .logo-mark img {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
 }
 
 /* Event countdown */
@@ -1817,6 +1839,37 @@ html.venue-tablet .venue-scanner-manual:active {
   padding: 0 0.25rem;
   font-size: 0.875rem;
   color: rgb(148 163 184);
+}
+
+/* Lanyard strap pattern preview */
+.lanyard-pattern-preview {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgb(0 29 74);
+}
+
+@media (min-width: 640px) {
+  .lanyard-pattern-preview {
+    font-size: 0.8125rem;
+    gap: 1.25rem;
+  }
+}
+
+.lanyard-pattern-dot {
+  display: inline-block;
+  height: 0.45rem;
+  width: 0.45rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: rgb(26 251 151);
 }
 
 /* Check-in success — contactless pass */

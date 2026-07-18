@@ -45,6 +45,28 @@ export default function SignagePage() {
             </button>
           </div>
         </div>
+
+        <div className="mt-6 overflow-hidden rounded-xl bg-white shadow-sm">
+          <div className="h-1.5 bg-brand-blue" />
+          <div className="lanyard-pattern-preview px-4 py-3">
+            <span>GHANA HUBS NETWORK</span>
+            <span className="lanyard-pattern-dot" aria-hidden />
+            <span>AGM 2026</span>
+            <span className="lanyard-pattern-dot" aria-hidden />
+            <span>FUTURE-LINK</span>
+            <span className="lanyard-pattern-dot" aria-hidden />
+            <span>GHANA HUBS NETWORK</span>
+            <span className="lanyard-pattern-dot" aria-hidden />
+            <span>AGM 2026</span>
+            <span className="lanyard-pattern-dot" aria-hidden />
+            <span>FUTURE-LINK</span>
+          </div>
+          <div className="h-1.5 bg-brand-blue" />
+        </div>
+        <p className="mt-2 text-xs text-white/50">
+          Lanyard strap preview — mint rails, navy type, repeating tile for 36″ strap print
+        </p>
+
         <div className="mt-4 flex flex-wrap gap-3 text-xs">
           <a
             href="/templates/name-badge-template.svg"
