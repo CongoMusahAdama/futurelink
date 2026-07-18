@@ -44,18 +44,43 @@ export default function EventCountdown({
       ? "event-countdown event-countdown-hero"
       : variant === "compact"
         ? "event-countdown event-countdown-compact"
-        : "event-countdown";
+        : variant === "splash"
+          ? "event-countdown event-countdown-splash"
+          : "event-countdown";
 
   if (!left) {
     return (
-      <div className={`${rootClass} ${className}`}>
+      <div className={`${rootClass} ${className}`.trim()}>
         <p className="event-countdown-live">Event is live</p>
       </div>
     );
   }
 
+  if (variant === "splash") {
+    return (
+      <div className={`${rootClass} ${className}`.trim()}>
+        {label && <p className="event-countdown-splash-label">{label}</p>}
+        <div className="event-countdown-splash-row" role="timer" aria-live="polite">
+          <CountdownUnit value={left.days} label="Days" />
+          <span className="event-countdown-splash-sep" aria-hidden="true">
+            :
+          </span>
+          <CountdownUnit value={left.hours} label="Hrs" />
+          <span className="event-countdown-splash-sep" aria-hidden="true">
+            :
+          </span>
+          <CountdownUnit value={left.minutes} label="Min" />
+          <span className="event-countdown-splash-sep" aria-hidden="true">
+            :
+          </span>
+          <CountdownUnit value={left.seconds} label="Sec" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`${rootClass} ${className}`}>
+    <div className={`${rootClass} ${className}`.trim()}>
       {label && <p className="event-countdown-heading">{label}</p>}
       <div className="event-countdown-grid" role="timer" aria-live="polite">
         <CountdownUnit value={left.days} label="Days" />

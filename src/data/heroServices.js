@@ -1,28 +1,15 @@
-/** Hero bento spotlight cards — skills, training & community */
-export const heroSpotlights = [
+/** Three-image strip below the hero headline */
+export const heroGalleryImages = [
   {
-    id: "workforce",
-    category: "Workforce Development",
-    title: "CV coaching, interview prep & job readiness",
-    image: "/services/workforce-development.jpg",
-    href: "#services",
-    imageClass: "object-cover object-center",
+    src: "/services/workforce-development.jpg",
+    alt: "Workforce development training session in Ghana",
   },
   {
-    id: "skills-income",
-    category: "Skills-to-Income Training",
-    title: "Mushroom production, food processing & baking skills",
-    image: "/services/skills-to-income.jpg",
-    href: "#services",
-    imageClass: "object-cover object-center",
+    src: "/services/skills-to-income.jpg",
+    alt: "Skills-to-income mushroom production training",
+  },
+  {
+    src: "/services/community-initiatives.jpg",
+    alt: "Community initiatives and youth engagement programme",
   },
 ];
-
-export const heroAccentSpotlight = {
-  id: "community",
-  category: "Community Initiatives",
-  title: "Recycling, youth engagement & environmental programmes",
-  image: "/services/community-initiatives.jpg",
-  href: "#services",
-  cta: "Explore our services",
-};

@@ -5,13 +5,16 @@ export default function SectionHeading({
   title,
   description,
   align = "center",
+  onBrand = false,
 }) {
   const alignClass = align === "center" ? "text-center" : "text-left";
+  const labelClass = onBrand ? "text-navy/80" : "text-brand-blue";
+  const descriptionClass = onBrand ? "text-navy/75" : "text-slate-500";
 
   return (
     <div className={alignClass}>
       {label && (
-        <ScrollReveal as="p" className="text-sm font-medium text-brand-blue">
+        <ScrollReveal as="p" className={`text-sm font-semibold ${labelClass}`}>
           {label}
         </ScrollReveal>
       )}
@@ -26,7 +29,7 @@ export default function SectionHeading({
         <ScrollReveal
           as="p"
           delay={200}
-          className={`mt-4 text-sm text-slate-500 ${align === "center" ? "mx-auto max-w-2xl" : "max-w-2xl"}`}
+          className={`mt-4 text-sm ${descriptionClass} ${align === "center" ? "mx-auto max-w-2xl" : "max-w-2xl"}`}
         >
           {description}
         </ScrollReveal>

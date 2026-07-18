@@ -1,15 +1,84 @@
 import { useEffect, useState } from "react";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import Logo from "./Logo";
+import { navLinks } from "../data/navigation";
 
-const navLinks = [
-  { label: "Home", href: "#", hasDropdown: true },
-  { label: "Events", href: "#events" },
-  { label: "Services", href: "#services" },
-  { label: "Impact", href: "#impact" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "About", href: "#about" },
-];
+function NavDropdown({ link, onNavigate }) {
+  if (!link.children?.length) {
+    return (
+      <a href={link.href} className="nav-top-link" onClick={onNavigate}>
+        {link.label}
+      </a>
+    );
+  }
+
+  return (
+    <div className="nav-item group">
+      <a href={link.href} className="nav-top-link">
+        {link.label}
+        <ChevronDown className="nav-chevron" aria-hidden="true" />
+      </a>
+
+      <div className="nav-dropdown-bridge" aria-hidden="true" />
+
+      <div className="nav-dropdown">
+        <ul className="nav-dropdown-list">
+          {link.children.map((child) => (
+            <li key={child.label}>
+              <a href={child.href} className="nav-dropdown-link" onClick={onNavigate}>
+                {child.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function MobileNavGroup({ link, onNavigate }) {
+  const [expanded, setExpanded] = useState(false);
+  const hasChildren = link.children?.length > 0;
+
+  if (!hasChildren) {
+    return (
+      <a href={link.href} className="mobile-nav-link" onClick={onNavigate}>
+        {link.label}
+      </a>
+    );
+  }
+
+  return (
+    <div className="mobile-nav-group">
+      <div className="flex items-center justify-between gap-2">
+        <a href={link.href} className="mobile-nav-link flex-1" onClick={onNavigate}>
+          {link.label}
+        </a>
+        <button
+          type="button"
+          className="mobile-nav-expand"
+          onClick={() => setExpanded((prev) => !prev)}
+          aria-expanded={expanded}
+          aria-label={`${expanded ? "Collapse" : "Expand"} ${link.label} menu`}
+        >
+          <ChevronDown className={`h-4 w-4 transition-transform ${expanded ? "rotate-180" : ""}`} />
+        </button>
+      </div>
+
+      {expanded && (
+        <ul className="mobile-nav-sublist">
+          {link.children.map((child) => (
+            <li key={child.label}>
+              <a href={child.href} className="mobile-nav-sublink" onClick={onNavigate}>
+                {child.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -23,6 +92,7 @@ export default function Header() {
   }, []);
 
   const solidNav = scrolled || open;
+  const closeMobile = () => setOpen(false);
 
   return (
     <header
@@ -45,16 +115,9 @@ export default function Header() {
           className="site-header-logo shrink-0"
         />
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
           {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="flex items-center gap-1 text-sm text-slate-600 transition-colors hover:text-brand-blue"
-            >
-              {link.label}
-              {link.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
-            </a>
+            <NavDropdown key={link.label} link={link} onNavigate={undefined} />
           ))}
         </nav>
 
@@ -84,21 +147,14 @@ export default function Header() {
 
       {open && (
         <div id="mobile-nav" className="relative z-20 border-t border-blue-100 bg-white px-5 py-4 lg:hidden">
-          <nav className="flex flex-col gap-3">
+          <nav className="flex flex-col gap-2">
             {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-sm text-slate-600 hover:text-brand-blue"
-                onClick={() => setOpen(false)}
-              >
-                {link.label}
-              </a>
+              <MobileNavGroup key={link.label} link={link} onNavigate={closeMobile} />
             ))}
             <a
               href="#contact"
               className="mt-2 inline-flex items-center justify-center gap-2 bg-brand-blue px-4 py-3 text-sm font-medium text-navy"
-              onClick={() => setOpen(false)}
+              onClick={closeMobile}
             >
               Contact
               <ArrowRight className="h-4 w-4" />

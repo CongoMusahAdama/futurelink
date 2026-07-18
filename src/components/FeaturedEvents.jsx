@@ -24,7 +24,7 @@ export default function FeaturedEvents() {
   const { openRegistration } = useRegistrationModal();
 
   return (
-    <section id="events" className="border-t border-blue-100 bg-blue-50 py-16 sm:py-20">
+    <section id="events-preview" className="border-t border-blue-100 bg-blue-50 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-5">
         <div className="flex items-end justify-between">
           <ScrollReveal as="h2" className="text-2xl font-bold text-navy sm:text-3xl">
@@ -115,6 +115,15 @@ export default function FeaturedEvents() {
             </article>
           ))}
         </div>
+
+        <ScrollReveal delay={400} className="mt-10 text-center">
+          <a href="#events" className="hero-cta hero-cta-primary inline-flex">
+            <span>View All Events</span>
+            <span className="hero-cta-icon" aria-hidden="true">
+              <ArrowRight className="h-4 w-4" />
+            </span>
+          </a>
+        </ScrollReveal>
       </div>
     </section>
   );
