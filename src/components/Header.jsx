@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import Logo from "./Logo";
-import { events } from "../data/events";
 
 const navLinks = [
   { label: "Home", href: "#", hasDropdown: true },
   { label: "Events", href: "#events" },
   { label: "Services", href: "#services" },
+  { label: "Impact", href: "#impact" },
   { label: "Pricing", href: "#pricing" },
   { label: "About", href: "#about" },
 ];
@@ -58,10 +58,7 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-6 lg:flex">
-          <a href="#events" className="text-sm text-slate-600 hover:text-brand-blue">
-            Events ({events.length})
-          </a>
+        <div className="hidden items-center lg:flex">
           <a
             href="#contact"
             className={`inline-flex items-center gap-2 bg-brand-blue text-sm font-medium text-navy transition-all duration-300 hover:bg-brand-blue-dark ${

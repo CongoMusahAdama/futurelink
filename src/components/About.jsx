@@ -53,10 +53,10 @@ const milestones = [
 
 export default function About() {
   return (
-    <section id="about" className="border-t border-blue-100 bg-white py-16 sm:py-24">
+    <section className="border-t border-blue-100 bg-white py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-5">
         {/* Impact stats */}
-        <div className="text-center">
+        <div id="impact" className="scroll-mt-28 text-center">
           <ScrollReveal as="h2" className="text-2xl font-bold text-navy sm:text-4xl">
             Our Impact by the Numbers
           </ScrollReveal>
@@ -81,7 +81,7 @@ export default function About() {
         </div>
 
         {/* Timeline */}
-        <div className="mt-24 grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <div id="about" className="scroll-mt-28 mt-24 grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <ScrollReveal as="h2" className="text-2xl font-bold leading-tight text-navy sm:text-3xl lg:text-4xl">
               Building Better Events, One Milestone at a Time
