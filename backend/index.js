@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 3001;
 const DEFAULT_ORIGINS = [
   "https://future-linkservices.com",
   "https://www.future-linkservices.com",
-  "https://futurelinkservices.netlify.app",
   "http://localhost:5173",
   "http://127.0.0.1:5173",
 ];
@@ -26,14 +25,18 @@ const allowedOrigins = [
   ]),
 ];
 
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+  // Vercel production + preview deployments (*.vercel.app)
+  if (/^https:\/\/[\w-]+\.vercel\.app$/i.test(origin)) return true;
+  return false;
+}
+
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-        return;
-      }
-      callback(null, false);
+      callback(null, isAllowedOrigin(origin));
     },
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

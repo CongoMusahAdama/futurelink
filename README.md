@@ -29,7 +29,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 - **Benefits** — Value propositions for event organizers
 - **Contact** — Demo request form
 
-## Deploy (Netlify + Render)
+## Deploy (Vercel + Render)
 
 ### 1. Backend on Render
 
@@ -45,31 +45,45 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
    | Key | Value |
    |-----|--------|
    | `MONGODB_URI` | Your MongoDB Atlas connection string |
-   | `CLIENT_ORIGIN` | `https://futurelinkservices.netlify.app,http://localhost:5173` |
+   | `CLIENT_ORIGIN` | `https://future-linkservices.com,https://www.future-linkservices.com,http://localhost:5173` |
 
 5. **Live API:** [https://futurelink-ufwi.onrender.com](https://futurelink-ufwi.onrender.com)
 6. In **MongoDB Atlas** → Network Access → allow `0.0.0.0/0` (or Render IPs)
 
 Health check: [https://futurelink-ufwi.onrender.com/api/health](https://futurelink-ufwi.onrender.com/api/health)
 
-### 2. Frontend on Netlify
+### 2. Frontend on Vercel
 
-1. Go to [netlify.com](https://netlify.com) → **Add new site** → **Import from Git**
-2. Select `CongoMusahAdama/futurelink`
-3. Netlify reads `netlify.toml` automatically:
-   - Build: `npm run build`
-   - Publish: `dist`
-   - `VITE_API_URL` → `https://futurelink-ufwi.onrender.com/api` (already in `netlify.toml`)
+1. Go to [vercel.com](https://vercel.com) → sign in with GitHub → **Add New Project**
+2. Import `CongoMusahAdama/futurelink`
+3. Vercel reads `vercel.json` automatically (Vite build → `dist`)
+4. **Environment variable** (Project → Settings → Environment Variables):
 
-4. **Live site:** [https://futurelinkservices.netlify.app](https://futurelinkservices.netlify.app)
+   | Key | Value |
+   |-----|--------|
+   | `VITE_API_URL` | `https://futurelink-ufwi.onrender.com/api` |
 
-5. Deploy. Open your Netlify URL → `#checkin` for venue tablet.
+5. Deploy. Your site will be at `https://your-project.vercel.app`
 
-### 3. Link them together
+6. **Custom domain** (Settings → Domains):
+   - Add `future-linkservices.com` and `www.future-linkservices.com`
+   - Copy the DNS records Vercel shows into **Hostinger DNS**
 
-After Netlify gives you a URL, add it to Render as `CLIENT_ORIGIN` and redeploy Render if you set it after the first deploy.
+### 3. Hostinger DNS (for custom domain)
 
-**Ops routes:** `yoursite.netlify.app/#checkin` · `#dashboard` · `#admin` · `#signage`
+Remove old Netlify records, then add what Vercel provides. Typical setup:
+
+| Type | Name | Value |
+|------|------|--------|
+| **A** | `@` | IP from Vercel domain settings |
+| **CNAME** | `www` | `cname.vercel-dns.com` (or value Vercel shows) |
+
+### 4. Link them together
+
+- `*.vercel.app` preview URLs are allowed by the API automatically
+- Custom domain `future-linkservices.com` is in `CLIENT_ORIGIN` — redeploy Render after updating env if needed
+
+**Ops routes:** `yoursite.com/#checkin` · `#dashboard` · `#admin` · `#signage`
 
 ## Brand Colors
 
