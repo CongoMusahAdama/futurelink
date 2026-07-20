@@ -5696,169 +5696,186 @@ html.tv-dashboard body {
   white-space: nowrap;
 }
 
-/* Ops login gate — full-screen split layout for tablets/desktops */
+/* Ops login gate — slanted split auth layout */
 .ops-login {
-  display: grid;
-  min-height: 100vh;
-  grid-template-columns: 1fr;
-  background: white;
-}
-
-@media (min-width: 900px) {
-  .ops-login {
-    grid-template-columns: 1.05fr 1fr;
-  }
-}
-
-.ops-login-hero {
-  position: relative;
-  display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-  padding: 3rem;
-  color: var(--color-navy);
-  background:
-    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.35), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(18, 216, 130, 0.55), transparent 50%),
-    linear-gradient(155deg, var(--color-brand-blue) 0%, var(--color-brand-blue-dark) 100%);
-}
-
-@media (min-width: 900px) {
-  .ops-login-hero {
-    display: flex;
-  }
-}
-
-.ops-login-hero-logo {
-  height: auto;
-  width: min(78%, 340px);
-  object-fit: contain;
-}
-
-.ops-login-hero-body {
-  max-width: 26rem;
-}
-
-.ops-login-hero-title {
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.ops-login-hero-copy {
-  margin-top: 1rem;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: rgb(0 29 74 / 0.78);
-}
-
-.ops-login-hero-points {
-  margin-top: 1.5rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
+  min-height: 100vh;
+  align-items: stretch;
+  justify-content: center;
+  padding: 1.25rem;
+  background:
+    radial-gradient(circle at 10% 20%, rgb(26 251 151 / 0.12), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgb(0 29 74 / 0.06), transparent 45%),
+    #f4f7f6;
 }
 
-.ops-login-hero-points li {
-  position: relative;
-  padding-left: 1.5rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--color-navy);
+.ops-login-shell {
+  display: grid;
+  width: min(1120px, 100%);
+  min-height: min(720px, calc(100vh - 2.5rem));
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: white;
+  box-shadow: 0 30px 80px rgb(0 29 74 / 0.12);
+  grid-template-columns: 1fr;
 }
 
-.ops-login-hero-points li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.45em;
-  height: 0.55rem;
-  width: 0.55rem;
-  border-radius: 9999px;
-  background: var(--color-navy);
-}
-
-.ops-login-hero-foot {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: rgb(0 29 74 / 0.65);
+@media (min-width: 920px) {
+  .ops-login-shell {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
 }
 
 .ops-login-panel {
+  position: relative;
+  z-index: 2;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  padding: 2.5rem 1.5rem;
+  padding: 2rem 1.5rem 2.5rem;
+  background: white;
 }
 
 @media (min-width: 640px) {
   .ops-login-panel {
-    padding: 3rem;
+    padding: 2.75rem 3rem 3rem;
   }
+}
+
+@media (min-width: 920px) {
+  .ops-login-panel {
+    clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+    padding-right: 4.5rem;
+  }
+}
+
+.ops-login-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 1.75rem;
+  align-self: flex-start;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgb(100 116 139);
+  transition: color 0.2s ease;
+}
+
+.ops-login-back:hover {
+  color: var(--color-navy);
 }
 
 .ops-login-form {
   display: flex;
   width: 100%;
-  max-width: 25rem;
+  max-width: 24rem;
   flex-direction: column;
 }
 
-.ops-login-lock {
-  display: inline-flex;
-  height: 2.75rem;
-  width: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.9rem;
-  background: var(--color-blue-50);
-  color: var(--color-navy);
+.ops-login-brand-mark {
+  height: auto;
+  width: min(58%, 190px);
+  object-fit: contain;
+  object-position: left center;
 }
 
 .ops-login-title {
   margin-top: 1.25rem;
-  font-size: 1.75rem;
+  font-size: clamp(1.5rem, 2.5vw, 1.9rem);
   font-weight: 800;
   color: var(--color-navy);
 }
 
 .ops-login-subtitle {
   margin-top: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   line-height: 1.6;
   color: rgb(100 116 139);
 }
 
 .ops-login-label {
-  margin-top: 1.5rem;
+  margin-top: 1.35rem;
   margin-bottom: 0.4rem;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: rgb(71 85 105);
+  color: rgb(100 116 139);
 }
 
 .ops-login-input {
   width: 100%;
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-blue-100);
-  background: var(--color-blue-50);
+  border-radius: 0.65rem;
+  border: 1px solid rgb(203 213 225);
+  background: white;
   padding: 0.85rem 1rem;
   font-size: 0.9375rem;
   color: var(--color-navy);
   transition:
     border-color 0.2s ease,
-    background-color 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .ops-login-input:focus {
   outline: none;
-  border-color: var(--color-brand-blue);
-  background: white;
-  box-shadow: 0 0 0 4px rgb(26 251 151 / 0.18);
+  border-color: var(--color-brand-blue-dark);
+  box-shadow: 0 0 0 4px rgb(26 251 151 / 0.2);
+}
+
+.ops-login-password-wrap {
+  position: relative;
+}
+
+.ops-login-password-wrap .ops-login-input {
+  padding-right: 2.75rem;
+}
+
+.ops-login-eye {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  display: inline-flex;
+  transform: translateY(-50%);
+  color: rgb(148 163 184);
+  transition: color 0.2s ease;
+}
+
+.ops-login-eye:hover {
+  color: var(--color-navy);
+}
+
+.ops-login-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.ops-login-remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgb(71 85 105);
+  cursor: pointer;
+}
+
+.ops-login-remember input {
+  accent-color: var(--color-brand-blue-dark);
+}
+
+.ops-login-forgot {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-navy);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ops-login-forgot:hover {
+  color: var(--color-brand-blue-dark);
 }
 
 .ops-login-error {
@@ -5876,20 +5893,24 @@ html.tv-dashboard body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin-top: 1.75rem;
-  border-radius: 9999px;
-  background: var(--color-navy);
-  padding: 0.9rem 1.25rem;
+  margin-top: 1.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(90deg, var(--color-brand-blue) 0%, var(--color-brand-blue-dark) 100%);
+  padding: 0.95rem 1.25rem;
   font-size: 0.9375rem;
-  font-weight: 700;
-  color: white;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-navy);
+  box-shadow: 0 12px 28px rgb(18 216 130 / 0.35);
   transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .ops-login-btn:hover:not(:disabled) {
   transform: translateY(-1px);
+  box-shadow: 0 16px 32px rgb(18 216 130 / 0.42);
 }
 
 .ops-login-btn:disabled {
@@ -5897,20 +5918,69 @@ html.tv-dashboard body {
   cursor: not-allowed;
 }
 
-.ops-login-back {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.375rem;
-  margin-top: 1.5rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: rgb(100 116 139);
-  transition: color 0.2s ease;
+.ops-login-visual {
+  position: relative;
+  display: none;
+  min-height: 100%;
+  overflow: hidden;
+  background: var(--color-navy);
 }
 
-.ops-login-back:hover {
-  color: var(--color-navy);
+@media (min-width: 920px) {
+  .ops-login-visual {
+    display: block;
+  }
+}
+
+.ops-login-visual-image {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.ops-login-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(160deg, rgb(0 29 74 / 0.55) 0%, rgb(0 29 74 / 0.78) 100%);
+}
+
+.ops-login-visual-content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+  text-align: center;
+  color: white;
+}
+
+.ops-login-visual-logo {
+  width: min(70%, 260px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 24px rgb(0 0 0 / 0.3));
+}
+
+.ops-login-visual-tagline {
+  margin-top: 1.25rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.ops-login-visual-copy {
+  margin-top: 0.65rem;
+  max-width: 18rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgb(226 232 240);
 }
 
 .ops-logout-btn {

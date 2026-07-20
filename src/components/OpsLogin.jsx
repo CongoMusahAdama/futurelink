@@ -1,16 +1,34 @@
 import { useState } from "react";
-import { ArrowLeft, KeyRound, Lock, LogIn } from "lucide-react";
-import { BRAND_NAME, LOGO_SRC } from "../lib/brand";
+import { ArrowLeft, Eye, EyeOff, KeyRound } from "lucide-react";
+import {
+  BRAND_NAME,
+  CONTACT_EMAIL,
+  LOGO_ON_DARK_SRC,
+  LOGO_SRC,
+} from "../lib/brand";
 import {
   changeOpsPassword,
   isUsingDefaultPassword,
   loginOps,
 } from "../lib/opsAuth";
 
+const REMEMBER_KEY = "fl-ops-remember-email";
+
+function readRememberedEmail() {
+  try {
+    return window.localStorage.getItem(REMEMBER_KEY) || "";
+  } catch {
+    return "";
+  }
+}
+
 export default function OpsLogin({ onSuccess, title = "Operations Login" }) {
+  const remembered = readRememberedEmail();
   const [step, setStep] = useState("login");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(remembered || CONTACT_EMAIL);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(Boolean(remembered));
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,7 +46,16 @@ export default function OpsLogin({ onSuccess, title = "Operations Login" }) {
       return;
     }
 
-    // First login (still on the starter password) → require a personal password.
+    try {
+      if (rememberMe) {
+        window.localStorage.setItem(REMEMBER_KEY, email.trim());
+      } else {
+        window.localStorage.removeItem(REMEMBER_KEY);
+      }
+    } catch {
+      // ignore
+    }
+
     if (isUsingDefaultPassword()) {
       setStep("change");
       setSubmitting(false);
@@ -61,129 +88,147 @@ export default function OpsLogin({ onSuccess, title = "Operations Login" }) {
 
   return (
     <div className="ops-login">
-      <aside className="ops-login-hero">
-        <div className="ops-login-hero-top">
-          <img src={LOGO_SRC} alt={BRAND_NAME} className="ops-login-hero-logo" />
+      <div className="ops-login-shell">
+        <div className="ops-login-panel">
+          <a href="#" className="ops-login-back">
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Back to website
+          </a>
+
+          {step === "login" ? (
+            <form className="ops-login-form" onSubmit={handleLogin}>
+              <img src={LOGO_SRC} alt={BRAND_NAME} className="ops-login-brand-mark" />
+              <h1 className="ops-login-title">{title}</h1>
+              <p className="ops-login-subtitle">
+                Welcome back. Please sign in to your Future-Link operations account.
+              </p>
+
+              <label className="ops-login-label" htmlFor="ops-email">
+                Email address
+              </label>
+              <input
+                id="ops-email"
+                type="email"
+                autoComplete="username"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={CONTACT_EMAIL}
+                className="ops-login-input"
+                required
+              />
+
+              <label className="ops-login-label" htmlFor="ops-password">
+                Password
+              </label>
+              <div className="ops-login-password-wrap">
+                <input
+                  id="ops-password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="ops-login-input"
+                  required
+                />
+                <button
+                  type="button"
+                  className="ops-login-eye"
+                  onClick={() => setShowPassword((value) => !value)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+
+              <div className="ops-login-meta">
+                <label className="ops-login-remember">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  Remember me
+                </label>
+                <a href={`mailto:${CONTACT_EMAIL}`} className="ops-login-forgot">
+                  Forgot password?
+                </a>
+              </div>
+
+              {error && <p className="ops-login-error">{error}</p>}
+
+              <button type="submit" className="ops-login-btn" disabled={submitting}>
+                {submitting ? "Signing in…" : "Login"}
+              </button>
+            </form>
+          ) : (
+            <form className="ops-login-form" onSubmit={handleChangePassword}>
+              <img src={LOGO_SRC} alt={BRAND_NAME} className="ops-login-brand-mark" />
+              <h1 className="ops-login-title">Set your password</h1>
+              <p className="ops-login-subtitle">
+                Choose a new password you&apos;ll remember. You&apos;ll use this next time you
+                sign in on this device.
+              </p>
+
+              <label className="ops-login-label" htmlFor="ops-new-password">
+                New password
+              </label>
+              <input
+                id="ops-new-password"
+                type="password"
+                autoComplete="new-password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="At least 8 characters"
+                className="ops-login-input"
+                minLength={8}
+                required
+              />
+
+              <label className="ops-login-label" htmlFor="ops-confirm-password">
+                Confirm new password
+              </label>
+              <input
+                id="ops-confirm-password"
+                type="password"
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter new password"
+                className="ops-login-input"
+                minLength={8}
+                required
+              />
+
+              {error && <p className="ops-login-error">{error}</p>}
+
+              <button type="submit" className="ops-login-btn" disabled={submitting}>
+                <KeyRound className="h-4 w-4" aria-hidden="true" />
+                {submitting ? "Saving…" : "Save password & continue"}
+              </button>
+            </form>
+          )}
         </div>
-        <div className="ops-login-hero-body">
-          <h2 className="ops-login-hero-title">
-            Smart Event Check-In &amp; Live Intelligence.
-          </h2>
-          <p className="ops-login-hero-copy">
-            Private operations console for registration, QR check-in, live dashboards,
-            and on-site badge printing across Ghana.
-          </p>
-          <ul className="ops-login-hero-points">
-            <li>Fast-lane QR check-in</li>
-            <li>Real-time attendance dashboard</li>
-            <li>On-site badge &amp; signage tools</li>
-          </ul>
-        </div>
-        <p className="ops-login-hero-foot">{BRAND_NAME}</p>
-      </aside>
 
-      <div className="ops-login-panel">
-        {step === "login" ? (
-          <form className="ops-login-form" onSubmit={handleLogin}>
-            <span className="ops-login-lock">
-              <Lock className="h-5 w-5" aria-hidden="true" />
-            </span>
-
-            <h1 className="ops-login-title">{title}</h1>
-            <p className="ops-login-subtitle">
-              This area is private. Sign in with your Future-Link credentials to continue.
+        <aside className="ops-login-visual" aria-hidden="true">
+          <img
+            src="/services/event-checkin.jpg"
+            alt=""
+            className="ops-login-visual-image"
+          />
+          <div className="ops-login-visual-overlay" />
+          <div className="ops-login-visual-content">
+            <img
+              src={LOGO_ON_DARK_SRC}
+              alt=""
+              className="ops-login-visual-logo"
+            />
+            <p className="ops-login-visual-tagline">Skills. Business. Opportunity.</p>
+            <p className="ops-login-visual-copy">
+              Private console for QR check-in, live dashboards, and on-site event tools.
             </p>
-
-            <label className="ops-login-label" htmlFor="ops-email">
-              Email
-            </label>
-            <input
-              id="ops-email"
-              type="email"
-              autoComplete="username"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@future-link"
-              className="ops-login-input"
-              required
-            />
-
-            <label className="ops-login-label" htmlFor="ops-password">
-              Password
-            </label>
-            <input
-              id="ops-password"
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="ops-login-input"
-              required
-            />
-
-            {error && <p className="ops-login-error">{error}</p>}
-
-            <button type="submit" className="ops-login-btn" disabled={submitting}>
-              <LogIn className="h-4 w-4" aria-hidden="true" />
-              {submitting ? "Signing in…" : "Sign in"}
-            </button>
-
-            <a href="#" className="ops-login-back">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              Back to website
-            </a>
-          </form>
-        ) : (
-          <form className="ops-login-form" onSubmit={handleChangePassword}>
-            <span className="ops-login-lock">
-              <KeyRound className="h-5 w-5" aria-hidden="true" />
-            </span>
-
-            <h1 className="ops-login-title">Set your password</h1>
-            <p className="ops-login-subtitle">
-              Choose a new password you&apos;ll remember. You&apos;ll use this next time you
-              sign in on this device.
-            </p>
-
-            <label className="ops-login-label" htmlFor="ops-new-password">
-              New password
-            </label>
-            <input
-              id="ops-new-password"
-              type="password"
-              autoComplete="new-password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="At least 8 characters"
-              className="ops-login-input"
-              minLength={8}
-              required
-            />
-
-            <label className="ops-login-label" htmlFor="ops-confirm-password">
-              Confirm new password
-            </label>
-            <input
-              id="ops-confirm-password"
-              type="password"
-              autoComplete="new-password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Re-enter new password"
-              className="ops-login-input"
-              minLength={8}
-              required
-            />
-
-            {error && <p className="ops-login-error">{error}</p>}
-
-            <button type="submit" className="ops-login-btn" disabled={submitting}>
-              <KeyRound className="h-4 w-4" aria-hidden="true" />
-              {submitting ? "Saving…" : "Save password & continue"}
-            </button>
-          </form>
-        )}
+          </div>
+        </aside>
       </div>
     </div>
   );
