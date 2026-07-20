@@ -5,7 +5,7 @@ export const LOGO_ON_DARK_SRC = "/events/FUTURELINK.png";
 export const BRAND_NAME = "Future-Link Services";
 export const BRAND_TAGLINE = "Smart Event Intelligence";
 
-export const CONTACT_EMAIL = "futurelinkservices@gmail.com";
+export const CONTACT_EMAIL = "Futurelinkservicesgh@gmail.com";
 
 export const CONTACT_PHONES = ["0575534229", "0547560022", "0207537553"];
 

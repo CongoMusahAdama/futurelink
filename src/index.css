@@ -5467,6 +5467,65 @@ html.tv-dashboard body {
   }
 }
 
+/* FAQ accordion */
+.faq-item {
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--color-blue-100);
+  background: white;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.faq-item--open {
+  border-color: var(--color-brand-blue);
+  box-shadow: 0 10px 30px rgb(0 29 74 / 0.06);
+}
+
+.faq-question {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.faq-icon {
+  color: var(--color-brand-blue-dark);
+  transition: transform 0.3s ease;
+}
+
+.faq-item--open .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-answer-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.faq-item--open .faq-answer-wrap {
+  grid-template-rows: 1fr;
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+}
+
+.faq-answer {
+  padding: 0 1.25rem 1.2rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgb(71 85 105);
+}
+
 /* Support widget */
 .support-widget {
   position: fixed;

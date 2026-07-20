@@ -10,6 +10,7 @@ import DashboardPreview from "./components/DashboardPreview";
 import Pricing from "./components/Pricing";
 import About from "./components/About";
 import BlogPreview from "./components/BlogPreview";
+import Faq from "./components/Faq";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import RegistrationPage from "./components/RegistrationPage";
@@ -109,6 +110,7 @@ function AppContent() {
       "services-preview",
       "events-preview",
       "blog-preview",
+      "faq",
     ]);
 
     if (homeSections.has(hash)) {
@@ -218,6 +220,7 @@ function AppContent() {
           <Pricing />
           <About />
           <BlogPreview />
+          <Faq />
           <Contact />
         </main>
         <Footer />
