@@ -21,8 +21,9 @@ import AdminPage from "./pages/AdminPage";
 import PageLoader from "./components/PageLoader";
 import SupportWidget from "./components/SupportWidget";
 import OpsLogin from "./components/OpsLogin";
+import OpsChangePasswordModal from "./components/OpsChangePasswordModal";
 import { isOpsAuthed, logoutOps } from "./lib/opsAuth";
-import { LogOut } from "lucide-react";
+import { KeyRound, LogOut } from "lucide-react";
 
 import ServicesPage from "./pages/ServicesPage";
 import EventsPage from "./pages/EventsPage";
@@ -67,6 +68,7 @@ function AppContent() {
   const [pageRoute, setPageRoute] = useState(getPageRoute);
   const [opsAuthed, setOpsAuthed] = useState(isOpsAuthed);
   const [confirmLogout, setConfirmLogout] = useState(false);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -144,14 +146,28 @@ function AppContent() {
     return (
       <>
         {opsPage}
-        <button
-          type="button"
-          className="ops-logout-fab"
-          onClick={() => setConfirmLogout(true)}
-        >
-          <LogOut className="h-4 w-4" aria-hidden="true" />
-          Sign out
-        </button>
+        <div className="ops-fab-stack">
+          <button
+            type="button"
+            className="ops-logout-fab"
+            onClick={() => setChangePasswordOpen(true)}
+          >
+            <KeyRound className="h-4 w-4" aria-hidden="true" />
+            Password
+          </button>
+          <button
+            type="button"
+            className="ops-logout-fab"
+            onClick={() => setConfirmLogout(true)}
+          >
+            <LogOut className="h-4 w-4" aria-hidden="true" />
+            Sign out
+          </button>
+        </div>
+
+        {changePasswordOpen && (
+          <OpsChangePasswordModal onClose={() => setChangePasswordOpen(false)} />
+        )}
 
         {confirmLogout && (
           <div

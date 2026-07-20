@@ -8,13 +8,30 @@ import { CONTACT_EMAIL } from "./brand";
  */
 
 export const OPS_LOGIN_EMAIL = CONTACT_EMAIL;
-const OPS_PASSWORD = "futurelink@checking12345";
-const STORAGE_KEY = "fl-ops-auth";
+const DEFAULT_PASSWORD = "futurelink@checking12345";
+const AUTH_KEY = "fl-ops-auth";
+const PASSWORD_KEY = "fl-ops-password";
 const TOKEN = "granted";
+
+function readStoredPassword() {
+  try {
+    return window.localStorage.getItem(PASSWORD_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function getOpsPassword() {
+  return readStoredPassword() || DEFAULT_PASSWORD;
+}
+
+export function isUsingDefaultPassword() {
+  return !readStoredPassword();
+}
 
 export function isOpsAuthed() {
   try {
-    return window.localStorage.getItem(STORAGE_KEY) === TOKEN;
+    return window.localStorage.getItem(AUTH_KEY) === TOKEN;
   } catch {
     return false;
   }
@@ -22,22 +39,44 @@ export function isOpsAuthed() {
 
 export function verifyOpsCredentials(email, password) {
   const normalizedEmail = String(email || "").trim().toLowerCase();
-  return normalizedEmail === OPS_LOGIN_EMAIL.toLowerCase() && password === OPS_PASSWORD;
+  return (
+    normalizedEmail === OPS_LOGIN_EMAIL.toLowerCase() &&
+    password === getOpsPassword()
+  );
 }
 
 export function loginOps(email, password) {
   if (!verifyOpsCredentials(email, password)) return false;
   try {
-    window.localStorage.setItem(STORAGE_KEY, TOKEN);
+    window.localStorage.setItem(AUTH_KEY, TOKEN);
   } catch {
     // ignore storage failures; session simply won't persist
   }
   return true;
 }
 
+export function changeOpsPassword(currentPassword, nextPassword) {
+  const next = String(nextPassword || "");
+  if (currentPassword !== getOpsPassword()) {
+    return { ok: false, error: "Current password is incorrect." };
+  }
+  if (next.length < 8) {
+    return { ok: false, error: "New password must be at least 8 characters." };
+  }
+  if (next === currentPassword) {
+    return { ok: false, error: "Choose a different password from the current one." };
+  }
+  try {
+    window.localStorage.setItem(PASSWORD_KEY, next);
+  } catch {
+    return { ok: false, error: "Could not save the new password on this device." };
+  }
+  return { ok: true };
+}
+
 export function logoutOps() {
   try {
-    window.localStorage.removeItem(STORAGE_KEY);
+    window.localStorage.removeItem(AUTH_KEY);
   } catch {
     // ignore
   }
