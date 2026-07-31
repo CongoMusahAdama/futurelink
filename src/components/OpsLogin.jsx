@@ -8,7 +8,7 @@ import {
 } from "../lib/brand";
 import {
   changeOpsPassword,
-  isUsingDefaultPassword,
+  isCurrentAccountUsingDefaultPassword,
   loginOps,
 } from "../lib/opsAuth";
 
@@ -56,7 +56,7 @@ export default function OpsLogin({ onSuccess, title = "Operations Login" }) {
       // ignore
     }
 
-    if (isUsingDefaultPassword()) {
+    if (isCurrentAccountUsingDefaultPassword()) {
       setStep("change");
       setSubmitting(false);
       return;

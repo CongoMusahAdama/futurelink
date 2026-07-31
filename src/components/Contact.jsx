@@ -10,8 +10,6 @@ import {
   CONTACT_BANK_ACCOUNT,
 } from "../lib/brand";
 
-import { ghanaHubsEvent } from "../data/events";
-
 export default function Contact() {
   return (
     <section id="contact" className="border-t border-blue-100 bg-blue-50 py-16 sm:py-20">
@@ -22,7 +20,7 @@ export default function Contact() {
               align="left"
               label="Get In Touch"
               title="Ready to transform your next event?"
-              description={`Whether it is the ${ghanaHubsEvent.title} in Kumasi or your next conference, we will help you deliver a professional attendee experience with real-time intelligence.`}
+              description="Whether you are listing your next conference or need on-site check-in support, we will help you deliver a professional attendee experience with real-time intelligence."
             />
 
             <div className="mt-8 space-y-3 border-t border-slate-200 pt-8">

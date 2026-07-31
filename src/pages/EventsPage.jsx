@@ -1,19 +1,19 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { ArrowRight, ArrowUpRight, Calendar, MapPin, Search, X } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ScrollReveal from "../components/ScrollReveal";
 import EventCountdown from "../components/EventCountdown";
-import { useRegistrationModal } from "../context/RegistrationModalContext";
 import {
-  eventCategories,
-  events,
+  getAllEvents,
+  getEventCategoryFilters,
   getEventStatus,
   getSortedEvents,
   getUpcomingEvents,
   isEventUpcoming,
+  openAttendeeRegistration,
 } from "../data/events";
-import { CONTACT_EMAIL } from "../lib/brand";
+import { useRegistrationModal } from "../context/RegistrationModalContext";
 
 function matchesSearch(event, query) {
   const haystack = [
@@ -43,9 +43,9 @@ function EventCriteria({ items }) {
 }
 
 function EventCard({ event, featured = false }) {
-  const { openRegistration } = useRegistrationModal();
   const upcoming = isEventUpcoming(event);
   const status = getEventStatus(event);
+  const hasRegLink = Boolean(event.registrationUrl?.trim());
 
   return (
     <article
@@ -53,12 +53,18 @@ function EventCard({ event, featured = false }) {
       className={`event-card group ${featured ? "event-card--featured" : ""}`}
     >
       <div className="event-card-media">
-        <img
-          src={event.image}
-          alt={event.title}
-          className={`h-full w-full ${event.imageClass ?? "object-cover object-center"}`}
-          loading="lazy"
-        />
+        {event.image ? (
+          <img
+            src={event.image}
+            alt={event.title}
+            className={`h-full w-full ${event.imageClass ?? "object-cover object-center"}`}
+            loading="lazy"
+          />
+        ) : (
+          <div className="flex h-full min-h-[11rem] w-full items-center justify-center bg-navy">
+            <span className="text-4xl font-bold text-brand-blue/30">{event.title?.[0] ?? "E"}</span>
+          </div>
+        )}
         <span className={`event-card-status event-card-status--${status}`}>
           {upcoming ? "Upcoming" : "Completed"}
         </span>
@@ -83,7 +89,7 @@ function EventCard({ event, featured = false }) {
           {event.location}
         </p>
 
-        <p className="event-card-excerpt">{event.excerpt}</p>
+        {event.excerpt && <p className="event-card-excerpt">{event.excerpt}</p>}
 
         {event.criteria?.length > 0 && <EventCriteria items={event.criteria} />}
 
@@ -97,15 +103,17 @@ function EventCard({ event, featured = false }) {
         )}
 
         <div className="event-card-actions">
-          {upcoming ? (
+          {upcoming && hasRegLink ? (
             <button
               type="button"
-              onClick={() => openRegistration(event)}
+              onClick={() => openAttendeeRegistration(event)}
               className="event-card-register"
             >
               Register
               <ArrowRight className="h-4 w-4" />
             </button>
+          ) : upcoming ? (
+            <span className="event-card-past-label">Registration link coming soon</span>
           ) : (
             <span className="event-card-past-label">Event completed</span>
           )}
@@ -116,14 +124,29 @@ function EventCard({ event, featured = false }) {
 }
 
 export default function EventsPage() {
+  const { openRegistration } = useRegistrationModal();
   const [activeCategory, setActiveCategory] = useState("All");
   const [query, setQuery] = useState("");
+  const [allEvents, setAllEvents] = useState(() => getAllEvents());
 
-  const upcomingCount = getUpcomingEvents().length;
-  const totalCount = events.length;
+  useEffect(() => {
+    const refresh = () => setAllEvents(getAllEvents());
+    const onStorage = (e) => {
+      if (e.key === "ee-events") refresh();
+    };
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("ee-events-updated", refresh);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("ee-events-updated", refresh);
+    };
+  }, []);
+
+  const upcomingCount = allEvents.filter(isEventUpcoming).length;
+  const totalCount = allEvents.length;
 
   const filteredEvents = useMemo(() => {
-    let list = getSortedEvents();
+    let list = getSortedEvents(allEvents);
 
     if (activeCategory !== "All") {
       list = list.filter((event) => event.category === activeCategory);
@@ -135,7 +158,7 @@ export default function EventsPage() {
     }
 
     return list;
-  }, [activeCategory, query]);
+  }, [activeCategory, query, allEvents]);
 
   const showFeaturedHighlight = !query.trim() && activeCategory === "All";
   const featuredEvent = showFeaturedHighlight ? getUpcomingEvents()[0] : null;
@@ -164,15 +187,21 @@ export default function EventsPage() {
               delay={160}
               className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg"
             >
-              Search and browse every event Future-Link supports — dates, locations, and the
-              services we deliver at each one.
+              Search and browse events listed by organizers — open each event&apos;s registration
+              link to sign up as an attendee.
             </ScrollReveal>
             <ScrollReveal delay={220} className="mt-6 flex flex-wrap items-center justify-center gap-2 text-sm text-slate-500">
               <span className="events-stat-pill">{upcomingCount} upcoming</span>
               <span aria-hidden="true">·</span>
               <span className="events-stat-pill">{totalCount} total</span>
             </ScrollReveal>
-            <ScrollReveal delay={280} className="mt-8">
+            <ScrollReveal delay={280} className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <button type="button" onClick={() => openRegistration()} className="hero-cta hero-cta-primary inline-flex">
+                <span>Register an Event</span>
+                <span className="hero-cta-icon" aria-hidden="true">
+                  <ArrowUpRight className="h-4 w-4" />
+                </span>
+              </button>
               <a href="#" className="hero-cta hero-cta-secondary inline-flex">
                 <span>Back to Home</span>
                 <span className="hero-cta-icon" aria-hidden="true">
@@ -213,7 +242,7 @@ export default function EventsPage() {
               </div>
 
               <div className="events-filter" role="group" aria-label="Filter by category">
-                {eventCategories.map((category) => (
+                {getEventCategoryFilters(allEvents).map((category) => (
                   <button
                     key={category}
                     type="button"
@@ -264,20 +293,34 @@ export default function EventsPage() {
 
             {filteredEvents.length === 0 && (
               <div className="events-empty mt-10">
-                <p className="events-empty-title">No events match your search</p>
-                <p className="events-empty-text">
-                  Try a different keyword or category, or clear your filters to see everything.
+                <p className="events-empty-title">
+                  {allEvents.length === 0 ? "No events listed yet" : "No events match your search"}
                 </p>
-                <button
-                  type="button"
-                  className="events-clear-filters events-clear-filters--button"
-                  onClick={() => {
-                    setQuery("");
-                    setActiveCategory("All");
-                  }}
-                >
-                  Show all events
-                </button>
+                <p className="events-empty-text">
+                  {allEvents.length === 0
+                    ? "Organizers can publish an event and add their attendee registration link — it will show up here."
+                    : "Try a different keyword or category, or clear your filters to see everything."}
+                </p>
+                {allEvents.length === 0 ? (
+                  <button
+                    type="button"
+                    className="events-clear-filters events-clear-filters--button"
+                    onClick={() => openRegistration()}
+                  >
+                    Register an Event
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="events-clear-filters events-clear-filters--button"
+                    onClick={() => {
+                      setQuery("");
+                      setActiveCategory("All");
+                    }}
+                  >
+                    Show all events
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -289,16 +332,16 @@ export default function EventsPage() {
               Planning your own event?
             </ScrollReveal>
             <ScrollReveal as="p" variant="subtle" delay={100} className="mx-auto mt-4 max-w-xl text-base text-slate-600">
-              Future-Link handles registration, QR check-in, live dashboards, and post-event
-              analytics for conferences and AGMs across Ghana.
+              List your event on Future-Link and share your registration link. Attendees discover
+              you on our Events page and sign up through your form.
             </ScrollReveal>
             <ScrollReveal delay={180} className="mt-8">
-              <a href={`mailto:${CONTACT_EMAIL}`} className="hero-cta hero-cta-primary inline-flex">
-                <span>Get in Touch</span>
+              <button type="button" onClick={() => openRegistration()} className="hero-cta hero-cta-primary inline-flex">
+                <span>Register an Event</span>
                 <span className="hero-cta-icon" aria-hidden="true">
                   <ArrowUpRight className="h-4 w-4" />
                 </span>
-              </a>
+              </button>
             </ScrollReveal>
           </div>
         </section>

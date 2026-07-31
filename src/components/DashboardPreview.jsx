@@ -1,4 +1,3 @@
-import { ghanaHubsEvent } from "../data/events";
 import ScrollReveal from "./ScrollReveal";
 
 const metrics = [
@@ -27,7 +26,7 @@ export default function DashboardPreview() {
             <div className="flex items-center justify-between border-b border-blue-100 px-5 py-3">
               <div>
                 <p className="text-xs text-slate-400">Live</p>
-                <p className="text-sm font-semibold text-navy">{ghanaHubsEvent.title}</p>
+                <p className="text-sm font-semibold text-navy">Live Event Dashboard</p>
               </div>
               <span className="text-xs font-medium text-brand-blue">Kumasi</span>
             </div>

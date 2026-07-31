@@ -1,44 +1,44 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { events, ghanaHubsEvent } from "../data/events";
 
 const RegistrationContext = createContext(null);
+const ORGANIZER_HASH = "register-event";
 
-function getEventFromHash() {
-  const match = window.location.hash.match(/^#register\/([^/?]+)/);
-  if (!match) return null;
-  return events.find((event) => event.id === match[1]) ?? ghanaHubsEvent;
+function isOrganizerHash() {
+  return window.location.hash.replace(/^#/, "") === ORGANIZER_HASH;
 }
 
 export function RegistrationProvider({ children }) {
-  const [activeEvent, setActiveEvent] = useState(getEventFromHash);
+  const [isOrganizerForm, setIsOrganizerForm] = useState(isOrganizerHash);
 
   useEffect(() => {
-    const onHashChange = () => setActiveEvent(getEventFromHash());
+    const onHashChange = () => setIsOrganizerForm(isOrganizerHash());
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  const openRegistration = useCallback((selectedEvent = ghanaHubsEvent) => {
-    window.location.hash = `#register/${selectedEvent.id}`;
-    setActiveEvent(selectedEvent);
+  /** Opens the public form for organizers to list their event on the platform. */
+  const openRegistration = useCallback(() => {
+    window.location.hash = ORGANIZER_HASH;
+    setIsOrganizerForm(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const closeRegistration = useCallback(() => {
-    if (window.location.hash.startsWith("#register")) {
+    if (isOrganizerHash()) {
       window.history.pushState(null, "", window.location.pathname + window.location.search);
     }
-    setActiveEvent(null);
+    setIsOrganizerForm(false);
   }, []);
 
   const value = useMemo(
     () => ({
       openRegistration,
       closeRegistration,
-      activeEvent,
-      isRegistrationPage: Boolean(activeEvent),
+      isRegistrationPage: isOrganizerForm,
+      /** @deprecated Attendee sign-up is via each event's registrationUrl */
+      activeEvent: null,
     }),
-    [openRegistration, closeRegistration, activeEvent]
+    [openRegistration, closeRegistration, isOrganizerForm]
   );
 
   return (

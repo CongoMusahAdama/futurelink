@@ -1,15 +1,14 @@
-import { ghanaHubsEvent } from "../data/events";
 import { BRAND_NAME, LOGO_SRC } from "./brand";
 
 export const TICKET_EVENT = {
-  badge: "AGM 2026",
-  title: "GHANA HUBS NETWORK AGM",
-  subtitle: "Annual General Meeting",
-  date: ghanaHubsEvent.date,
+  badge: "EVENT",
+  title: "FUTURE-LINK EVENT",
+  subtitle: "Smart Event Check-In",
+  date: "TBA",
   time: "9:00 AM",
-  location: ghanaHubsEvent.location,
+  location: "Ghana",
   hall: "Main Hall",
-  eventLogo: ghanaHubsEvent.logo,
+  eventLogo: LOGO_SRC,
   brandLogo: LOGO_SRC,
   brandName: BRAND_NAME,
 };

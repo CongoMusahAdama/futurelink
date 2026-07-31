@@ -13,7 +13,7 @@ import BlogPreview from "./components/BlogPreview";
 import Faq from "./components/Faq";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import RegistrationPage from "./components/RegistrationPage";
+import OrganizerEventPage from "./components/OrganizerEventPage";
 import VenueTabletPage from "./pages/VenueTabletPage";
 import LiveDashboardPage from "./pages/LiveDashboardPage";
 import SignagePage from "./pages/SignagePage";
@@ -29,13 +29,20 @@ import ServicesPage from "./pages/ServicesPage";
 import EventsPage from "./pages/EventsPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
+import EventCheckoutPage from "./pages/EventCheckoutPage";
 import { services } from "./data/services";
-import { events } from "./data/events";
+import { events, getAllEvents, getEventById } from "./data/events";
 import { blogPosts } from "./data/blog";
 
 const serviceIds = new Set(services.map((service) => service.id));
 const eventIds = new Set(events.map((event) => event.id));
 const blogIds = new Set(blogPosts.map((post) => post.id));
+
+function getCheckoutEvent() {
+  const match = window.location.hash.match(/^#checkout\/([^/?]+)/);
+  if (!match) return null;
+  return getEventById(match[1]) ?? null;
+}
 
 function getOpsRoute() {
   const hash = window.location.hash.replace(/^#/, "");
@@ -63,9 +70,10 @@ const OPS_TITLES = {
 };
 
 function AppContent() {
-  const { activeEvent } = useRegistrationModal();
+  const { isRegistrationPage } = useRegistrationModal();
   const [opsRoute, setOpsRoute] = useState(getOpsRoute);
   const [pageRoute, setPageRoute] = useState(getPageRoute);
+  const [checkoutEvent, setCheckoutEvent] = useState(getCheckoutEvent);
   const [opsAuthed, setOpsAuthed] = useState(isOpsAuthed);
   const [confirmLogout, setConfirmLogout] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
@@ -74,6 +82,7 @@ function AppContent() {
     const onHashChange = () => {
       setOpsRoute(getOpsRoute());
       setPageRoute(getPageRoute());
+      setCheckoutEvent(getCheckoutEvent());
     };
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
@@ -121,6 +130,11 @@ function AppContent() {
       });
     }
   }, [pageRoute]);
+
+  // ── Public checkout links (no login needed) ──
+  if (checkoutEvent) {
+    return <EventCheckoutPage event={checkoutEvent} />;
+  }
 
   if (opsRoute) {
     if (!opsAuthed) {
@@ -212,7 +226,7 @@ function AppContent() {
       </>
     );
   }
-  if (activeEvent) return <RegistrationPage event={activeEvent} />;
+  if (isRegistrationPage) return <OrganizerEventPage />;
 
   const renderPage = () => {
     if (pageRoute === "services") return <ServicesPage />;

@@ -1,4 +1,4 @@
-import { ghanaHubsEvent } from "../data/events";
+import { LOGO_SRC, BRAND_NAME } from "../lib/brand";
 
 const SIZES = {
   sm: "h-12",
@@ -10,8 +10,8 @@ const SIZES = {
 export default function EventLogo({ size = "lg", className = "", variant = "default" }) {
   const img = (
     <img
-      src={ghanaHubsEvent.logo}
-      alt="Ghana Hubs Network"
+      src={LOGO_SRC}
+      alt={BRAND_NAME}
       className={`${SIZES[size] || SIZES.lg} w-auto max-w-[280px] object-contain object-left`}
     />
   );

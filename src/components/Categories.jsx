@@ -1,16 +1,14 @@
 import { ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import EventCountdown from "./EventCountdown";
-import { ghanaHubsEvent } from "../data/events";
 
 const categories = [
   {
     name: "AGM",
     count: "08",
-    description: `${ghanaHubsEvent.title} — upcoming next week in Kumasi with member registration and live attendance tracking.`,
-    image: ghanaHubsEvent.image,
-    imageClass: ghanaHubsEvent.imageClass,
-    featuredLabel: "Upcoming next week",
+    description:
+      "Annual general meetings with member registration, QR check-in, and live attendance tracking.",
+    image: "/events/ghana-hubs-summit.png",
+    featuredLabel: "Member gatherings",
   },
   {
     name: "Conference",
@@ -80,7 +78,7 @@ export default function Categories() {
                 <img
                   src={featured.image}
                   alt={featured.name}
-                  className={`aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] ${featured.imageClass ?? ""}`}
+                  className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                   loading="lazy"
                 />
               </div>
@@ -90,49 +88,38 @@ export default function Categories() {
                 {featured.description}
               </p>
 
-              {ghanaHubsEvent.upcoming && ghanaHubsEvent.startsAt && (
-                <EventCountdown
-                  startsAt={ghanaHubsEvent.startsAt}
-                  label="AGM starts in"
-                  variant="compact"
-                  className="mt-4"
-                />
+              {featured.featuredLabel && (
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-brand-blue-dark">
+                  {featured.featuredLabel}
+                </p>
               )}
 
-              <div className="mt-5 flex items-center justify-between border-t border-blue-100 pt-5 text-sm">
-                <span className="font-medium text-navy">{featured.count} upcoming events</span>
-                <span className="font-medium text-orange">{featured.featuredLabel ?? "Most popular"}</span>
-              </div>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-navy transition-colors group-hover:text-brand-blue">
+                Explore {featured.name}
+                <ArrowRight className="h-4 w-4" />
+              </span>
             </a>
           </ScrollReveal>
 
-          <div className="divide-y divide-blue-100">
-            {rest.map((cat, i) => (
-              <ScrollReveal key={cat.name} delay={180 + i * 60}>
-                <a href="#events" className="group flex gap-4 py-5 first:pt-0 last:pb-0">
-                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl sm:h-24 sm:w-24">
+          <div className="grid gap-6 sm:grid-cols-2">
+            {rest.map((category, index) => (
+              <ScrollReveal key={category.name} delay={180 + index * 60}>
+                <a href="#events" className="group block">
+                  <div className="overflow-hidden rounded-xl bg-blue-50">
                     <img
-                      src={cat.image}
-                      alt={cat.name}
-                      className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 ${cat.imageClass ?? ""}`}
+                      src={category.image}
+                      alt={category.name}
+                      className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                       loading="lazy"
                     />
                   </div>
-
-                  <div className="flex min-w-0 flex-1 flex-col justify-center">
-                    <h4 className="font-bold text-navy transition-colors group-hover:text-brand-blue">
-                      {cat.name}
-                    </h4>
-                    <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-slate-500 sm:text-sm">
-                      {cat.description}
-                    </p>
-                    <div className="mt-3 flex items-center justify-between text-xs text-slate-400">
-                      <span>{cat.count} events</span>
-                      <span className="font-medium text-brand-blue opacity-0 transition-opacity group-hover:opacity-100">
-                        Browse
-                      </span>
-                    </div>
+                  <div className="mt-3 flex items-baseline justify-between gap-2">
+                    <h3 className="font-bold text-navy">{category.name}</h3>
+                    <span className="text-xs font-semibold text-slate-400">{category.count}</span>
                   </div>
+                  <p className="mt-1.5 text-xs leading-relaxed text-slate-500 sm:text-sm">
+                    {category.description}
+                  </p>
                 </a>
               </ScrollReveal>
             ))}

@@ -1,4 +1,3 @@
-import { ghanaHubsEvent } from "../data/events";
 import { BRAND_NAME, LOGO_SRC, CONTACT_EMAIL, CONTACT_PHONES_DISPLAY } from "./brand";
 
 /** Name badge print spec: 3.5" × 5.5" vertical + 0.125" bleed */
@@ -10,16 +9,16 @@ export const BADGE_SPEC = {
 };
 
 export const BADGE_ORG = {
-  organizationName: "Ghana Hubs Network",
-  orgLogo: ghanaHubsEvent.logo,
+  organizationName: BRAND_NAME,
+  orgLogo: LOGO_SRC,
   brandLogo: LOGO_SRC,
   brandName: BRAND_NAME,
-  eventTitle: "GHANA HUBS NETWORK AGM",
-  eventSubtitle: "Annual General Meeting 2026",
+  eventTitle: "FUTURE-LINK EVENT",
+  eventSubtitle: "Smart Event Check-In",
   themeLabel: "THEME:",
-  themeQuote: "Connecting Hubs · Building Impact",
+  themeQuote: "Skills · Business · Opportunity",
   phones: CONTACT_PHONES_DISPLAY,
-  website: "www.ghanahubsnetwork.org",
+  website: "www.future-linkservices.com",
   email: CONTACT_EMAIL,
   poweredBy: BRAND_NAME,
 };

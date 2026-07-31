@@ -1,5 +1,4 @@
 import ScrollReveal from "./ScrollReveal";
-import { ghanaHubsEvent } from "../data/events";
 
 const stats = [
   {
@@ -41,7 +40,8 @@ const milestones = [
   {
     year: "2026",
     title: "Ghana Hubs Network AGM",
-    description: `Upcoming next week in Kumasi — ${ghanaHubsEvent.title} with QR check-in, live dashboard, and end-of-day analytics.`,
+    description:
+      "QR check-in, live dashboards, and end-of-day analytics for conferences and AGMs across Ghana.",
   },
   {
     year: "Today",
