@@ -1,10 +1,9 @@
 import { jsPDF } from "jspdf";
 import { BADGE_ROLES, BADGE_SPEC, getBadgeFields, getRoleColors } from "./badgeMeta";
 import { EVENT } from "../data/checkin";
+import { ACCENT, INK, loadImageDataUrl } from "./eventTheme";
 
 const IN = 25.4;
-const NAVY = [0, 29, 74];
-const MINT = [26, 251, 151];
 const WHITE = [255, 255, 255];
 
 const TRIM_W = BADGE_SPEC.trimWidthIn * IN;
@@ -14,19 +13,14 @@ const SAFE = BADGE_SPEC.safeIn * IN;
 const PAGE_W = TRIM_W + BLEED * 2;
 const PAGE_H = TRIM_H + BLEED * 2;
 
-async function loadImageDataUrl(src) {
-  try {
-    const res = await fetch(src);
-    const blob = await res.blob();
-    return await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  } catch {
-    return null;
-  }
+/** Draw an image inside a box, keeping its aspect ratio; returns the drawn width */
+function addImageFit(doc, dataUrl, x, y, maxW, maxH) {
+  const { width, height } = doc.getImageProperties(dataUrl);
+  const scale = Math.min(maxW / width, maxH / height);
+  const w = width * scale;
+  const h = height * scale;
+  doc.addImage(dataUrl, x, y + (maxH - h) / 2, w, h);
+  return w;
 }
 
 function drawCropMarks(doc) {
@@ -51,11 +45,11 @@ async function drawBadgeFace(doc, fields, { showCropMarks = true, placeholderNam
   const roleColors = getRoleColors(fields.role);
 
   // Background (full page including bleed)
-  doc.setFillColor(...NAVY);
+  doc.setFillColor(...INK);
   doc.rect(0, 0, PAGE_W, PAGE_H, "F");
 
   // Top accent stripe
-  doc.setFillColor(...MINT);
+  doc.setFillColor(...ACCENT);
   doc.rect(BLEED, BLEED, TRIM_W, 2.5, "F");
 
   if (showCropMarks) drawCropMarks(doc);
@@ -74,18 +68,36 @@ async function drawBadgeFace(doc, fields, { showCropMarks = true, placeholderNam
   doc.setFillColor(...WHITE);
   doc.roundedRect(contentLeft, pillY, contentW, pillH, 4, 4, "F");
 
-  const orgLogo = await loadImageDataUrl(fields.orgLogo);
+  const [orgLogo, partnerLogo] = await Promise.all([
+    loadImageDataUrl(fields.orgLogo),
+    loadImageDataUrl(fields.partnerLogo),
+  ]);
+  let textX = contentLeft + 6;
+  // A wide logo already carries the organiser's name, so skip the text name.
+  let logoIsWordmark = false;
   if (orgLogo) {
-    doc.addImage(orgLogo, "PNG", contentLeft + 4, pillY + 2.5, 9, 9);
+    const { width, height } = doc.getImageProperties(orgLogo);
+    logoIsWordmark = width / height > 1.8;
+    textX = contentLeft + 3 + addImageFit(doc, orgLogo, contentLeft + 3, pillY + 2, 34, 10) + 3;
   }
-  doc.setTextColor(...NAVY);
-  doc.setFontSize(8);
-  doc.setFont(undefined, "bold");
-  doc.text(fields.organizationName, contentLeft + (orgLogo ? 15 : 6), pillY + 7.5);
-  doc.setFontSize(5.5);
+  if (partnerLogo) {
+    addImageFit(doc, partnerLogo, contentLeft + contentW - 13, pillY + 2, 10, 10);
+  }
+  if (!logoIsWordmark) {
+    doc.setTextColor(...INK);
+    doc.setFontSize(8);
+    doc.setFont(undefined, "bold");
+    doc.text(fields.organizationName, textX, pillY + 7.5);
+  }
+  doc.setFontSize(5);
   doc.setFont(undefined, "normal");
   doc.setTextColor(100, 116, 139);
-  doc.text(`Powered by ${fields.poweredBy}`, contentLeft + (orgLogo ? 15 : 6), pillY + 11);
+  if (logoIsWordmark) {
+    doc.text("Powered by", textX, pillY + 6.5);
+    doc.text(fields.poweredBy, textX, pillY + 9.5);
+  } else {
+    doc.text(`Powered by ${fields.poweredBy}`, textX, pillY + 11);
+  }
 
   let y = pillY + pillH + 7;
 
@@ -103,14 +115,14 @@ async function drawBadgeFace(doc, fields, { showCropMarks = true, placeholderNam
   y += 7;
 
   // Theme label + box
-  doc.setTextColor(...MINT);
+  doc.setTextColor(...ACCENT);
   doc.setFontSize(5);
   doc.setFont(undefined, "bold");
   doc.text(fields.themeLabel, contentLeft, y);
   y += 2.5;
 
   const themeH = 11;
-  doc.setDrawColor(...MINT);
+  doc.setDrawColor(...ACCENT);
   doc.setLineWidth(0.35);
   doc.roundedRect(contentLeft, y, contentW, themeH, 2, 2, "S");
   doc.setTextColor(...WHITE);
@@ -150,21 +162,23 @@ async function drawBadgeFace(doc, fields, { showCropMarks = true, placeholderNam
   y += roleH + 7;
 
   // Contact
-  doc.setTextColor(...WHITE);
-  doc.setFontSize(6);
-  doc.setFont(undefined, "normal");
-  doc.text(`Contact: ${fields.phones}`, cx, y, { align: "center" });
-  y += 5;
+  if (fields.phones) {
+    doc.setTextColor(...WHITE);
+    doc.setFontSize(6);
+    doc.setFont(undefined, "normal");
+    doc.text(`Contact: ${fields.phones}`, cx, y, { align: "center" });
+    y += 5;
+  }
 
   // Footer divider + web/email
   const footY = BLEED + TRIM_H - SAFE - 10;
-  doc.setDrawColor(...MINT);
+  doc.setDrawColor(...ACCENT);
   doc.setLineWidth(0.25);
   doc.line(contentLeft, footY, contentLeft + contentW, footY);
 
   doc.setFillColor(...WHITE);
   doc.rect(contentLeft, footY + 0.3, contentW, BLEED + SAFE + 7, "F");
-  doc.setTextColor(...NAVY);
+  doc.setTextColor(...INK);
   doc.setFontSize(4.8);
   doc.setFont(undefined, "normal");
   doc.text(`${fields.website}  |  ${fields.email}`, cx, footY + 5.5, { align: "center" });
@@ -176,8 +190,8 @@ async function drawBadgeFace(doc, fields, { showCropMarks = true, placeholderNam
   }
 }
 
-function drawMintDot(doc, x, y, r = 1.2) {
-  doc.setFillColor(...MINT);
+function drawAccentDot(doc, x, y, r = 1.2) {
+  doc.setFillColor(...ACCENT);
   doc.circle(x, y, r, "F");
 }
 
@@ -196,14 +210,14 @@ function measureLanyardTile(doc, phrases, fontSize, gap) {
 function drawLanyardTile(doc, x, y, phrases, fontSize, gap) {
   doc.setFontSize(fontSize);
   doc.setFont(undefined, "bold");
-  doc.setTextColor(...NAVY);
+  doc.setTextColor(...INK);
 
   let cx = x + 6;
   phrases.forEach((phrase, idx) => {
     doc.text(phrase, cx, y);
     cx += doc.getTextWidth(phrase);
     if (idx < phrases.length - 1) {
-      drawMintDot(doc, cx + gap / 2, y - 1.5, 1.1);
+      drawAccentDot(doc, cx + gap / 2, y - 1.5, 1.1);
       cx += gap;
     }
   });
@@ -221,7 +235,7 @@ function drawLanyardStrip(doc) {
   doc.setFillColor(...WHITE);
   doc.rect(left, y0, width, stripH, "F");
 
-  doc.setFillColor(...MINT);
+  doc.setFillColor(...ACCENT);
   doc.rect(left, y0, width, 3, "F");
   doc.rect(left, y0 + stripH - 3, width, 3, "F");
 

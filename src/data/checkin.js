@@ -13,6 +13,15 @@ export const EVENT = {
   codeToLabel: "Screening",
   /** Event flyer (served from /public), shown on the ticket and check-in home */
   flyer: "/events/breast-screening-flyer.jpg",
+  /** Organiser shown on badges and printed tickets */
+  organizer: "Duapa Werkspace",
+  organizerLogo: "/events/duapa-werkspace-logo.png",
+  partnerLogo: "/events/sycamore-medical-logo.png",
+  contact: {
+    phones: "",
+    website: "www.duapawerkspace.com",
+    email: "info@duapawerkspace.com",
+  },
   /** Ticket colours, taken from the flyer */
   ticketTheme: {
     ink: "#7a0d45",

@@ -1,9 +1,7 @@
 import { jsPDF } from "jspdf";
 import { BRAND_NAME } from "./brand";
 import { EVENT } from "../data/checkin";
-
-const NAVY = [0, 29, 74];
-const MINT = [26, 251, 151];
+import { ACCENT, INK } from "./eventTheme";
 
 const SIGNS = [
   {
@@ -26,8 +24,8 @@ const SIGNS = [
   },
   {
     title: "VIP REGISTRATION",
-    subtitle: "Speakers · Sponsors · Partners",
-    hint: "Priority lane for VIP guests",
+    subtitle: "Medical staff · Speakers · Partners",
+    hint: "Priority lane for medical staff & partners",
     num: "04",
   },
   {
@@ -43,35 +41,35 @@ const SIGNS = [
     num: "06",
   },
   {
-    title: "FAST LANE →",
+    title: "FAST LANE »",
     subtitle: "QR check-in only",
     hint: "Pre-registered attendees",
-    num: "→",
+    num: "»",
   },
   {
-    title: "HELP DESK →",
+    title: "HELP DESK »",
     subtitle: "Walk-ins & support",
     hint: "Please form a queue on the left",
-    num: "→",
+    num: "»",
   },
   {
     title: "PLEASE WAIT HERE",
     subtitle: "Registration queue",
     hint: "Staff will assist you shortly",
-    num: "⏳",
+    num: "…",
   },
 ];
 
 function drawSign(doc, sign, pageW, pageH) {
-  doc.setFillColor(...NAVY);
+  doc.setFillColor(...INK);
   doc.rect(0, 0, pageW, pageH, "F");
 
-  doc.setFillColor(...MINT);
+  doc.setFillColor(...ACCENT);
   doc.rect(0, 0, pageW, 8, "F");
 
-  doc.setFillColor(...MINT);
+  doc.setFillColor(...ACCENT);
   doc.circle(20, 28, 12, "F");
-  doc.setTextColor(...NAVY);
+  doc.setTextColor(...INK);
   doc.setFontSize(14);
   doc.setFont(undefined, "bold");
   doc.text(sign.num, 20, 30, { align: "center" });
@@ -85,7 +83,7 @@ function drawSign(doc, sign, pageW, pageH) {
   doc.setFont(undefined, "normal");
   doc.text(sign.subtitle, pageW / 2, 68, { align: "center" });
 
-  doc.setDrawColor(...MINT);
+  doc.setDrawColor(...ACCENT);
   doc.setLineWidth(0.8);
   doc.line(30, 78, pageW - 30, 78);
 
@@ -95,7 +93,7 @@ function drawSign(doc, sign, pageW, pageH) {
 
   doc.setFillColor(255, 255, 255);
   doc.roundedRect(pageW / 2 - 45, 100, 90, 22, 3, 3, "F");
-  doc.setTextColor(...NAVY);
+  doc.setTextColor(...INK);
   doc.setFontSize(9);
   doc.text(EVENT.host.toUpperCase(), pageW / 2, 108, { align: "center" });
   doc.setFontSize(11);
@@ -104,7 +102,7 @@ function drawSign(doc, sign, pageW, pageH) {
 
   doc.setFontSize(8);
   doc.setFont(undefined, "normal");
-  doc.setTextColor(...MINT);
+  doc.setTextColor(...ACCENT);
   doc.text(`Smart check-in powered by ${BRAND_NAME}`, pageW / 2, pageH - 12, { align: "center" });
 }
 

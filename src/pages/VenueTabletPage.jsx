@@ -21,6 +21,7 @@ import {
   sanitizePhoneInput,
 } from "../lib/phone";
 import { CATEGORIES, EVENT, REGIONS, VIP_CATEGORIES } from "../data/checkin";
+import { alertAlreadyCheckedIn, alertCheckedIn, alertError } from "../lib/alerts";
 import { useConnectionStatus, useLiveStats } from "../hooks/useVenue";
 
 const STATIONS = [
@@ -194,10 +195,13 @@ export default function VenueTabletPage() {
       setForm(emptyForm);
       setShowMore(false);
       setPhoneError("");
+      alertCheckedIn(attendee, { isNew: true });
     } catch (err) {
       setError(err.message);
       if (err.message.toLowerCase().includes("phone")) {
         setPhoneError(err.message);
+      } else {
+        alertError("Could not register", err.message);
       }
     } finally {
       setLoading(false);
@@ -219,11 +223,13 @@ export default function VenueTabletPage() {
       const attendee = await api.lookup(id);
       if (attendee.checkedIn) {
         setAlreadyCheckedIn(attendee);
+        alertAlreadyCheckedIn(attendee);
         return;
       }
       const updated = await api.checkIn(attendee._id, "fast-lane");
       setSuccess(updated);
       setLookupId("");
+      alertCheckedIn(updated);
     } catch {
       setErrorScreen({
         message: "Registration not found",

@@ -3,6 +3,7 @@ import EventLogo from "./EventLogo";
 import EventTicket from "./EventTicket";
 import { downloadNameBadgePdf } from "../lib/nameBadgePdf";
 import { downloadTicketPdf, printTicket } from "../lib/ticketPdf";
+import { runWithFeedback } from "../lib/alerts";
 
 export function AlreadyCheckedInScreen({ attendee, onNext }) {
   return (
@@ -27,9 +28,9 @@ export function AlreadyCheckedInScreen({ attendee, onNext }) {
           attendee={attendee}
           statusLine="Already checked in"
           showActions
-          onPrint={() => printTicket(attendee)}
-          onDownload={() => downloadTicketPdf(attendee)}
-          onBadge={() => downloadNameBadgePdf(attendee)}
+          onPrint={() => runWithFeedback(() => printTicket(attendee), null, "Could not print ticket")}
+          onDownload={() => runWithFeedback(() => downloadTicketPdf(attendee), "Ticket saved", "Could not save ticket")}
+          onBadge={() => runWithFeedback(() => downloadNameBadgePdf(attendee), "Name badge saved", "Could not create badge")}
         />
 
         <button type="button" onClick={onNext} className="venue-btn-primary venue-btn-hero mx-auto mt-8 w-full max-w-lg">

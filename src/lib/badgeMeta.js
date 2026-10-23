@@ -10,17 +10,18 @@ export const BADGE_SPEC = {
 };
 
 export const BADGE_ORG = {
-  organizationName: BRAND_NAME,
-  orgLogo: LOGO_SRC,
+  organizationName: EVENT.organizer || BRAND_NAME,
+  orgLogo: EVENT.organizerLogo || LOGO_SRC,
+  partnerLogo: EVENT.partnerLogo || "",
   brandLogo: LOGO_SRC,
   brandName: BRAND_NAME,
   eventTitle: EVENT.title.toUpperCase(),
   eventSubtitle: EVENT.host,
   themeLabel: "THEME:",
   themeQuote: EVENT.theme,
-  phones: CONTACT_PHONES_DISPLAY,
-  website: "www.future-linkservices.com",
-  email: CONTACT_EMAIL,
+  phones: EVENT.contact ? EVENT.contact.phones : CONTACT_PHONES_DISPLAY,
+  website: EVENT.contact?.website || "www.future-linkservices.com",
+  email: EVENT.contact?.email || CONTACT_EMAIL,
   poweredBy: BRAND_NAME,
 };
 

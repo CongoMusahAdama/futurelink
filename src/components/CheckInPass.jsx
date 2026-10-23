@@ -2,6 +2,7 @@ import EventTicket from "./EventTicket";
 import { EVENT } from "../data/checkin";
 import { downloadNameBadgePdf } from "../lib/nameBadgePdf";
 import { downloadTicketPdf, printTicket } from "../lib/ticketPdf";
+import { runWithFeedback as run } from "../lib/alerts";
 
 export default function CheckInPass({ registrationId, fullName, category, checkedInTime, attendee }) {
   const ticketData = attendee || { registrationId, fullName, category };
@@ -16,9 +17,9 @@ export default function CheckInPass({ registrationId, fullName, category, checke
         attendee={ticketData}
         statusLine={statusLine}
         showActions
-        onPrint={() => printTicket(ticketData)}
-        onDownload={() => downloadTicketPdf(ticketData)}
-        onBadge={() => downloadNameBadgePdf(ticketData)}
+        onPrint={() => run(() => printTicket(ticketData), null, "Could not print ticket")}
+        onDownload={() => run(() => downloadTicketPdf(ticketData), "Ticket saved", "Could not save ticket")}
+        onBadge={() => run(() => downloadNameBadgePdf(ticketData), "Name badge saved", "Could not create badge")}
       />
     </div>
   );
