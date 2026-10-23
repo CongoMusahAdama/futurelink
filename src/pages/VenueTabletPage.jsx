@@ -20,7 +20,7 @@ import {
   phoneValidationMessage,
   sanitizePhoneInput,
 } from "../lib/phone";
-import { CATEGORIES, EVENT, REGIONS, VIP_CATEGORIES } from "../data/checkin";
+import { CATEGORIES, EVENT, REGIONS } from "../data/checkin";
 import { alertAlreadyCheckedIn, alertCheckedIn, alertError } from "../lib/alerts";
 import { useConnectionStatus, useLiveStats } from "../hooks/useVenue";
 import { useVenueTheme } from "../hooks/useVenueTheme";
@@ -589,10 +589,7 @@ export default function VenueTabletPage() {
             <div>
               <label className="venue-label">Category</label>
               <select name="category" value={form.category} onChange={handleChange} className="venue-input">
-                {(station === "vip"
-                  ? VIP_CATEGORIES
-                  : CATEGORIES
-                ).map((c) => (
+                {CATEGORIES.map((c) => (
                   <option key={c} value={c}>
                     {c}
                   </option>

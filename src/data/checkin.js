@@ -46,9 +46,6 @@ export const CATEGORIES = [
   "Guest",
 ];
 
-/** Categories offered at the VIP / priority desk */
-export const VIP_CATEGORIES = ["Medical Staff", "Speaker", "Partner"];
-
 export const REGIONS = [
   "Western",
   "Ashanti",
