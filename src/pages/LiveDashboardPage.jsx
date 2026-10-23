@@ -19,6 +19,7 @@ const STATION_LABELS = {
   "help-desk": "Help Desk",
   "fast-lane": "Fast Lane",
   vip: "VIP Desk",
+  "self-service": "Self check-in",
 };
 
 const EVENT_TITLE = EVENT.title;

@@ -15,6 +15,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import OrganizerEventPage from "./components/OrganizerEventPage";
 import VenueTabletPage from "./pages/VenueTabletPage";
+import SelfCheckInPage from "./pages/SelfCheckInPage";
 import LiveDashboardPage from "./pages/LiveDashboardPage";
 import SignagePage from "./pages/SignagePage";
 import AdminPage from "./pages/AdminPage";
@@ -47,6 +48,7 @@ function getCheckoutEvent() {
 function getOpsRoute() {
   const hash = window.location.hash.replace(/^#/, "");
   if (hash === "venue" || hash === "checkin") return "venue";
+  if (hash === "selfcheckin" || hash === "self-checkin") return "self";
   if (hash === "dashboard") return "dashboard";
   if (hash === "signage") return "signage";
   if (hash === "admin") return "admin";
@@ -137,6 +139,11 @@ function AppContent() {
   }
 
   if (opsRoute) {
+    // Attendees check themselves in from the QR poster — always public.
+    if (opsRoute === "self") {
+      return <SelfCheckInPage />;
+    }
+
     // Check-in desks are open without a login; dashboard, signage and admin stay gated.
     if (opsRoute === "venue" && !opsAuthed) {
       return <VenueTabletPage />;

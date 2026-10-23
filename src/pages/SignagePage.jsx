@@ -1,9 +1,13 @@
-import { Download, FileImage, IdCard, Printer } from "lucide-react";
+import { Download, FileImage, IdCard, Printer, QrCode } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import OpsShell from "../components/OpsShell";
 import NameBadgePreviewGrid from "../components/NameBadgePreview";
 import { downloadLanyardStrapPdf, downloadRoleBadgeTemplatesPdf } from "../lib/nameBadgePdf";
 import { downloadSignagePackPdf, SIGNS } from "../lib/signagePdf";
 import { EVENT } from "../data/checkin";
+import { SELF_CHECKIN_URL } from "../lib/brand";
+import { downloadSelfCheckInPosterPdf } from "../lib/selfCheckInPoster";
+import { runWithFeedback } from "../lib/alerts";
 
 export default function SignagePage() {
   return (
@@ -97,6 +101,30 @@ export default function SignagePage() {
         </div>
         <NameBadgePreviewGrid />
       </section>
+
+      <div className="mb-6 flex flex-wrap items-center gap-6 rounded-2xl bg-white p-6 ring-1 ring-slate-200/80">
+        <QRCodeSVG value={SELF_CHECKIN_URL} size={132} level="H" className="shrink-0 rounded-lg" />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <QrCode className="h-5 w-5 text-brand-blue" />
+            <h2 className="text-lg font-bold text-navy">Self check-in QR poster</h2>
+          </div>
+          <p className="mt-1 text-sm text-slate-500">
+            Attendees scan this with their phone camera to check themselves in — no app or login needed.
+          </p>
+          <a href={SELF_CHECKIN_URL} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block break-all text-sm font-semibold text-brand-blue underline">
+            {SELF_CHECKIN_URL}
+          </a>
+        </div>
+        <button
+          type="button"
+          onClick={() => runWithFeedback(downloadSelfCheckInPosterPdf, "Poster downloaded", "Could not create poster")}
+          className="inline-flex items-center gap-2 rounded-xl bg-brand-blue px-5 py-3 text-sm font-bold text-navy transition-opacity hover:opacity-90"
+        >
+          <Download className="h-4 w-4" />
+          A4 QR poster (PDF)
+        </button>
+      </div>
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-white p-6 ring-1 ring-slate-200/80">
         <div>

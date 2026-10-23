@@ -23,6 +23,9 @@ import {
 import { CATEGORIES, EVENT, REGIONS, VIP_CATEGORIES } from "../data/checkin";
 import { alertAlreadyCheckedIn, alertCheckedIn, alertError } from "../lib/alerts";
 import { useConnectionStatus, useLiveStats } from "../hooks/useVenue";
+import { useVenueTheme } from "../hooks/useVenueTheme";
+import { QRCodeSVG } from "qrcode.react";
+import { SELF_CHECKIN_URL } from "../lib/brand";
 
 const STATIONS = [
   {
@@ -80,23 +83,7 @@ export default function VenueTabletPage() {
   const { connected } = useConnectionStatus();
   const stats = useLiveStats();
 
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.add("venue-tablet");
-    // Re-skin the check-in screens in the event's colours (see .venue-event-theme in index.css)
-    const theme = EVENT.ticketTheme;
-    const vars = theme
-      ? { "--ev-ink": theme.ink, "--ev-accent": theme.accent, "--ev-accent-ink": theme.accentInk, "--ev-bg": theme.bg }
-      : {};
-    if (theme) {
-      root.classList.add("venue-event-theme");
-      Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
-    }
-    return () => {
-      root.classList.remove("venue-tablet", "venue-event-theme");
-      Object.keys(vars).forEach((k) => root.style.removeProperty(k));
-    };
-  }, []);
+  useVenueTheme();
 
   useEffect(() => {
     if (station && nameRef.current && station !== "fast-lane" && !success) {
@@ -304,6 +291,13 @@ export default function VenueTabletPage() {
                 <span className="mt-4 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-brand-blue ring-1 ring-blue-100">
                   {EVENT.dateLabel} · {EVENT.time}
                 </span>
+                <div className="venue-selfcheckin-qr">
+                  <QRCodeSVG value={SELF_CHECKIN_URL} size={84} level="M" aria-label="Self check-in QR code" />
+                  <div>
+                    <p className="venue-selfcheckin-qr-title">Check in on your own phone</p>
+                    <p className="venue-selfcheckin-qr-hint">Scan with your camera — no app needed</p>
+                  </div>
+                </div>
               </div>
 
               <div className="grid w-full grid-cols-3 gap-3 sm:w-auto sm:min-w-[280px]">

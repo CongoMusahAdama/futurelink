@@ -153,7 +153,6 @@ router.get("/lookup/:registrationId", async (req, res) => {
     const id = req.params.registrationId.toUpperCase();
     const attendee = await Attendee.findOne({ registrationId: id });
     if (!attendee) return res.status(404).json({ error: "Not found" });
-    await sendCheckInSms(attendee);
     res.json(attendee);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -240,6 +239,7 @@ router.patch("/:id/checkin", async (req, res) => {
       { new: true }
     );
     if (!attendee) return res.status(404).json({ error: "Not found" });
+    await sendCheckInSms(attendee);
     res.json(attendee);
   } catch (err) {
     res.status(500).json({ error: err.message });
