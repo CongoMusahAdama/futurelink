@@ -1,0 +1,22 @@
+{
+  "name": "Future-Link Check-in",
+  "short_name": "FL Check-in",
+  "description": "Event check-in, live dashboard and badges by Future-Link Services.",
+  "id": "/",
+  "start_url": "/#checkin",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#052673",
+  "theme_color": "#052673",
+  "icons": [
+    { "src": "/pwa/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/pwa/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/pwa/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Check-in", "url": "/#checkin", "icons": [{ "src": "/pwa/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Self check-in", "url": "/#selfcheckin", "icons": [{ "src": "/pwa/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Live dashboard", "url": "/#dashboard", "icons": [{ "src": "/pwa/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

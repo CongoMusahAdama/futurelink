@@ -3,6 +3,7 @@ import {
   ArrowRight,
   ChevronLeft,
   Crown,
+  Download,
   Headphones,
   LayoutDashboard,
   Radio,
@@ -24,6 +25,7 @@ import { CATEGORIES, EVENT, REGIONS } from "../data/checkin";
 import { alertAlreadyCheckedIn, alertCheckedIn, alertError } from "../lib/alerts";
 import { useConnectionStatus, useLiveStats } from "../hooks/useVenue";
 import { useVenueTheme } from "../hooks/useVenueTheme";
+import { useInstallPrompt } from "../hooks/useInstallPrompt";
 import { QRCodeSVG } from "qrcode.react";
 import { SELF_CHECKIN_URL } from "../lib/brand";
 
@@ -84,6 +86,7 @@ export default function VenueTabletPage() {
   const stats = useLiveStats();
 
   useVenueTheme();
+  const { canInstall, install } = useInstallPrompt();
 
   useEffect(() => {
     if (station && nameRef.current && station !== "fast-lane" && !success) {
@@ -262,6 +265,12 @@ export default function VenueTabletPage() {
               <span className={`venue-pill ${connected ? "venue-pill-live" : "venue-pill-off"}`}>
                 {connected ? "Live" : "Offline"}
               </span>
+              {canInstall && (
+                <button type="button" onClick={install} className="venue-dash-link">
+                  <Download className="h-4 w-4 text-brand-blue" />
+                  Install app
+                </button>
+              )}
               <a href="#dashboard" className="venue-dash-link">
                 <LayoutDashboard className="h-4 w-4 text-brand-blue" />
                 Dashboard
