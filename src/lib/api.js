@@ -1,4 +1,4 @@
-/** API base — `/api` in dev (Vite proxy), full URL on Netlify (VITE_API_URL) */
+/** API base — `/api` by default (Vite proxy in dev, Vercel function in prod); VITE_API_URL overrides */
 export const API_BASE = (import.meta.env.VITE_API_URL || "/api").replace(/\/$/, "");
 
 export function apiUrl(path = "") {

@@ -1,54 +1,8 @@
 import "dotenv/config";
-import express from "express";
-import cors from "cors";
+import app from "./app.js";
 import { connectDB } from "./db.js";
-import attendeesRouter from "./routes/attendees.js";
 
-const app = express();
 const PORT = process.env.PORT || 3001;
-
-/** Always allow production + local dev; extend via CLIENT_ORIGIN env (comma-separated). */
-const DEFAULT_ORIGINS = [
-  "https://future-linkservices.com",
-  "https://www.future-linkservices.com",
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-];
-
-const allowedOrigins = [
-  ...new Set([
-    ...DEFAULT_ORIGINS,
-    ...(process.env.CLIENT_ORIGIN || "")
-      .split(",")
-      .map((origin) => origin.trim())
-      .filter(Boolean),
-  ]),
-];
-
-function isAllowedOrigin(origin) {
-  if (!origin) return true;
-  if (allowedOrigins.includes(origin)) return true;
-  // Vercel production + preview deployments (*.vercel.app)
-  if (/^https:\/\/[\w-]+\.vercel\.app$/i.test(origin)) return true;
-  return false;
-}
-
-app.use(
-  cors({
-    origin(origin, callback) {
-      callback(null, isAllowedOrigin(origin));
-    },
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-app.use(express.json());
-
-app.get("/api/health", (_req, res) => {
-  res.json({ ok: true });
-});
-
-app.use("/api/attendees", attendeesRouter);
 
 connectDB()
   .then(() => {
