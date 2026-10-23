@@ -6,6 +6,7 @@ import {
   isValidGhanaPhone,
   normalizePhone,
 } from "../lib/phone.js";
+import { sendCheckInSms } from "../lib/sms.js";
 
 const router = Router();
 
@@ -152,6 +153,7 @@ router.get("/lookup/:registrationId", async (req, res) => {
     const id = req.params.registrationId.toUpperCase();
     const attendee = await Attendee.findOne({ registrationId: id });
     if (!attendee) return res.status(404).json({ error: "Not found" });
+    await sendCheckInSms(attendee);
     res.json(attendee);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -217,6 +219,8 @@ router.post("/", async (req, res) => {
       checkInStation: shouldCheckIn ? checkInStation || "help-desk" : "",
     });
 
+    // Awaited (with a timeout inside) so serverless hosts do not freeze the request mid-send.
+    if (shouldCheckIn) await sendCheckInSms(attendee);
     res.status(201).json(attendee);
   } catch (err) {
     res.status(500).json({ error: err.message });
