@@ -262,7 +262,18 @@ export default function VenueTabletPage() {
         <main className="venue-wrap-wide flex-1 pb-12 pt-8">
           <div className="venue-home-hero">
             <div className="flex flex-wrap items-start justify-between gap-6">
-              <div className="max-w-2xl">
+              {EVENT.flyer && (
+                <a
+                  href={EVENT.flyer}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="venue-hero-flyer"
+                  aria-label={`View the ${EVENT.title} flyer`}
+                >
+                  <img src={EVENT.flyer} alt={`${EVENT.title} flyer`} />
+                </a>
+              )}
+              <div className="max-w-2xl flex-1">
                 <EventLogo size="md" className="mb-4 lg:hidden" />
                 <p className="text-xs font-semibold uppercase tracking-wider text-brand-blue">
                   Future-Link · Venue Check-in

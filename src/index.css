@@ -2963,6 +2963,15 @@ html.venue-tablet .venue-scanner-manual:active {
     padding: 1.5rem 1.5rem 2.75rem;
   }
 
+  html.venue-tablet .event-ticket-flyer {
+    height: 13rem;
+  }
+
+  html.venue-tablet .event-ticket-flyer + .event-ticket-band {
+    min-height: 0;
+    padding-top: 0.625rem;
+  }
+
   html.venue-tablet .event-ticket-band-title {
     font-size: 2.25rem;
   }
@@ -3301,6 +3310,32 @@ html.venue-tablet .venue-scanner-manual:active {
   padding: 1.75rem 1.5rem;
   box-shadow: 0 1px 3px rgba(10, 37, 64, 0.04);
   border: 1px solid #e2e8f0;
+}
+
+.venue-hero-flyer {
+  display: block;
+  flex-shrink: 0;
+  width: 7.5rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(122, 13, 69, 0.18);
+  transition: transform 0.2s ease;
+}
+
+.venue-hero-flyer:hover {
+  transform: translateY(-2px);
+}
+
+.venue-hero-flyer img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 640px) {
+  .venue-hero-flyer {
+    width: 9.5rem;
+  }
 }
 
 @media (min-width: 640px) {
@@ -3847,6 +3882,11 @@ html.venue-tablet .venue-scanner-manual:active {
 
 /* ── Event ticket — boarding pass card ── */
 .event-ticket {
+  /* Per-event theme; EventTicket sets these from EVENT.ticketTheme */
+  --t-ink: #001d4a;
+  --t-accent: var(--color-brand-blue);
+  --t-accent-ink: var(--color-navy);
+  --t-bg: #eef4fb;
   width: 100%;
   max-width: 28rem;
   margin-left: auto;
@@ -3857,8 +3897,36 @@ html.venue-tablet .venue-scanner-manual:active {
 .event-ticket-card {
   overflow: hidden;
   border-radius: 1.625rem;
-  background: linear-gradient(180deg, #001d4a 0%, #001d4a 32%, #eef4fb 32%);
-  box-shadow: 0 16px 40px rgba(0, 29, 74, 0.16);
+  background: var(--t-bg);
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--t-ink) 18%, transparent);
+}
+
+.event-ticket-flyer {
+  position: relative;
+  display: block;
+  height: 11.5rem;
+  overflow: hidden;
+  background: var(--t-ink);
+}
+
+.event-ticket-flyer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  transition: transform 0.4s ease;
+}
+
+.event-ticket-flyer:hover img {
+  transform: scale(1.03);
+}
+
+.event-ticket-flyer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, var(--t-ink) 100%);
+  pointer-events: none;
 }
 
 .event-ticket-band {
@@ -3868,7 +3936,13 @@ html.venue-tablet .venue-scanner-manual:active {
   gap: 1rem;
   min-height: 5.5rem;
   padding: 1.25rem 1.25rem 2.5rem;
+  background: var(--t-ink);
   color: #fff;
+}
+
+.event-ticket-flyer + .event-ticket-band {
+  min-height: 0;
+  padding-top: 0.5rem;
 }
 
 .event-ticket-band-kicker {
@@ -3908,7 +3982,7 @@ html.venue-tablet .venue-scanner-manual:active {
   padding: 1.125rem 1.25rem;
   border-radius: 1.25rem;
   background: #fff;
-  box-shadow: 0 10px 28px rgba(0, 29, 74, 0.12);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--t-ink) 14%, transparent);
 }
 
 .event-ticket-qr-col {
@@ -3954,7 +4028,7 @@ html.venue-tablet .venue-scanner-manual:active {
   font-weight: 400;
   letter-spacing: 0.06em;
   line-height: 1;
-  color: var(--color-navy);
+  color: var(--t-ink);
 }
 
 .event-ticket-hub-sub {
@@ -3971,7 +4045,7 @@ html.venue-tablet .venue-scanner-manual:active {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: var(--color-brand-blue);
+  color: var(--t-accent);
   opacity: 0.9;
 }
 
@@ -4000,7 +4074,7 @@ html.venue-tablet .venue-scanner-manual:active {
   margin-top: 0.1875rem;
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--color-navy);
+  color: var(--t-ink);
   line-height: 1.25;
 }
 
@@ -4027,7 +4101,7 @@ html.venue-tablet .venue-scanner-manual:active {
   font-size: 1.375rem;
   font-weight: 400;
   letter-spacing: 0.06em;
-  color: var(--color-navy);
+  color: var(--t-accent);
 }
 
 .event-ticket-region {
@@ -4059,14 +4133,14 @@ html.venue-tablet .venue-scanner-manual:active {
 }
 
 .event-ticket-btn-primary {
-  background: var(--color-brand-blue);
-  color: var(--color-navy);
-  box-shadow: 0 4px 14px rgba(26, 251, 151, 0.3);
+  background: var(--t-accent);
+  color: var(--t-accent-ink);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--t-accent) 32%, transparent);
 }
 
 .event-ticket-btn-outline {
   background: #fff;
-  color: var(--color-navy);
+  color: var(--t-ink);
   box-shadow: inset 0 0 0 1.5px #e2e8f0;
 }
 
@@ -4085,7 +4159,7 @@ html.venue-tablet .venue-scanner-manual:active {
   font-family: var(--font-ticket);
   font-size: 0.8125rem;
   font-weight: 700;
-  background: var(--color-navy);
+  background: var(--t-ink);
   color: #fff;
 }
 
@@ -4093,7 +4167,15 @@ html.venue-tablet .venue-scanner-manual:active {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   padding: 0.5rem 1rem 0.875rem;
+}
+
+.event-ticket-foot-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
 }
 
 .event-ticket-brand-logo {

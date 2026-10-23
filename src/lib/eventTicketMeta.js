@@ -32,6 +32,6 @@ export function getTicketFields(attendee) {
   return {
     ...fields,
     shortDate: formatTicketDate(fields.date),
-    city: fields.location.split(",")[0]?.trim() || fields.location,
+    city: EVENT.city || fields.location.split(",")[0]?.trim() || fields.location,
   };
 }

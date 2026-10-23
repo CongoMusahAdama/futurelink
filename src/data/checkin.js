@@ -10,6 +10,16 @@ export const EVENT = {
   /** Short codes shown on the ticket route strip, e.g. DWS → BCS */
   codeFrom: "DWS",
   codeTo: "BCS",
+  codeToLabel: "Screening",
+  /** Event flyer (served from /public), shown on the ticket and check-in home */
+  flyer: "/events/breast-screening-flyer.jpg",
+  /** Ticket colours, taken from the flyer */
+  ticketTheme: {
+    ink: "#7a0d45",
+    accent: "#e0157a",
+    accentInk: "#ffffff",
+    bg: "#fdf0f6",
+  },
   /** Repeating phrases on the lanyard strap */
   lanyardPhrases: ["DUAPA WERKSPACE", "BREAST SCREENING", "EARLY DETECTION"],
   /** Prefix for exported files */

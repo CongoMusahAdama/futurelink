@@ -15,10 +15,31 @@ export default function EventTicket({
   const t = getTicketFields(attendee);
   const isTablet = useTabletLayout();
   const qrSize = isTablet ? 148 : 120;
+  const theme = EVENT.ticketTheme;
+  const themeStyle = theme
+    ? {
+        "--t-ink": theme.ink,
+        "--t-accent": theme.accent,
+        "--t-accent-ink": theme.accentInk,
+        "--t-bg": theme.bg,
+      }
+    : undefined;
 
   return (
-    <article className="event-ticket">
+    <article className="event-ticket" style={themeStyle}>
       <div className="event-ticket-card">
+        {EVENT.flyer && (
+          <a
+            href={EVENT.flyer}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="event-ticket-flyer"
+            aria-label={`View the ${EVENT.title} flyer`}
+          >
+            <img src={EVENT.flyer} alt={`${EVENT.title} flyer`} />
+          </a>
+        )}
+
         <header className="event-ticket-band">
           <div className="event-ticket-band-copy">
             <p className="event-ticket-band-kicker">
@@ -26,7 +47,7 @@ export default function EventTicket({
             </p>
             <p className="event-ticket-band-title">You're checked in</p>
           </div>
-          <img src={t.eventLogo} alt="" className="event-ticket-band-logo" />
+          {!EVENT.flyer && <img src={t.eventLogo} alt="" className="event-ticket-band-logo" />}
         </header>
 
         <div className="event-ticket-pass">
@@ -51,7 +72,7 @@ export default function EventTicket({
               </span>
               <div className="event-ticket-hub">
                 <span className="event-ticket-code">{EVENT.codeTo}</span>
-                <span className="event-ticket-hub-sub">{EVENT.dateLabel}</span>
+                <span className="event-ticket-hub-sub">{EVENT.codeToLabel || EVENT.dateLabel}</span>
               </div>
             </div>
 
@@ -111,6 +132,7 @@ export default function EventTicket({
         )}
 
         <footer className="event-ticket-foot">
+          <span className="event-ticket-foot-label">Check-in powered by</span>
           <img src={t.brandLogo} alt={t.brandName} className="event-ticket-brand-logo" />
         </footer>
       </div>
