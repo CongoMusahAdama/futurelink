@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { Copy, Check, ThumbsUp, ThumbsDown, Trash2, ExternalLink, Plus, ImageIcon, CalendarPlus, X } from "lucide-react";
+import { Copy, Check, ThumbsUp, ThumbsDown, Trash2, ExternalLink, Plus, ImageIcon, CalendarPlus, X, Printer } from "lucide-react";
 import OpsShell from "../components/OpsShell";
 import TableExportMenu from "../components/TableExportMenu";
 import TablePagination from "../components/TablePagination";
@@ -10,6 +10,8 @@ import { getRegistrations, updateRegistrationStatus, deleteRegistration } from "
 import { saveEvent, getDynamicEvents, deleteDynamicEvent, setEventStatus } from "../lib/eventStore";
 import CategorySelect from "../components/CategorySelect";
 import { EVENT } from "../data/checkin";
+import { printTicket } from "../lib/ticketPdf";
+import { runWithFeedback } from "../lib/alerts";
 
 const EVENT_TITLE = EVENT.title;
 const PAGE_SIZE = 10;
@@ -362,6 +364,16 @@ function AttendeesTab({ onLoaded }) {
                   <div><dt className="text-slate-400">Category</dt><dd className="font-medium text-navy">{a.category}</dd></div>
                   {a.phone && <div className="col-span-2"><dt className="text-slate-400">Phone</dt><dd className="font-medium text-navy">{a.phone}</dd></div>}
                 </dl>
+                <div className="mt-3 flex justify-end border-t border-slate-100 pt-3">
+                  <button
+                    type="button"
+                    onClick={() => runWithFeedback(() => printTicket(a), null, "Could not print badge")}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-semibold text-navy hover:bg-slate-200 transition-colors"
+                  >
+                    <Printer className="h-3.5 w-3.5 text-brand-blue" />
+                    Print badge (80×80)
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
@@ -374,10 +386,10 @@ function AttendeesTab({ onLoaded }) {
               <TableExportMenu {...exportProps} />
             </div>
             <div className="overflow-x-auto">
-              <table className="ops-table min-w-[720px]">
+              <table className="ops-table min-w-[760px]">
                 <thead>
                   <tr>
-                    <th>ID</th><th>Name</th><th>Organisation</th><th>Area / Region</th><th>Category</th><th>Status</th>
+                    <th>ID</th><th>Name</th><th>Organisation</th><th>Area / Region</th><th>Category</th><th>Status</th><th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -397,6 +409,17 @@ function AttendeesTab({ onLoaded }) {
                         ) : (
                           <span className="inline-flex rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500">Pending</span>
                         )}
+                      </td>
+                      <td className="px-5 py-3">
+                        <button
+                          type="button"
+                          onClick={() => runWithFeedback(() => printTicket(a), null, "Could not print badge")}
+                          title="Print 80×80 check-in badge"
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-semibold text-navy hover:bg-slate-200 transition-colors"
+                        >
+                          <Printer className="h-3.5 w-3.5 text-brand-blue" />
+                          Print (80×80)
+                        </button>
                       </td>
                     </tr>
                   ))}

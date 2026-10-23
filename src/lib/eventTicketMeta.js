@@ -27,7 +27,12 @@ export function getTicketFields(attendee) {
     category: attendee.category || "Guest",
     region: attendee.region || "—",
     hub: attendee.hub || "—",
-    organisation: attendee.organisation || "",
+    organisation:
+      attendee.organisation ||
+      attendee.organization ||
+      attendee.company ||
+      attendee.org ||
+      "",
   };
   return {
     ...fields,

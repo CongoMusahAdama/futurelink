@@ -51,6 +51,12 @@ export function getBadgeFields(attendee) {
     fullName: (attendee?.fullName || "Attendee Name").toUpperCase(),
     role: (attendee?.category || "Guest").toUpperCase(),
     registrationId: attendee?.registrationId || "",
-    organisation: attendee?.organisation || "",
+    organisation: (
+      attendee?.organisation ||
+      attendee?.organization ||
+      attendee?.company ||
+      attendee?.org ||
+      ""
+    ).toUpperCase(),
   };
 }

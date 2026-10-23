@@ -4,12 +4,8 @@ import { getTicketFields } from "./eventTicketMeta";
 import { EVENT } from "../data/checkin";
 import {
   ACCENT,
-  ACCENT_HEX,
-  ACCENT_INK_HEX,
   BG,
-  BG_HEX,
   INK,
-  INK_HEX,
   loadCoverCrop,
   loadImageDataUrl,
 } from "./eventTheme";
@@ -206,100 +202,292 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;");
 }
 
-function absoluteUrl(src) {
-  return src ? new URL(src, window.location.origin).href : "";
+
+export function getBadge80x80Fields(attendee) {
+  const rawName =
+    attendee?.fullName ||
+    attendee?.name ||
+    attendee?.preferredName ||
+    "ATTENDEE";
+  const rawOrg =
+    attendee?.organisation ||
+    attendee?.organization ||
+    attendee?.company ||
+    attendee?.org ||
+    "";
+
+  return {
+    name: String(rawName).trim().toUpperCase(),
+    organisation: String(rawOrg).trim().toUpperCase(),
+  };
 }
 
-/** Full HTML document for the printable ticket (exported so it can be previewed) */
-export function buildTicketPrintHtml(attendee, qrSrc) {
-  const t = getTicketFields(attendee);
-  const flyer = absoluteUrl(EVENT.flyer);
-  const logos = [EVENT.organizerLogo, EVENT.partnerLogo].filter(Boolean).map(absoluteUrl);
+/**
+ * 80mm × 80mm check-in badge print layout.
+ * Strictly prints ONLY the registrant's NAME and ORGANIZATION,
+ * well-centered, professional typography, in ALL CAPS, 1 badge per sheet.
+ */
+export function buildTicketPrintHtml(attendee) {
+  const { name, organisation } = getBadge80x80Fields(attendee);
+
+  // Dynamic font sizing based on length so it fits elegantly inside 80mm x 80mm
+  const nameLen = name.length;
+  let nameSizePt = 22;
+  if (nameLen > 32) {
+    nameSizePt = 13.5;
+  } else if (nameLen > 22) {
+    nameSizePt = 16.5;
+  } else if (nameLen > 14) {
+    nameSizePt = 19;
+  }
+
+  const orgLen = organisation.length;
+  let orgSizePt = 11;
+  if (orgLen > 36) {
+    orgSizePt = 8.5;
+  } else if (orgLen > 24) {
+    orgSizePt = 9.5;
+  }
 
   return `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Ticket ${escapeHtml(t.registrationId)}</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: ${BG_HEX}; display: flex; justify-content: center; padding: 20px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .wrap { width: 380px; border-radius: 24px; overflow: hidden; background: ${BG_HEX}; box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
-  .flyer { display: block; width: 100%; height: 150px; object-fit: cover; object-position: center 22%; }
-  .band { background: ${INK_HEX}; color: #fff; padding: ${flyer ? "12px" : "22px"} 20px 42px; }
-  .band-k { font-size: 13px; opacity: 0.85; }
-  .band-t { font-size: 28px; font-weight: 300; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; }
-  .pass { display: flex; gap: 14px; margin: -26px 14px 0; padding: 16px; background: #fff; border-radius: 18px; box-shadow: 0 10px 28px rgba(0,0,0,0.08); }
-  .qr-col { flex-shrink: 0; display: flex; align-items: center; background: #f8fafc; border-radius: 12px; padding: 6px; }
-  .qr-col img { width: 120px; height: 120px; display: block; }
-  .details { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-  .route { display: flex; align-items: center; justify-content: space-between; }
-  .code { display: block; text-align: center; font-size: 24px; font-weight: 300; letter-spacing: 0.06em; color: ${INK_HEX}; }
-  .sub { display: block; text-align: center; font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
-  .arrow { color: ${ACCENT_HEX}; font-size: 16px; }
-  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; }
-  label { display: block; font-size: 8px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; }
-  .val { font-size: 12px; font-weight: 700; color: ${INK_HEX}; margin-top: 2px; }
-  .name { font-size: 17px; font-weight: 400; }
-  .id-row { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px dashed #e2e8f0; padding-top: 6px; }
-  .id { font-size: 20px; letter-spacing: 0.06em; color: ${ACCENT_HEX}; }
-  .region { font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
-  .venue { text-align: center; font-size: 11px; color: #64748b; margin: 12px 16px 0; }
-  .logos { display: flex; justify-content: center; align-items: center; gap: 12px; margin: 12px 0 4px; }
-  .logos img { height: 44px; width: auto; background: #fff; border-radius: 8px; padding: 3px; }
-  .foot { text-align: center; font-size: 10px; color: #94a3b8; padding: 8px 10px 14px; }
-  .chip { display: inline-block; margin-top: 6px; background: ${ACCENT_HEX}; color: ${ACCENT_INK_HEX}; border-radius: 999px; padding: 2px 10px; font-size: 10px; font-weight: 700; }
-  @media print { body { background: #fff; padding: 0; } .wrap { box-shadow: none; } }
-</style></head><body>
-  <div class="wrap">
-    ${flyer ? `<img class="flyer" src="${escapeHtml(flyer)}" alt="" />` : ""}
-    <div class="band">
-      <p class="band-k">${escapeHtml(checkedInLabel(attendee))}</p>
-      <p class="band-t">You're checked in</p>
-    </div>
-    <div class="pass">
-      <div class="qr-col"><img src="${qrSrc}" alt="QR ${escapeHtml(t.registrationId)}" /></div>
-      <div class="details">
-        <div class="route">
-          <div><span class="code">${escapeHtml(EVENT.codeFrom)}</span><span class="sub">${escapeHtml(t.city)}</span></div>
-          <span class="arrow">→</span>
-          <div><span class="code">${escapeHtml(EVENT.codeTo)}</span><span class="sub">${escapeHtml(EVENT.codeToLabel || EVENT.dateLabel)}</span></div>
-        </div>
-        <div class="meta">
-          <div><label>Date</label><div class="val">${escapeHtml(t.shortDate)}</div></div>
-          <div><label>Time</label><div class="val">${escapeHtml(t.time)}</div></div>
-          <div><label>Attendee</label><div class="val name">${escapeHtml(t.fullName)}</div></div>
-          <div><label>Category</label><div class="val">${escapeHtml(t.category)}</div></div>
-        </div>
-        <div class="id-row"><span class="id">${escapeHtml(t.registrationId)}</span><span class="region">${escapeHtml(t.region)}</span></div>
-      </div>
-    </div>
-    <p class="venue">${escapeHtml(EVENT.venue)} · ${escapeHtml(EVENT.dateLabel)}, ${escapeHtml(EVENT.time)}</p>
-    ${logos.length ? `<div class="logos">${logos.map((src) => `<img src="${escapeHtml(src)}" alt="" />`).join("")}</div>` : ""}
-    <div class="foot">Check-in powered by ${escapeHtml(t.brandName)}</div>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(name)} - Check-in Badge</title>
+  <style>
+    @page {
+      size: 80mm 80mm;
+      margin: 0;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 80mm;
+      height: 80mm;
+      max-width: 80mm;
+      max-height: 80mm;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #ffffff;
+      color: #000000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow: hidden;
+      page-break-before: avoid !important;
+      page-break-after: avoid !important;
+      page-break-inside: avoid !important;
+      break-before: avoid !important;
+      break-after: avoid !important;
+      break-inside: avoid !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .badge-sheet {
+      width: 80mm;
+      height: 80mm;
+      max-width: 80mm;
+      max-height: 80mm;
+      box-sizing: border-box;
+      padding: 6mm 6mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      page-break-before: avoid !important;
+      page-break-after: avoid !important;
+      page-break-inside: avoid !important;
+      break-before: avoid !important;
+      break-after: avoid !important;
+      break-inside: avoid !important;
+    }
+    .badge-name {
+      font-size: ${nameSizePt}pt;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #000000;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+      text-align: center;
+    }
+    .badge-org {
+      margin-top: 4.5mm;
+      font-size: ${orgSizePt}pt;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #000000;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+      text-align: center;
+    }
+    @media screen {
+      html, body {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        background: #0f172a;
+      }
+      .badge-sheet {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      }
+    }
+    @media print {
+      html, body {
+        width: 80mm !important;
+        height: 80mm !important;
+        max-width: 80mm !important;
+        max-height: 80mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
+      }
+      .badge-sheet {
+        width: 80mm !important;
+        height: 80mm !important;
+        max-width: 80mm !important;
+        max-height: 80mm !important;
+        box-sizing: border-box !important;
+        padding: 6mm 6mm !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        overflow: hidden !important;
+        page-break-before: avoid !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        break-before: avoid !important;
+        break-after: avoid !important;
+        break-inside: avoid !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="badge-sheet">
+    <div class="badge-name">${escapeHtml(name)}</div>
+    ${organisation ? `<div class="badge-org">${escapeHtml(organisation)}</div>` : ""}
   </div>
-</body></html>`;
+</body>
+</html>`;
 }
 
+/** Print the 80mm × 80mm check-in badge on a single sheet */
 export async function printTicket(attendee) {
-  // Open the window synchronously (inside the click) so popup blockers allow it.
-  const win = window.open("", "_blank", "width=440,height=820");
+  // Open the window synchronously (inside user click) to avoid popup blockers
+  const win = window.open("", "_blank", "width=440,height=480");
   if (!win) {
-    throw new Error("Pop-up blocked — allow pop-ups for this site to print tickets.");
+    throw new Error("Pop-up blocked — allow pop-ups for this site to print badges.");
   }
-  win.document.write("<p style=\"font-family:sans-serif;padding:24px\">Preparing ticket…</p>");
 
-  const qr = await qrDataUrl(getTicketFields(attendee).registrationId, 360);
+  const html = buildTicketPrintHtml(attendee);
   win.document.open();
-  win.document.write(buildTicketPrintHtml(attendee, qr));
+  win.document.write(html);
   win.document.close();
 
-  // Print once the flyer, QR and logos have loaded.
   const doPrint = () => {
-    win.focus();
-    win.print();
+    try {
+      win.focus();
+      win.print();
+    } catch {
+      // ignore
+    }
   };
-  win.onafterprint = () => win.close();
+
+  win.onafterprint = () => {
+    try {
+      win.close();
+    } catch {
+      // ignore
+    }
+  };
+
   if (win.document.readyState === "complete") {
-    setTimeout(doPrint, 300);
+    setTimeout(doPrint, 250);
   } else {
     win.addEventListener("load", () => setTimeout(doPrint, 150));
   }
+}
+
+/** Download the 80mm × 80mm check-in badge as a single-page PDF */
+export async function downloadBadge80x80Pdf(attendee) {
+  const { name, organisation } = getBadge80x80Fields(attendee);
+  const doc = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: [80, 80],
+  });
+
+  doc.setFillColor(255, 255, 255);
+  doc.rect(0, 0, 80, 80, "F");
+
+  const cx = 40;
+  const maxW = 68;
+
+  const nameLen = name.length;
+  const nameFontSize = nameLen > 32 ? 13.5 : nameLen > 22 ? 16.5 : nameLen > 14 ? 19 : 22;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(nameFontSize);
+  const nameLines = doc.splitTextToSize(name, maxW);
+  const nameLineH = nameFontSize * 0.42;
+  const totalNameH = nameLines.length * nameLineH;
+
+  if (organisation) {
+    const orgLen = organisation.length;
+    const orgFontSize = orgLen > 36 ? 8.5 : orgLen > 24 ? 9.5 : 11;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(orgFontSize);
+    const orgLines = doc.splitTextToSize(organisation, maxW);
+    const orgLineH = orgFontSize * 0.42;
+    const totalOrgH = orgLines.length * orgLineH;
+    const gap = 4.5;
+    const totalH = totalNameH + gap + totalOrgH;
+
+    let y = (80 - totalH) / 2 + nameLineH * 0.8;
+    doc.setTextColor(0, 0, 0);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(nameFontSize);
+    nameLines.forEach((line) => {
+      doc.text(line, cx, y, { align: "center" });
+      y += nameLineH;
+    });
+
+    y += gap - nameLineH + orgLineH * 0.8;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(orgFontSize);
+    doc.setTextColor(0, 0, 0);
+    orgLines.forEach((line) => {
+      doc.text(line, cx, y, { align: "center" });
+      y += orgLineH;
+    });
+  } else {
+    let y = (80 - totalNameH) / 2 + nameLineH * 0.8;
+    doc.setTextColor(0, 0, 0);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(nameFontSize);
+    nameLines.forEach((line) => {
+      doc.text(line, cx, y, { align: "center" });
+      y += nameLineH;
+    });
+  }
+
+  const safeSlug = name.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase() || "badge";
+  doc.save(`badge-80x80-${safeSlug}.pdf`);
 }

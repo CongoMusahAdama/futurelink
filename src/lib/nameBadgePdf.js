@@ -2,6 +2,7 @@ import { jsPDF } from "jspdf";
 import { BADGE_ROLES, BADGE_SPEC, getBadgeFields, getRoleColors } from "./badgeMeta";
 import { EVENT } from "../data/checkin";
 import { ACCENT, INK, loadImageDataUrl } from "./eventTheme";
+import { printTicket, downloadBadge80x80Pdf } from "./ticketPdf";
 
 const IN = 25.4;
 const WHITE = [255, 255, 255];
@@ -301,6 +302,8 @@ export function downloadLanyardStrapPdf() {
   doc.save(`${EVENT.fileSlug}-lanyard-strap-pattern.pdf`);
 }
 
+export { downloadBadge80x80Pdf };
+
 export function printNameBadge(attendee) {
-  downloadNameBadgePdf(attendee);
+  return printTicket(attendee);
 }

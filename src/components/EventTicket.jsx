@@ -114,9 +114,9 @@ export default function EventTicket({
               </button>
             )}
             {onPrint && (
-              <button type="button" onClick={onPrint} className="event-ticket-btn event-ticket-btn-outline">
+              <button type="button" onClick={onPrint} className="event-ticket-btn event-ticket-btn-outline" title="Print 80mm × 80mm check-in badge">
                 <Printer className="h-4 w-4" />
-                Print
+                Print badge (80×80)
               </button>
             )}
           </div>
@@ -124,9 +124,9 @@ export default function EventTicket({
 
         {showActions && onBadge && (
           <div className="event-ticket-badge-row">
-            <button type="button" onClick={onBadge} className="event-ticket-btn event-ticket-btn-badge">
+            <button type="button" onClick={onBadge} className="event-ticket-btn event-ticket-btn-badge" title="Save 80mm × 80mm badge as PDF">
               <UserRound className="h-4 w-4" />
-              Name badge (PDF)
+              Badge PDF (80×80)
             </button>
           </div>
         )}
