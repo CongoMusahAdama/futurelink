@@ -24,6 +24,8 @@ export default function SelfCheckInPage() {
   // Always open on the form, so a shared phone never shows the previous person's ticket.
   // A returning attendee gets their ticket back by entering the same phone number.
   const [ticket, setTicket] = useState(null);
+  // Most recent check-in, offered as a "View ticket" banner above the fresh form.
+  const [lastCheckIn, setLastCheckIn] = useState(null);
   const [phoneError, setPhoneError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -38,11 +40,15 @@ export default function SelfCheckInPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // After the success popup, go back to an empty form for the next person.
   const finish = (attendee, isNew) => {
-    setTicket(attendee);
     setForm(emptyForm);
+    setPhoneError("");
+    setLastCheckIn(attendee);
     window.scrollTo({ top: 0, behavior: "smooth" });
-    alertCheckedIn(attendee, { isNew });
+    alertCheckedIn(attendee, { isNew, nextLabel: "Done" }).then((result) => {
+      if (result.isDenied) setTicket(attendee);
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -110,10 +116,22 @@ export default function SelfCheckInPage() {
               Tap “Save ticket” to keep it on your phone, and show it to the team at the venue if asked.
             </p>
             <button type="button" onClick={startOver} className="self-checkin-link">
-              Check in someone else
+              Back to check-in form
             </button>
           </>
         ) : (
+          <>
+          {lastCheckIn && (
+            <div className="self-checkin-last" role="status">
+              <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
+              <p className="min-w-0 flex-1">
+                <strong>{lastCheckIn.fullName}</strong> is checked in · {lastCheckIn.registrationId}
+              </p>
+              <button type="button" onClick={() => setTicket(lastCheckIn)} className="self-checkin-last-btn">
+                View ticket
+              </button>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="venue-card self-checkin-card">
             <div className="self-checkin-head">
               <p className="self-checkin-kicker">Self check-in</p>
@@ -215,6 +233,7 @@ export default function SelfCheckInPage() {
               Your details are only used for this event.
             </p>
           </form>
+          </>
         )}
       </main>
 

@@ -16,8 +16,18 @@ const base = {
   didOpen: (popup) => popup.style.setProperty("--fl-swal-confirm-ink", ACCENT_INK_HEX),
 };
 
-/** Celebrate a successful registration or check-in, then reveal the ticket. */
-export function alertCheckedIn(attendee, { isNew = false } = {}) {
+/**
+ * Desk flow: the main button (and the timer) moves on to the next attendee;
+ * "View ticket" (a deny button, so result.isDenied) opens the ticket instead.
+ */
+function nextOrTicket(nextLabel) {
+  return nextLabel
+    ? { confirmButtonText: nextLabel, showDenyButton: true, denyButtonText: "View ticket", denyButtonColor: INK_HEX }
+    : {};
+}
+
+/** Celebrate a successful registration or check-in. */
+export function alertCheckedIn(attendee, { isNew = false, nextLabel } = {}) {
   const name = escapeHtml(attendee?.preferredName || attendee?.fullName || "Attendee");
   const id = escapeHtml(attendee?.registrationId);
   return Swal.fire({
@@ -27,13 +37,14 @@ export function alertCheckedIn(attendee, { isNew = false } = {}) {
     title: isNew ? "Registered & checked in!" : "Welcome — you're checked in!",
     html: `<p class="fl-swal-name">${name}</p>${id ? `<p class="fl-swal-id">${id}</p>` : ""}`,
     confirmButtonText: "View ticket",
+    ...nextOrTicket(nextLabel),
     timer: 3500,
     timerProgressBar: true,
   });
 }
 
 /** Attendee already checked in earlier — friendly heads-up. */
-export function alertAlreadyCheckedIn(attendee) {
+export function alertAlreadyCheckedIn(attendee, { nextLabel } = {}) {
   const name = escapeHtml(attendee?.fullName || "This attendee");
   return Swal.fire({
     ...base,
@@ -42,6 +53,7 @@ export function alertAlreadyCheckedIn(attendee) {
     title: "Already checked in",
     html: `<p class="fl-swal-name">${name}</p><p class="fl-swal-id">${escapeHtml(attendee?.registrationId)}</p>`,
     confirmButtonText: "OK",
+    ...nextOrTicket(nextLabel),
     timer: 3500,
     timerProgressBar: true,
   });

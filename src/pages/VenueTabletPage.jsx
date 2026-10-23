@@ -191,11 +191,14 @@ export default function VenueTabletPage() {
         checkInStation: station,
         checkInNow: true,
       });
-      setSuccess(attendee);
       setForm(emptyForm);
       setShowMore(false);
       setPhoneError("");
-      alertCheckedIn(attendee, { isNew: true });
+      // Back to an empty form for the next person; staff can still open the ticket.
+      alertCheckedIn(attendee, { isNew: true, nextLabel: "Next attendee" }).then((result) => {
+        if (result.isDenied) setSuccess(attendee);
+        else nameRef.current?.focus();
+      });
     } catch (err) {
       setError(err.message);
       if (err.message.toLowerCase().includes("phone")) {
@@ -221,15 +224,17 @@ export default function VenueTabletPage() {
     setAlreadyCheckedIn(null);
     try {
       const attendee = await api.lookup(id);
+      setLookupId("");
+      // Keep the scanner paused (loading) until the popup closes, so the same code
+      // is not scanned twice; then return to scanning unless staff open the ticket.
       if (attendee.checkedIn) {
-        setAlreadyCheckedIn(attendee);
-        alertAlreadyCheckedIn(attendee);
+        const result = await alertAlreadyCheckedIn(attendee, { nextLabel: "Next attendee" });
+        if (result.isDenied) setAlreadyCheckedIn(attendee);
         return;
       }
       const updated = await api.checkIn(attendee._id, "fast-lane");
-      setSuccess(updated);
-      setLookupId("");
-      alertCheckedIn(updated);
+      const result = await alertCheckedIn(updated, { nextLabel: "Next attendee" });
+      if (result.isDenied) setSuccess(updated);
     } catch {
       setErrorScreen({
         message: "Registration not found",
