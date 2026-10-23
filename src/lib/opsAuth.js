@@ -6,27 +6,42 @@ import { CONTACT_EMAIL } from "./brand";
  * substitute for real server-side authentication — anyone with the bundle can
  * read these values — but it is an effective deterrent for a small internal tool.
  *
- * Multiple admin accounts are supported. Each entry has:
+ * Accounts come from the VITE_OPS_ACCOUNTS build variable (set in Vercel / local .env)
+ * so passwords stay out of the repository. Format, comma-separated:
+ *   VITE_OPS_ACCOUNTS=first@example.com:password1,second@example.com:password2
+ *
+ * Each parsed entry has:
  *   email       — lowercased for comparison
  *   password    — static password for this account
  *   isDefault   — if true, the system will prompt to change it on first login
  *   storageKey  — per-account localStorage key for a custom password
  */
 
-const ACCOUNTS = [
-  {
-    email: CONTACT_EMAIL.toLowerCase(),
-    password: "futurelink@checking12345",
-    isDefault: true,
-    storageKey: "fl-ops-password",
-  },
-  {
-    email: "amusahcongo@gmail.com",
-    password: "Musah@superadmin",
-    isDefault: false,
-    storageKey: "fl-ops-password-amusahcongo",
-  },
-];
+const PRIMARY_EMAIL = CONTACT_EMAIL.toLowerCase();
+
+function parseAccounts(raw) {
+  return String(raw || "")
+    .split(",")
+    .map((entry) => {
+      const sep = entry.indexOf(":");
+      if (sep < 1) return null;
+      const email = entry.slice(0, sep).trim().toLowerCase();
+      const password = entry.slice(sep + 1).trim();
+      if (!email || !password) return null;
+      const isPrimary = email === PRIMARY_EMAIL;
+      return {
+        email,
+        password,
+        isDefault: isPrimary,
+        storageKey: isPrimary ? "fl-ops-password" : `fl-ops-password-${email.split("@")[0]}`,
+      };
+    })
+    .filter(Boolean)
+    // Primary account first — the legacy single-account helpers below rely on it.
+    .sort((a, b) => Number(b.email === PRIMARY_EMAIL) - Number(a.email === PRIMARY_EMAIL));
+}
+
+const ACCOUNTS = parseAccounts(import.meta.env.VITE_OPS_ACCOUNTS);
 
 const AUTH_KEY = "fl-ops-auth";
 const AUTH_EMAIL_KEY = "fl-ops-auth-email";
@@ -61,6 +76,7 @@ export const OPS_LOGIN_EMAIL = CONTACT_EMAIL;
 /** Returns the effective password for the primary (legacy) account. */
 export function getOpsPassword() {
   const account = ACCOUNTS[0];
+  if (!account) return null;
   return getStoredPassword(account) || account.password;
 }
 
@@ -123,6 +139,9 @@ export function isCurrentAccountUsingDefaultPassword() {
 export function changeOpsPassword(currentPassword, nextPassword) {
   const email = getOpsEmail();
   const account = getAccount(email) ?? ACCOUNTS[0];
+  if (!account) {
+    return { ok: false, error: "No ops accounts are configured." };
+  }
   const effective = getStoredPassword(account) || account.password;
 
   const next = String(nextPassword || "");
