@@ -22,5 +22,5 @@ export const CONTACT_BANK_ACCOUNT = "4011440001177";
 export const CONTACT_BANK = `${CONTACT_BANK_NAME} · Acct ${CONTACT_BANK_ACCOUNT}`;
 
 /** Public site address — used for QR codes so they always point at production */
-export const PUBLIC_SITE_URL = "https://future-linkservices.com";
+export const PUBLIC_SITE_URL = "https://www.future-linkservices.com";
 export const SELF_CHECKIN_URL = `${PUBLIC_SITE_URL}/#selfcheckin`;
