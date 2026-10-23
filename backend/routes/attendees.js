@@ -9,9 +9,14 @@ import {
 
 const router = Router();
 
+/** Next ID after the highest existing one, so deleting records never reissues a used ID. */
 async function nextRegistrationId() {
-  const count = await Attendee.countDocuments();
-  return `GH-${String(count + 1).padStart(3, "0")}`;
+  const ids = await Attendee.find({}, { registrationId: 1, _id: 0 }).lean();
+  const highest = ids.reduce((max, { registrationId }) => {
+    const n = Number(/^GH-(\d+)$/.exec(registrationId || "")?.[1]);
+    return Number.isFinite(n) && n > max ? n : max;
+  }, 0);
+  return `GH-${String(highest + 1).padStart(3, "0")}`;
 }
 
 router.get("/stats", async (_req, res) => {
