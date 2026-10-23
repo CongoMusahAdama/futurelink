@@ -10,6 +10,7 @@ import OpsShell from "../components/OpsShell";
 import BarChartPanel, { HourlyChartPanel } from "../components/BarChartPanel";
 import TableExportMenu from "../components/TableExportMenu";
 import TablePagination from "../components/TablePagination";
+import BulkSmsPanel from "../components/BulkSmsPanel";
 import { useDashboardData } from "../hooks/useDashboardData";
 import { usePagination } from "../hooks/usePagination";
 import { ACTIVITY_EXPORT_COLUMNS } from "../lib/exportTable";
@@ -324,6 +325,8 @@ export default function LiveDashboardPage() {
               peakHour={stats.peakHour}
             />
           </div>
+
+          <BulkSmsPanel />
         </div>
       )}
     </OpsShell>

@@ -36,4 +36,6 @@ export const api = {
       body: JSON.stringify({ checkInStation }),
     }),
   exportUrl: () => apiUrl("/attendees/export"),
+  smsStatus: () => request("/sms/status"),
+  sendBulkSms: (body) => request("/sms/bulk", { method: "POST", body: JSON.stringify(body) }),
 };

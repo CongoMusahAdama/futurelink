@@ -46,3 +46,53 @@ export async function sendCheckInSms(attendee) {
     clearTimeout(timer);
   }
 }
+
+const BULK_BATCH_SIZE = 200;
+
+export function isSmsConfigured() {
+  return Boolean(process.env.MNOTIFY_API_KEY && process.env.MNOTIFY_SENDER_ID);
+}
+
+/**
+ * Send one message to many numbers via mNotify, in batches.
+ * Returns { sent, failed, batches: [{ ok, count, response }] }.
+ */
+export async function sendBulkSms(phones, message) {
+  const key = process.env.MNOTIFY_API_KEY;
+  const sender = process.env.MNOTIFY_SENDER_ID;
+  if (!key || !sender) throw new Error("SMS is not configured (MNOTIFY_API_KEY / MNOTIFY_SENDER_ID).");
+
+  const batches = [];
+  for (let i = 0; i < phones.length; i += BULK_BATCH_SIZE) {
+    const recipient = phones.slice(i, i + BULK_BATCH_SIZE);
+    try {
+      const res = await fetch(`${MNOTIFY_URL}?key=${encodeURIComponent(key)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ recipient, sender, message, is_schedule: false, schedule_date: "" }),
+      });
+      const body = await res.json().catch(() => ({}));
+      const ok = res.ok && body.status === "success";
+      if (!ok) console.error("mNotify bulk batch failed:", res.status, JSON.stringify(body));
+      batches.push({ ok, count: recipient.length, response: body });
+    } catch (err) {
+      console.error("mNotify bulk batch error:", err.message);
+      batches.push({ ok: false, count: recipient.length, response: { error: err.message } });
+    }
+  }
+  const sent = batches.filter((b) => b.ok).reduce((n, b) => n + b.count, 0);
+  return { sent, failed: phones.length - sent, batches };
+}
+
+/** mNotify SMS credit balance, or null if unavailable. */
+export async function getSmsBalance() {
+  const key = process.env.MNOTIFY_API_KEY;
+  if (!key) return null;
+  try {
+    const res = await fetch(`https://api.mnotify.com/api/balance/sms?key=${encodeURIComponent(key)}`);
+    const body = await res.json().catch(() => ({}));
+    return res.ok && body.balance != null ? body.balance : null;
+  } catch {
+    return null;
+  }
+}

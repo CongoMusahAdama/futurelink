@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./db.js";
 import attendeesRouter from "./routes/attendees.js";
+import smsRouter from "./routes/sms.js";
 
 const app = express();
 
@@ -58,5 +59,6 @@ app.use("/api", async (_req, res, next) => {
 });
 
 app.use("/api/attendees", attendeesRouter);
+app.use("/api/sms", smsRouter);
 
 export default app;

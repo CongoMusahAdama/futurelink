@@ -86,3 +86,23 @@ export async function runWithFeedback(action, successMessage, failTitle) {
     alertError(failTitle, err?.message || "Please try again.");
   }
 }
+
+/** Yes / no confirmation; resolves true when confirmed. */
+export async function confirmAction(title, html, confirmText = "Yes, continue") {
+  const result = await Swal.fire({
+    ...base,
+    icon: "question",
+    iconColor: INK_HEX,
+    title,
+    html,
+    showCancelButton: true,
+    confirmButtonText: confirmText,
+    cancelButtonText: "Cancel",
+    reverseButtons: true,
+  });
+  return result.isConfirmed;
+}
+
+export function alertSuccess(title, text) {
+  return Swal.fire({ ...base, icon: "success", iconColor: ACCENT_HEX, title, text, confirmButtonText: "OK" });
+}
