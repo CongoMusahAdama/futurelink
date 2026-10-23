@@ -137,6 +137,11 @@ function AppContent() {
   }
 
   if (opsRoute) {
+    // Check-in desks are open without a login; dashboard, signage and admin stay gated.
+    if (opsRoute === "venue" && !opsAuthed) {
+      return <VenueTabletPage />;
+    }
+
     if (!opsAuthed) {
       return (
         <OpsLogin
