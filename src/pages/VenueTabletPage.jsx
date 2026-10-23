@@ -81,8 +81,21 @@ export default function VenueTabletPage() {
   const stats = useLiveStats();
 
   useEffect(() => {
-    document.documentElement.classList.add("venue-tablet");
-    return () => document.documentElement.classList.remove("venue-tablet");
+    const root = document.documentElement;
+    root.classList.add("venue-tablet");
+    // Re-skin the check-in screens in the event's colours (see .venue-event-theme in index.css)
+    const theme = EVENT.ticketTheme;
+    const vars = theme
+      ? { "--ev-ink": theme.ink, "--ev-accent": theme.accent, "--ev-accent-ink": theme.accentInk, "--ev-bg": theme.bg }
+      : {};
+    if (theme) {
+      root.classList.add("venue-event-theme");
+      Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
+    }
+    return () => {
+      root.classList.remove("venue-tablet", "venue-event-theme");
+      Object.keys(vars).forEach((k) => root.style.removeProperty(k));
+    };
   }, []);
 
   useEffect(() => {
@@ -510,6 +523,16 @@ export default function VenueTabletPage() {
           </div>
         ) : (
           <form onSubmit={handleRegister} className="venue-card venue-card-tablet mx-auto max-w-xl space-y-5 p-6 sm:p-8">
+            <div className="venue-form-event">
+              {EVENT.flyer && <img src={EVENT.flyer} alt="" className="venue-form-event-flyer" />}
+              <div className="min-w-0">
+                <p className="venue-form-event-title">{EVENT.title}</p>
+                <p className="venue-form-event-meta">
+                  {EVENT.dateLabel} · {EVENT.time} · {EVENT.city}
+                </p>
+              </div>
+            </div>
+
             <div className="text-center">
               {station === "vip" && <Crown className="mx-auto mb-2 h-8 w-8 text-orange" />}
               <h2 className="text-xl font-bold text-navy">
