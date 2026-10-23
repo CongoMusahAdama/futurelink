@@ -1,12 +1,13 @@
 import { BRAND_NAME, LOGO_SRC } from "./brand";
+import { EVENT } from "../data/checkin";
 
 export const TICKET_EVENT = {
   badge: "EVENT",
-  title: "FUTURE-LINK EVENT",
-  subtitle: "Smart Event Check-In",
-  date: "TBA",
-  time: "9:00 AM",
-  location: "Ghana",
+  title: EVENT.title.toUpperCase(),
+  subtitle: EVENT.host,
+  date: EVENT.dateLabel,
+  time: EVENT.time,
+  location: EVENT.venue,
   hall: "Main Hall",
   eventLogo: LOGO_SRC,
   brandLogo: LOGO_SRC,

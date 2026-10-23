@@ -94,7 +94,7 @@ router.get("/export", async (_req, res) => {
       "\n"
     );
     res.setHeader("Content-Type", "text/csv");
-    res.setHeader("Content-Disposition", 'attachment; filename="ghana-hubs-agm-attendees.csv"');
+    res.setHeader("Content-Disposition", 'attachment; filename="attendees.csv"');
     res.send(csv);
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -1,4 +1,5 @@
 import { BRAND_NAME, LOGO_SRC, CONTACT_EMAIL, CONTACT_PHONES_DISPLAY } from "./brand";
+import { CATEGORIES, EVENT } from "../data/checkin";
 
 /** Name badge print spec: 3.5" × 5.5" vertical + 0.125" bleed */
 export const BADGE_SPEC = {
@@ -13,36 +14,26 @@ export const BADGE_ORG = {
   orgLogo: LOGO_SRC,
   brandLogo: LOGO_SRC,
   brandName: BRAND_NAME,
-  eventTitle: "FUTURE-LINK EVENT",
-  eventSubtitle: "Smart Event Check-In",
+  eventTitle: EVENT.title.toUpperCase(),
+  eventSubtitle: EVENT.host,
   themeLabel: "THEME:",
-  themeQuote: "Skills · Business · Opportunity",
+  themeQuote: EVENT.theme,
   phones: CONTACT_PHONES_DISPLAY,
   website: "www.future-linkservices.com",
   email: CONTACT_EMAIL,
   poweredBy: BRAND_NAME,
 };
 
-export const BADGE_ROLES = [
-  "Guest",
-  "Hub Lead",
-  "Staff",
-  "Founder",
-  "Speaker",
-  "Sponsor",
-  "Partner",
-  "Media",
-  "VIP",
-];
+export const BADGE_ROLES = [...CATEGORIES, "VIP"];
 
 /** Role pill colors for print & preview */
 export const ROLE_COLORS = {
   Guest: { fill: [26, 251, 151], text: [0, 29, 74] },
-  "Hub Lead": { fill: [26, 251, 151], text: [0, 29, 74] },
+  Participant: { fill: [236, 72, 153], text: [255, 255, 255] },
+  "Medical Staff": { fill: [0, 29, 74], text: [255, 255, 255] },
+  Volunteer: { fill: [26, 251, 151], text: [0, 29, 74] },
   Staff: { fill: [0, 29, 74], text: [255, 255, 255] },
-  Founder: { fill: [26, 251, 151], text: [0, 29, 74] },
   Speaker: { fill: [249, 115, 22], text: [0, 29, 74] },
-  Sponsor: { fill: [251, 191, 36], text: [0, 29, 74] },
   Partner: { fill: [26, 251, 151], text: [0, 29, 74] },
   Media: { fill: [147, 197, 253], text: [0, 29, 74] },
   VIP: { fill: [249, 115, 22], text: [0, 29, 74] },

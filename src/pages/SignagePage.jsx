@@ -3,13 +3,14 @@ import OpsShell from "../components/OpsShell";
 import NameBadgePreviewGrid from "../components/NameBadgePreview";
 import { downloadLanyardStrapPdf, downloadRoleBadgeTemplatesPdf } from "../lib/nameBadgePdf";
 import { downloadSignagePackPdf, SIGNS } from "../lib/signagePdf";
+import { EVENT } from "../data/checkin";
 
 export default function SignagePage() {
   return (
     <OpsShell
       active="signage"
       title="Event Signage & Badges"
-      subtitle="Print-ready desk signs, lanyard badges & strap patterns · Ghana Hubs AGM 2026"
+      subtitle={`Print-ready desk signs, lanyard badges & strap patterns · ${EVENT.title}`}
     >
       <div className="mb-8 rounded-2xl bg-navy p-6 text-white ring-1 ring-white/10">
         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -49,17 +50,17 @@ export default function SignagePage() {
         <div className="mt-6 overflow-hidden rounded-xl bg-white shadow-sm">
           <div className="h-1.5 bg-brand-blue" />
           <div className="lanyard-pattern-preview px-4 py-3">
-            <span>GHANA HUBS NETWORK</span>
+            <span>{EVENT.lanyardPhrases[0]}</span>
             <span className="lanyard-pattern-dot" aria-hidden />
-            <span>AGM 2026</span>
+            <span>{EVENT.lanyardPhrases[1]}</span>
             <span className="lanyard-pattern-dot" aria-hidden />
-            <span>FUTURE-LINK</span>
+            <span>{EVENT.lanyardPhrases[2]}</span>
             <span className="lanyard-pattern-dot" aria-hidden />
-            <span>GHANA HUBS NETWORK</span>
+            <span>{EVENT.lanyardPhrases[0]}</span>
             <span className="lanyard-pattern-dot" aria-hidden />
-            <span>AGM 2026</span>
+            <span>{EVENT.lanyardPhrases[1]}</span>
             <span className="lanyard-pattern-dot" aria-hidden />
-            <span>FUTURE-LINK</span>
+            <span>{EVENT.lanyardPhrases[2]}</span>
           </div>
           <div className="h-1.5 bg-brand-blue" />
         </div>
@@ -101,7 +102,7 @@ export default function SignagePage() {
         <div>
           <h2 className="text-lg font-bold">Registration signage pack</h2>
           <p className="mt-1 text-sm text-white/70">
-            {SIGNS.length} A4 landscape signs — Future-Link × Ghana Hubs Network branded
+            {SIGNS.length} A4 landscape signs — Future-Link × {EVENT.host} branded
           </p>
         </div>
         <button
@@ -149,8 +150,7 @@ export default function SignagePage() {
         </div>
         <p className="mt-4 flex items-center gap-2 text-xs text-slate-500">
           <FileImage className="h-3.5 w-3.5" />
-          For roll-up banners and backdrops, send `public/events/TRANS.png` and `ghana-hubs-network.png` to
-          your print vendor.
+          For roll-up banners and backdrops, send `public/events/TRANS.png` to your print vendor.
         </p>
       </div>
     </OpsShell>

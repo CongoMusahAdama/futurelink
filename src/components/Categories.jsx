@@ -7,7 +7,7 @@ const categories = [
     count: "08",
     description:
       "Annual general meetings with member registration, QR check-in, and live attendance tracking.",
-    image: "/events/ghana-hubs-summit.png",
+    image: "/events/digital-innovation-week.jpg",
     featuredLabel: "Member gatherings",
   },
   {

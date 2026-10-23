@@ -1,6 +1,7 @@
 import QRCode from "qrcode";
 import { jsPDF } from "jspdf";
 import { getTicketFields } from "./eventTicketMeta";
+import { EVENT } from "../data/checkin";
 
 const NAVY = [0, 29, 74];
 const BLUE = [30, 90, 138];
@@ -159,16 +160,16 @@ export function printTicket(attendee) {
 </style></head><body>
   <div class="wrap">
     <div class="band">
-      <div><p class="band-k">Ghana Hubs Network · AGM 2026</p><p class="band-t">You're checked in</p></div>
+      <div><p class="band-k">${escapeHtml(EVENT.title)}</p><p class="band-t">You're checked in</p></div>
       <img class="band-logo" src="${escapeHtml(t.eventLogo)}" alt="" />
     </div>
     <div class="pass">
       <div class="qr-col" id="qr"></div>
       <div class="details">
         <div class="route">
-          <div><span class="code">GHN</span><span class="hub-sub">${escapeHtml(t.city)}</span></div>
+          <div><span class="code">${EVENT.codeFrom}</span><span class="hub-sub">${escapeHtml(t.city)}</span></div>
           <span class="arrow">→</span>
-          <div><span class="code">AGM</span><span class="hub-sub">2026</span></div>
+          <div><span class="code">${EVENT.codeTo}</span><span class="hub-sub">${escapeHtml(EVENT.dateLabel)}</span></div>
         </div>
         <div class="meta">
           <div><label>Date</label><div class="val">${escapeHtml(t.shortDate)}</div></div>

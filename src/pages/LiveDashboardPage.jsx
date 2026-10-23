@@ -13,6 +13,7 @@ import TablePagination from "../components/TablePagination";
 import { useDashboardData } from "../hooks/useDashboardData";
 import { usePagination } from "../hooks/usePagination";
 import { ACTIVITY_EXPORT_COLUMNS } from "../lib/exportTable";
+import { EVENT } from "../data/checkin";
 
 const STATION_LABELS = {
   "help-desk": "Help Desk",
@@ -20,7 +21,7 @@ const STATION_LABELS = {
   vip: "VIP Desk",
 };
 
-const EVENT_TITLE = "Ghana Hubs Network AGM 2026";
+const EVENT_TITLE = EVENT.title;
 const ACTIVITY_PAGE_SIZE = 8;
 
 function formatTime(value) {
@@ -57,7 +58,7 @@ export default function LiveDashboardPage() {
   const exportProps = {
     columns: ACTIVITY_EXPORT_COLUMNS,
     rows: recentActivity,
-    filename: "ghana-hubs-agm-activity",
+    filename: `${EVENT.fileSlug}-activity`,
     title: EVENT_TITLE,
     subtitle: "Recent activity",
     sheetName: "Activity",
@@ -67,11 +68,11 @@ export default function LiveDashboardPage() {
     <OpsShell
       active="dashboard"
       title="Live Dashboard"
-      subtitle={`${EVENT_TITLE} · Kumasi`}
+      subtitle={`${EVENT_TITLE} · ${EVENT.city}`}
       exportData={{
         columns: ACTIVITY_EXPORT_COLUMNS,
         rows: attendees,
-        filename: "ghana-hubs-agm-attendees",
+        filename: `${EVENT.fileSlug}-attendees`,
         title: EVENT_TITLE,
         subtitle: "Full attendee register",
         sheetName: "Attendees",

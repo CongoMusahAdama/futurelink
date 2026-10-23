@@ -1,6 +1,6 @@
 import { jsPDF } from "jspdf";
 import { BRAND_NAME } from "./brand";
-import { TICKET_EVENT } from "./eventTicketMeta";
+import { EVENT } from "../data/checkin";
 
 const NAVY = [0, 29, 74];
 const MINT = [26, 251, 151];
@@ -8,7 +8,7 @@ const MINT = [26, 251, 151];
 const SIGNS = [
   {
     title: "REGISTRATION",
-    subtitle: "Ghana Hubs Network AGM 2026 · Kumasi",
+    subtitle: `${EVENT.title} · ${EVENT.city}`,
     hint: "Welcome — please register or check in here",
     num: "01",
   },
@@ -97,10 +97,10 @@ function drawSign(doc, sign, pageW, pageH) {
   doc.roundedRect(pageW / 2 - 45, 100, 90, 22, 3, 3, "F");
   doc.setTextColor(...NAVY);
   doc.setFontSize(9);
-  doc.text("GHANA HUBS NETWORK", pageW / 2, 108, { align: "center" });
+  doc.text(EVENT.host.toUpperCase(), pageW / 2, 108, { align: "center" });
   doc.setFontSize(11);
   doc.setFont(undefined, "bold");
-  doc.text(`AGM 2026 · ${TICKET_EVENT.location}`, pageW / 2, 115, { align: "center" });
+  doc.text(`${EVENT.title} · ${EVENT.city}`, pageW / 2, 115, { align: "center" });
 
   doc.setFontSize(8);
   doc.setFont(undefined, "normal");
@@ -118,7 +118,7 @@ export function downloadSignagePackPdf() {
     drawSign(doc, sign, pageW, pageH);
   });
 
-  doc.save("ghn-agm-registration-signage-pack.pdf");
+  doc.save(`${EVENT.fileSlug}-registration-signage-pack.pdf`);
 }
 
 export { SIGNS };

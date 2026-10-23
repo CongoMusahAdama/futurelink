@@ -11,27 +11,6 @@ export const blogCategories = [
 
 export const blogPosts = [
   {
-    id: "ghana-hubs-agm-checkin-guide",
-    title: "How to Prepare for Ghana Hubs Network AGM 2026 Check-In",
-    category: "Events",
-    date: "Jul 15, 2026",
-    author: "Future-Link Team",
-    readTime: "4 min read",
-    image: "/events/ghana-hubs-summit.png",
-    imageClass: "object-left",
-    featured: true,
-    tags: ["AGM", "QR Check-in", "Kumasi"],
-    excerpt:
-      "Everything delegates need before arriving in Kumasi — QR codes, registration tips, and what to expect at the fast lane on Monday 21 July.",
-    content: [
-      "The Ghana Hubs Network AGM 2026 takes place on Monday 21 July in Kumasi. To keep registration smooth for hundreds of members, Future-Link is running a fully digital check-in system with QR codes, live attendance tracking, and on-site badge printing.",
-      "Before you travel, make sure your registration is complete and your confirmation email is saved on your phone. You will receive a personal QR code — screenshot it or keep the email open. At the venue, the fast lane is for delegates who arrive with their code ready to scan.",
-      "If you registered on behalf of a hub or organisation, confirm that each delegate has their own QR code. Shared codes slow down the queue and can cause duplicate check-ins. Our help desk at the entrance can re-send codes quickly if needed.",
-      "On arrival, follow signage to the Future-Link check-in stations. Present your QR code, collect your printed name badge, and proceed to the main hall. Walk-ins are welcome, but pre-registered delegates move through fastest.",
-      "For hub coordinators: end-of-day analytics and attendance exports will be available after the AGM. Contact the Future-Link team on site if you need a live headcount during sessions.",
-    ],
-  },
-  {
     id: "skills-to-income-mushroom-training",
     title: "From Training Room to Income: Mushroom Production in Ghana",
     category: "Skills",

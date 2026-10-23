@@ -20,7 +20,7 @@ import {
   phoneValidationMessage,
   sanitizePhoneInput,
 } from "../lib/phone";
-import { CATEGORIES, REGIONS } from "../data/checkin";
+import { CATEGORIES, EVENT, REGIONS, VIP_CATEGORIES } from "../data/checkin";
 import { useConnectionStatus, useLiveStats } from "../hooks/useVenue";
 
 const STATIONS = [
@@ -45,8 +45,8 @@ const STATIONS = [
     id: "vip",
     num: "03",
     label: "VIP Desk",
-    hint: "Speakers & sponsors",
-    detail: "Priority lane for VIP guests",
+    hint: "Medical staff & partners",
+    detail: "Priority lane for medical staff & partners",
     icon: Crown,
   },
 ];
@@ -56,8 +56,8 @@ const emptyForm = {
   phone: "",
   organisation: "",
   hub: "",
-  region: "Ashanti",
-  category: "Guest",
+  region: "Western",
+  category: "Participant",
   futureLinkOptIn: false,
 };
 
@@ -268,11 +268,11 @@ export default function VenueTabletPage() {
                   Future-Link · Venue Check-in
                 </p>
                 <h1 className="mt-2 text-3xl font-bold tracking-tight text-navy sm:text-4xl">
-                  Ghana Hubs Network AGM 2026
+                  {EVENT.title}
                 </h1>
-                <p className="mt-2 text-slate-500">Kumasi · Choose a registration station to begin</p>
+                <p className="mt-2 text-slate-500">{EVENT.venue} · Choose a registration station to begin</p>
                 <span className="mt-4 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-brand-blue ring-1 ring-blue-100">
-                  Mon 21 Jul 2026
+                  {EVENT.dateLabel} · {EVENT.time}
                 </span>
               </div>
 
@@ -555,7 +555,7 @@ export default function VenueTabletPage() {
               <label className="venue-label">Category</label>
               <select name="category" value={form.category} onChange={handleChange} className="venue-input">
                 {(station === "vip"
-                  ? ["Speaker", "Sponsor", "Partner", "Hub Lead"]
+                  ? VIP_CATEGORIES
                   : CATEGORIES
                 ).map((c) => (
                   <option key={c} value={c}>
@@ -576,13 +576,13 @@ export default function VenueTabletPage() {
             ) : (
               <div className="space-y-4 border-t border-blue-100 pt-4">
                 <div>
-                  <label className="venue-label">Hub</label>
+                  <label className="venue-label">Community / Area</label>
                   <input
                     name="hub"
                     value={form.hub}
                     onChange={handleChange}
                     className="venue-input"
-                    placeholder="Hub affiliation"
+                    placeholder="e.g. Anaji, Adentem"
                   />
                 </div>
                 <div>

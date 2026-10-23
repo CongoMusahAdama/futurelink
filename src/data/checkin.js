@@ -1,19 +1,40 @@
+/** The event currently running on the check-in, dashboard, ticket and badge screens. */
+export const EVENT = {
+  title: "Free Breast Screening 2026",
+  host: "Duapa Werkspace × Sycamore Medical Centre",
+  theme: "Take a Step Towards Early Detection",
+  city: "Anaji",
+  venue: "Duapa Werkspace Premises, Anaji",
+  dateLabel: "Fri 23 Oct 2026",
+  time: "9:00 AM",
+  /** Short codes shown on the ticket route strip, e.g. DWS → BCS */
+  codeFrom: "DWS",
+  codeTo: "BCS",
+  /** Repeating phrases on the lanyard strap */
+  lanyardPhrases: ["DUAPA WERKSPACE", "BREAST SCREENING", "EARLY DETECTION"],
+  /** Prefix for exported files */
+  fileSlug: "breast-screening-2026",
+};
+
 export const CATEGORIES = [
-  "Hub Lead",
+  "Participant",
+  "Medical Staff",
+  "Volunteer",
   "Staff",
-  "Founder",
-  "Sponsor",
-  "Speaker",
   "Partner",
-  "Guest",
+  "Speaker",
   "Media",
+  "Guest",
 ];
 
+/** Categories offered at the VIP / priority desk */
+export const VIP_CATEGORIES = ["Medical Staff", "Speaker", "Partner"];
+
 export const REGIONS = [
+  "Western",
   "Ashanti",
   "Greater Accra",
   "Northern",
-  "Western",
   "Eastern",
   "Central",
   "Volta",

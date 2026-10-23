@@ -18,7 +18,6 @@ export const navLinks = [
     href: "#events",
     children: [
       { label: "All Events", href: "#events" },
-      { label: "Ghana Hubs AGM 2026", href: "#ghana-hubs-agm" },
       { label: "Educators Conference", href: "#educators-conference" },
       { label: "Sales Leaders Conference", href: "#sales-leaders-conference" },
       { label: "Media Creators Networking", href: "#media-creators-networking" },
@@ -46,7 +45,6 @@ export const navLinks = [
       { label: "Events Hub", href: "#events" },
       { label: "Services Hub", href: "#services" },
       { label: "Impact Stories", href: "#impact" },
-      { label: "AGM Check-In Guide", href: "#ghana-hubs-agm-checkin-guide" },
     ],
   },
   {

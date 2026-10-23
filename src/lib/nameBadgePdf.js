@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
 import { BADGE_ROLES, BADGE_SPEC, getBadgeFields, getRoleColors } from "./badgeMeta";
+import { EVENT } from "../data/checkin";
 
 const IN = 25.4;
 const NAVY = [0, 29, 74];
@@ -224,7 +225,7 @@ function drawLanyardStrip(doc) {
   doc.rect(left, y0, width, 3, "F");
   doc.rect(left, y0 + stripH - 3, width, 3, "F");
 
-  const phrases = ["GHANA HUBS NETWORK", "AGM 2026", "FUTURE-LINK"];
+  const phrases = EVENT.lanyardPhrases;
   const fontSize = width > 200 ? 9 : 7.5;
   const gap = 7;
   const tileW = measureLanyardTile(doc, phrases, fontSize, gap);
@@ -276,14 +277,14 @@ export async function downloadRoleBadgeTemplatesPdf() {
   doc.addPage([PAGE_W, PAGE_H]);
   drawLanyardStrip(doc);
 
-  doc.save("ghn-agm-name-badge-role-templates.pdf");
+  doc.save(`${EVENT.fileSlug}-name-badge-role-templates.pdf`);
 }
 
 /** Lanyard strap pattern page only (landscape A4 for a wide repeat preview) */
 export function downloadLanyardStrapPdf() {
   const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
   drawLanyardStrip(doc);
-  doc.save("ghn-agm-lanyard-strap-pattern.pdf");
+  doc.save(`${EVENT.fileSlug}-lanyard-strap-pattern.pdf`);
 }
 
 export function printNameBadge(attendee) {

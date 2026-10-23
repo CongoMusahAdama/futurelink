@@ -9,6 +9,7 @@ import {
   Users,
 } from "lucide-react";
 import Logo from "./Logo";
+import { EVENT } from "../data/checkin";
 import TableExportMenu from "./TableExportMenu";
 
 const NAV = [
@@ -156,7 +157,7 @@ export default function OpsShell({
             {!collapsed && (
               <div className="flex items-center gap-2 px-3 py-2 text-xs text-blue-200/60">
                 <Radio className="h-3.5 w-3.5 shrink-0 text-brand-blue" />
-                <span className="truncate">Ghana Hubs AGM 2026</span>
+                <span className="truncate">{EVENT.title}</span>
               </div>
             )}
           </div>

@@ -1,4 +1,5 @@
 import EventTicket from "./EventTicket";
+import { EVENT } from "../data/checkin";
 import { downloadNameBadgePdf } from "../lib/nameBadgePdf";
 import { downloadTicketPdf, printTicket } from "../lib/ticketPdf";
 
@@ -7,7 +8,7 @@ export default function CheckInPass({ registrationId, fullName, category, checke
 
   if (!registrationId) return null;
 
-  const statusLine = checkedInTime ? `Checked in at ${checkedInTime}` : "Fast Lane · Kumasi";
+  const statusLine = checkedInTime ? `Checked in at ${checkedInTime}` : `Fast Lane · ${EVENT.city}`;
 
   return (
     <div className="checkin-pass">

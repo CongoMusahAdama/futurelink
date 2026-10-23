@@ -25,18 +25,17 @@
 
   <!-- Org pill -->
   <rect class="white" x="80" y="100" width="729" height="110" rx="28"/>
-  <text class="text-navy bold" x="200" y="155" font-size="32">Ghana Hubs Network</text>
+  <text class="text-navy bold" x="200" y="155" font-size="32">Duapa Werkspace</text>
   <text class="text-muted" x="200" y="188" font-size="22">Powered by Future-Link Services</text>
-  <!-- Replace with logo: public/events/ghana-hubs-network.png -->
 
   <!-- Event title -->
-  <text class="text-white bold" x="444" y="280" font-size="44" text-anchor="middle">GHANA HUBS NETWORK AGM</text>
-  <text class="text-white" x="444" y="330" font-size="28" text-anchor="middle">Annual General Meeting 2026</text>
+  <text class="text-white bold" x="444" y="280" font-size="44" text-anchor="middle">FREE BREAST SCREENING</text>
+  <text class="text-white" x="444" y="330" font-size="28" text-anchor="middle">Breast Cancer Awareness 2026</text>
 
   <!-- Theme -->
   <text class="mint bold" x="80" y="390" font-size="22">THEME:</text>
   <rect fill="none" stroke="#1afb97" stroke-width="3" x="80" y="410" width="729" height="90" rx="12"/>
-  <text class="text-white bold" x="444" y="465" font-size="26" text-anchor="middle">"CONNECTING HUBS · BUILDING IMPACT"</text>
+  <text class="text-white bold" x="444" y="465" font-size="26" text-anchor="middle">"TAKE A STEP TOWARDS EARLY DETECTION"</text>
 
   <!-- Attendee name — EDIT -->
   <text class="text-white bold" x="444" y="560" font-size="48" text-anchor="middle">{{ATTENDEE_NAME}}</text>

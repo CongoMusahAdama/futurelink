@@ -39,9 +39,9 @@ const milestones = [
   },
   {
     year: "2026",
-    title: "Ghana Hubs Network AGM",
+    title: "Community health screening",
     description:
-      "QR check-in, live dashboards, and end-of-day analytics for conferences and AGMs across Ghana.",
+      "QR check-in and live dashboards for the Duapa Werkspace × Sycamore Medical Centre free breast screening in Anaji.",
   },
   {
     year: "Today",
@@ -87,8 +87,8 @@ export default function About() {
               Building Better Events, One Milestone at a Time
             </ScrollReveal>
             <ScrollReveal as="p" delay={100} className="mt-5 text-sm leading-relaxed text-slate-500 sm:text-base">
-              From our first vision to the upcoming Ghana Hubs Network AGM in
-              Kumasi, we are helping organizers deliver professional attendee experiences
+              From our first vision to community events like the free breast screening in
+              Anaji, we are helping organizers deliver professional attendee experiences
               with real-time intelligence.
             </ScrollReveal>
           </div>

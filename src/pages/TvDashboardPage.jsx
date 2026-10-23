@@ -3,9 +3,10 @@ import { Radio } from "lucide-react";
 import EventLogo from "../components/EventLogo";
 import Logo from "../components/Logo";
 import { useDashboardData } from "../hooks/useDashboardData";
+import { EVENT } from "../data/checkin";
 
-const EVENT_TITLE = "Ghana Hubs Network AGM 2026";
-const EVENT_VENUE = "Kumasi · Mon 21 Jul 2026";
+const EVENT_TITLE = EVENT.title;
+const EVENT_VENUE = `${EVENT.city} · ${EVENT.dateLabel}`;
 
 function formatTime(value) {
   if (!value) return "—";

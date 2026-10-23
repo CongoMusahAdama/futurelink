@@ -1,6 +1,7 @@
 import { Download, Printer, Ticket, UserRound } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { getTicketFields } from "../lib/eventTicketMeta";
+import { EVENT } from "../data/checkin";
 import { useTabletLayout } from "../hooks/useTabletLayout";
 
 export default function EventTicket({
@@ -21,7 +22,7 @@ export default function EventTicket({
         <header className="event-ticket-band">
           <div className="event-ticket-band-copy">
             <p className="event-ticket-band-kicker">
-              {statusLine || "Ghana Hubs Network · AGM 2026"}
+              {statusLine || EVENT.title}
             </p>
             <p className="event-ticket-band-title">You're checked in</p>
           </div>
@@ -42,15 +43,15 @@ export default function EventTicket({
           <div className="event-ticket-details">
             <div className="event-ticket-route">
               <div className="event-ticket-hub">
-                <span className="event-ticket-code">GHN</span>
+                <span className="event-ticket-code">{EVENT.codeFrom}</span>
                 <span className="event-ticket-hub-sub">{t.city}</span>
               </div>
               <span className="event-ticket-route-icon" aria-hidden="true">
                 <Ticket className="h-5 w-5" />
               </span>
               <div className="event-ticket-hub">
-                <span className="event-ticket-code">AGM</span>
-                <span className="event-ticket-hub-sub">2026</span>
+                <span className="event-ticket-code">{EVENT.codeTo}</span>
+                <span className="event-ticket-hub-sub">{EVENT.dateLabel}</span>
               </div>
             </div>
 

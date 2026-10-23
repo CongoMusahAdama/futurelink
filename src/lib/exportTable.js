@@ -70,7 +70,7 @@ export const ATTENDEE_EXPORT_COLUMNS = [
   { header: "Name", accessor: (r) => r.fullName },
   { header: "Phone", accessor: (r) => r.phone || "" },
   { header: "Organisation", accessor: (r) => r.organisation || "" },
-  { header: "Hub", accessor: (r) => r.hub || "" },
+  { header: "Area", accessor: (r) => r.hub || "" },
   { header: "Region", accessor: (r) => r.region || "" },
   { header: "Category", accessor: (r) => r.category },
   {

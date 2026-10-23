@@ -9,8 +9,9 @@ import { usePagination } from "../hooks/usePagination";
 import { getRegistrations, updateRegistrationStatus, deleteRegistration } from "../lib/registrations";
 import { saveEvent, getDynamicEvents, deleteDynamicEvent, setEventStatus } from "../lib/eventStore";
 import CategorySelect from "../components/CategorySelect";
+import { EVENT } from "../data/checkin";
 
-const EVENT_TITLE = "Ghana Hubs Network AGM 2026";
+const EVENT_TITLE = EVENT.title;
 const PAGE_SIZE = 10;
 
 // ─── Copy link helper ───────────────────────────────────────────────────────
@@ -293,7 +294,7 @@ function AttendeesTab() {
   const exportProps = {
     columns: ATTENDEE_EXPORT_COLUMNS,
     rows: filtered,
-    filename: "ghana-hubs-agm-attendees",
+    filename: `${EVENT.fileSlug}-attendees`,
     title: EVENT_TITLE,
     subtitle: `Attendee list · ${filter === "all" ? "All" : filter === "checked-in" ? "Checked in" : "Pending"}`,
     sheetName: "Attendees",
@@ -355,7 +356,7 @@ function AttendeesTab() {
                 </div>
                 <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
                   <div className="col-span-2"><dt className="text-slate-400">Organisation</dt><dd className="font-medium text-navy">{a.organisation || "—"}</dd></div>
-                  <div><dt className="text-slate-400">Hub / Region</dt><dd className="font-medium text-navy">{[a.hub, a.region].filter(Boolean).join(" · ") || "—"}</dd></div>
+                  <div><dt className="text-slate-400">Area / Region</dt><dd className="font-medium text-navy">{[a.hub, a.region].filter(Boolean).join(" · ") || "—"}</dd></div>
                   <div><dt className="text-slate-400">Category</dt><dd className="font-medium text-navy">{a.category}</dd></div>
                   {a.phone && <div className="col-span-2"><dt className="text-slate-400">Phone</dt><dd className="font-medium text-navy">{a.phone}</dd></div>}
                 </dl>
@@ -770,7 +771,7 @@ export default function AdminPage() {
       exportData={activeTab === "attendees" ? {
         columns: ATTENDEE_EXPORT_COLUMNS,
         rows: [],
-        filename: "ghana-hubs-agm-attendees",
+        filename: `${EVENT.fileSlug}-attendees`,
         title: EVENT_TITLE,
         subtitle: "Full attendee register",
         sheetName: "Attendees",
