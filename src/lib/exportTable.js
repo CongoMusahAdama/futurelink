@@ -103,9 +103,12 @@ function formatTime(value) {
 /** Activity table columns for dashboard export */
 export const ACTIVITY_EXPORT_COLUMNS = [
   { header: "Attendee", accessor: (r) => r.fullName },
+  { header: "Phone", accessor: (r) => r.phone || "" },
   { header: "Organisation", accessor: (r) => r.organisation || "" },
   { header: "ID", accessor: (r) => r.registrationId },
   { header: "Category", accessor: (r) => r.category },
+  { header: "Area", accessor: (r) => r.hub || "" },
+  { header: "Region", accessor: (r) => r.region || "" },
   {
     header: "Station",
     accessor: (r) => STATION_LABELS[r.checkInStation] || "",

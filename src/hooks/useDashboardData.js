@@ -38,15 +38,14 @@ export function useDashboardData(refreshMs = 5000) {
     };
   }, [refreshMs]);
 
+  // Every attendee, most recent first (the dashboard table paginates it and exports it all).
   const recentActivity = useMemo(
     () =>
-      [...attendees]
-        .sort((a, b) => {
-          const aTime = a.checkedInAt || a.createdAt;
-          const bTime = b.checkedInAt || b.createdAt;
-          return new Date(bTime) - new Date(aTime);
-        })
-        .slice(0, 12),
+      [...attendees].sort((a, b) => {
+        const aTime = a.checkedInAt || a.createdAt;
+        const bTime = b.checkedInAt || b.createdAt;
+        return new Date(bTime) - new Date(aTime);
+      }),
     [attendees]
   );
 

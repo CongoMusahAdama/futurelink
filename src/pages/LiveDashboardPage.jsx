@@ -61,7 +61,7 @@ export default function LiveDashboardPage() {
     rows: recentActivity,
     filename: `${EVENT.fileSlug}-activity`,
     title: EVENT_TITLE,
-    subtitle: "Recent activity",
+    subtitle: `All check-in activity (${recentActivity.length})`,
     sheetName: "Activity",
   };
 
@@ -208,6 +208,12 @@ export default function LiveDashboardPage() {
                             <dd className="font-mono font-semibold text-navy">{a.registrationId}</dd>
                           </div>
                           <div>
+                            <dt className="text-slate-400">Phone</dt>
+                            <dd className="font-medium text-navy">
+                              {a.phone ? <a href={`tel:${a.phone.replace(/s/g, "")}`}>{a.phone}</a> : "—"}
+                            </dd>
+                          </div>
+                          <div>
                             <dt className="text-slate-400">Category</dt>
                             <dd className="font-medium text-navy">{a.category}</dd>
                           </div>
@@ -239,10 +245,11 @@ export default function LiveDashboardPage() {
                   />
 
                   <div className="hidden overflow-x-auto md:block">
-                    <table className="ops-table min-w-[640px]">
+                    <table className="ops-table min-w-[760px]">
                     <thead>
                       <tr>
                         <th>Attendee</th>
+                        <th>Phone</th>
                         <th>ID</th>
                         <th>Category</th>
                         <th>Station</th>
@@ -257,6 +264,7 @@ export default function LiveDashboardPage() {
                             <p className="font-medium">{a.fullName}</p>
                             <p className="text-xs text-slate-400">{a.organisation || "—"}</p>
                           </td>
+                          <td className="whitespace-nowrap px-5 py-3 text-slate-600">{a.phone || "—"}</td>
                           <td className="px-5 py-3 font-mono text-xs text-slate-600">
                             {a.registrationId}
                           </td>

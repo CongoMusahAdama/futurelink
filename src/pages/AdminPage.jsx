@@ -256,7 +256,7 @@ function RegistrationsTab() {
 
 // ─── Attendees Tab (existing) ────────────────────────────────────────────────
 
-function AttendeesTab() {
+function AttendeesTab({ onLoaded }) {
   const [attendees, setAttendees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -266,7 +266,9 @@ function AttendeesTab() {
     api
       .listAttendees()
       .then((list) => {
-        setAttendees(Array.isArray(list) ? list : []);
+        const rows = Array.isArray(list) ? list : [];
+        setAttendees(rows);
+        onLoaded?.(rows);
         setError("");
       })
       .catch((err) => {
@@ -274,7 +276,7 @@ function AttendeesTab() {
         setError(err.message);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [onLoaded]);
 
   const filtered = attendees.filter((a) => {
     if (filter === "checked-in") return a.checkedIn;
@@ -375,7 +377,7 @@ function AttendeesTab() {
               <table className="ops-table min-w-[720px]">
                 <thead>
                   <tr>
-                    <th>ID</th><th>Name</th><th>Organisation</th><th>Hub / Region</th><th>Category</th><th>Status</th>
+                    <th>ID</th><th>Name</th><th>Organisation</th><th>Area / Region</th><th>Category</th><th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -751,6 +753,8 @@ function AddEventTab() {
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("registrations");
+  // Loaded by the Attendees tab, so the top-bar export downloads every attendee.
+  const [allAttendees, setAllAttendees] = useState([]);
 
   const pendingCount = getRegistrations().filter((r) => r.status === "pending").length;
 
@@ -770,7 +774,7 @@ export default function AdminPage() {
       subtitle={activeTab === "registrations" ? attendeeSubtitle : undefined}
       exportData={activeTab === "attendees" ? {
         columns: ATTENDEE_EXPORT_COLUMNS,
-        rows: [],
+        rows: allAttendees,
         filename: `${EVENT.fileSlug}-attendees`,
         title: EVENT_TITLE,
         subtitle: "Full attendee register",
@@ -823,7 +827,7 @@ export default function AdminPage() {
 
       {activeTab === "registrations" && <RegistrationsTab />}
       {activeTab === "add-event" && <AddEventTab />}
-      {activeTab === "attendees" && <AttendeesTab />}
+      {activeTab === "attendees" && <AttendeesTab onLoaded={setAllAttendees} />}
     </OpsShell>
 
   );
