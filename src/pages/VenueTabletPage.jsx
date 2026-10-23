@@ -461,7 +461,7 @@ export default function VenueTabletPage() {
         </div>
       </header>
 
-      <main className="venue-wrap flex-1 py-6">
+      <main className={`venue-wrap flex-1 py-6 ${station === "fast-lane" ? "" : "venue-wrap-form"}`}>
         {error && (
           <div className="mb-5 rounded-2xl bg-red-50 px-4 py-3 text-center text-sm text-red-700">{error}</div>
         )}
@@ -516,7 +516,8 @@ export default function VenueTabletPage() {
             </div>
           </div>
         ) : (
-          <form onSubmit={handleRegister} className="venue-card venue-card-tablet mx-auto max-w-xl space-y-5 p-6 sm:p-8">
+          <div className="venue-form-layout">
+          <form onSubmit={handleRegister} className="venue-card venue-card-tablet mx-auto w-full max-w-xl space-y-5 p-6 sm:p-8">
             <div className="venue-form-event">
               {EVENT.flyer && <img src={EVENT.flyer} alt="" className="venue-form-event-flyer" />}
               <div className="min-w-0">
@@ -650,6 +651,18 @@ export default function VenueTabletPage() {
               {loading ? "Saving..." : "Register & check in"}
             </button>
           </form>
+
+          <aside className="venue-scan-aside" aria-label="Scan to check in">
+            <div className="venue-scan-qr">
+              <QRCodeSVG value={SELF_CHECKIN_URL} size={168} level="M" />
+            </div>
+            <div className="venue-scan-copy">
+              <p className="venue-scan-kicker">Skip the queue</p>
+              <p className="venue-scan-title">Scan to check in</p>
+              <p className="venue-scan-hint">Open your phone camera and point it at the code</p>
+            </div>
+          </aside>
+          </div>
         )}
       </main>
     </div>

@@ -7179,3 +7179,213 @@ html.venue-event-theme .venue-input:focus {
     height: 9.5rem;
   }
 }
+
+/* ── Self check-in form polish (phone) ── */
+.self-checkin-hero {
+  position: relative;
+  height: 11rem;
+}
+
+.self-checkin-hero img {
+  object-position: center 26%;
+}
+
+.self-checkin-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, var(--color-blue-50) 100%);
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .self-checkin-hero {
+    height: 16rem;
+  }
+
+  .self-checkin-hero img {
+    object-position: center 24%;
+  }
+}
+
+.self-checkin-head {
+  margin-bottom: 1.375rem;
+  text-align: center;
+}
+
+.self-checkin-title {
+  font-size: 1.5rem;
+}
+
+.self-checkin-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.875rem;
+}
+
+.self-checkin-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  background: var(--color-blue-50);
+  color: var(--color-navy);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.self-checkin-chip svg {
+  color: var(--color-brand-blue);
+}
+
+.self-checkin-fields {
+  display: grid;
+  gap: 1.125rem;
+}
+
+.self-checkin-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-navy);
+}
+
+.self-checkin-optional {
+  border-radius: 9999px;
+  background: #f1f5f9;
+  padding: 0.0625rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.self-checkin-field {
+  position: relative;
+}
+
+.self-checkin-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  width: 1.125rem;
+  height: 1.125rem;
+  transform: translateY(-50%);
+  color: var(--color-brand-blue);
+  pointer-events: none;
+}
+
+.self-checkin-input {
+  padding-left: 2.75rem !important;
+}
+
+.self-checkin-submit {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--color-brand-blue) 30%, transparent);
+}
+
+.self-checkin-fine {
+  margin-top: 0.875rem;
+}
+
+.self-checkin-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* ── "Scan to check in" panel beside the desk registration form ── */
+.venue-form-layout {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.venue-scan-aside {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 1rem 1.25rem;
+  border-radius: 1.5rem;
+  border: 2px dashed color-mix(in srgb, var(--color-brand-blue) 45%, white);
+  background: #ffffff;
+}
+
+.venue-scan-qr {
+  flex-shrink: 0;
+  padding: 0.5rem;
+  border-radius: 0.875rem;
+  background: #ffffff;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--color-navy) 12%, transparent);
+}
+
+.venue-scan-qr svg {
+  display: block;
+  width: 6rem;
+  height: 6rem;
+}
+
+.venue-scan-kicker {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-brand-blue);
+}
+
+.venue-scan-title {
+  margin-top: 0.125rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.venue-scan-hint {
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+@media (min-width: 900px) {
+  html.venue-tablet .venue-wrap.venue-wrap-form,
+  .venue-wrap.venue-wrap-form {
+    max-width: 58rem;
+  }
+
+  .venue-form-layout {
+    grid-template-columns: minmax(0, 36rem) 15rem;
+    justify-content: center;
+    align-items: start;
+    gap: 1.5rem;
+  }
+
+  .venue-scan-aside {
+    position: sticky;
+    top: 1.5rem;
+    flex-direction: column;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+  }
+
+  .venue-scan-qr svg {
+    width: 10.5rem;
+    height: 10.5rem;
+  }
+}
